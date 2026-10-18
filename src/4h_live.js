@@ -174,7 +174,7 @@ function liveChanged(full,info){
   liveT=setTimeout(()=>{
     const doFull=liveFull; liveFull=false;
     if(doFull) computeAll();
-    const bs=$('#brandSub'); if(bs) bs.textContent= LIVE.status==='ok'? feedTimeText().replace(/ · cập nhật.*/,'') : 'Mỹ & Việt Nam · 6 nhân tố';
+    const bs=$('#brandSub'); if(bs) bs.textContent= LIVE.status==='ok'? feedTimeText().replace(/ · (cập nhật|updated).*/,'') : 'Mỹ & Việt Nam · 6 nhân tố';
     if(!$('#sheet').hidden){
       $$('[data-px]').forEach(el=>{ const t=el.dataset.px; const tmp=document.createElement('span'); tmp.innerHTML=pxChip(t,{etf:!!el.dataset.pxe}); if(tmp.firstElementChild) el.replaceWith(tmp.firstElementChild); });
       const lb=$('#liveSlot'); if(lb&&lb.dataset.t){ const etf=!!lb.dataset.etf; const s=etf?EBY[lb.dataset.t]:BY[lb.dataset.t]; if(s) lb.innerHTML=liveBlockHTML(s,etf); }

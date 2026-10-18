@@ -14,6 +14,7 @@ window.claude={use:async(name)=>{ if(name!=='db') return null; await new Promise
   doc:(p)=>({onSnapshot:(next,err)=>{ setTimeout(()=>next(snap(p)),40+Math.random()*60); return ()=>{}; }, get:()=>new Promise(r=>setTimeout(()=>r(snap(p)),80))})}; }};""" % json.dumps(D)
 def run(pw,name,vp,mobile,scheme,with_db=True):
     b=pw.chromium.launch(); ctx=b.new_context(viewport=vp,device_scale_factor=2 if mobile else 1,is_mobile=mobile,has_touch=mobile,color_scheme=scheme); p=ctx.new_page(); errs=[]
+    if __import__('os').environ.get('LB_LANG')=='en': p.add_init_script("try{localStorage.setItem('labanCoPhieu.lang','en')}catch(e){}"); name=name+'-en'
     if with_db: p.add_init_script(mock)
     p.on("pageerror",lambda e: errs.append("PAGEERR "+str(e))); p.on("console",lambda m: errs.append(m.text) if m.type=="error" else None)
     p.route("https://cdnjs.cloudflare.com/**",lambda r: r.fulfill(path=GSAP,content_type="application/javascript")); p.route("https://fonts.googleapis.com/**",lambda r: r.fulfill(body="",content_type="text/css"))
@@ -49,7 +50,7 @@ def run(pw,name,vp,mobile,scheme,with_db=True):
     p.select_option("#chT","FPT"); p.wait_for_timeout(700); L("chart FPT:", p.locator("#v-chart .disc").first.inner_text()[:140])
     click('#tabbar button[data-v="screen"]',wait=300)
     click('[data-sm="etf"]',wait=400); L("etf:", p.locator("#eCount").inner_text()); ov("etf"); p.screenshot(path=f"{SCR}/{name}-etf.png",full_page=True)
-    for g in ["lev","Trái phiếu","star","all"]:
+    for g in ["lev",("Bonds" if name.endswith('-en') else "Trái phiếu"),"star","all"]:
         click(f'[data-eg="{g}"]',wait=200); L(" grp",g,p.locator("#eCount").inner_text())
     for v in ["er","dy","r1y","chg","chgabs","b","lev","age","aum"]: p.select_option("#eSort",v); p.wait_for_timeout(80)
     p.fill("#eq","nasdaq"); p.wait_for_timeout(200); L(" search nasdaq:",p.locator("#eCount").inner_text()); p.fill("#eq","")
@@ -58,7 +59,7 @@ def run(pw,name,vp,mobile,scheme,with_db=True):
     click("#sheetClose",wait=400)
     click('[data-sm="pairs"]',wait=600); L("pairs cards:", p.locator(".pcard").count()); ov("pairs"); p.screenshot(path=f"{SCR}/{name}-pairs.png",full_page=False)
     for v in ["decay","dev","lev","grp","move"]: p.select_option("#pSort",v); p.wait_for_timeout(120)
-    click('[data-pg="Cổ phiếu đơn"]',wait=300); L(" single-stock pairs:",p.locator(".pcard").count()); click('[data-pg="all"]',wait=300)
+    click('[data-pg="'+("Single Stock" if name.endswith('-en') else "Cổ phiếu đơn")+'"]',wait=300); L(" single-stock pairs:",p.locator(".pcard").count()); click('[data-pg="all"]',wait=300)
     click(".pcard",0,600); L("pair:", p.locator("#pairBody").inner_text()[:300].replace("\n"," | ")); p.screenshot(path=f"{SCR}/{name}-pair.png",full_page=False)
     click("[data-etf-open]",0,500); click("#sheetClose",wait=400)
     click('[data-pv="table"]',wait=300); L("table rows:",p.locator(".ptab tbody tr").count()); ov("ptable"); click(".ptab tbody tr",0,500); click("#sheetClose",wait=400); click('[data-pv="card"]',wait=200)

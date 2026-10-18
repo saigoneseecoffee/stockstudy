@@ -1,6 +1,6 @@
 # La Bàn Cổ Phiếu
 
-Ứng dụng học và phân tích cổ phiếu Mỹ + Việt Nam, giao diện tiếng Việt, tối ưu cho iPhone.
+Ứng dụng học và phân tích cổ phiếu Mỹ + Việt Nam, song ngữ Việt / Anh (chọn trong Cài đặt), tối ưu cho iPhone.
 
 - ~500 mã S&P 500, ~500 mã HOSE/HNX, ~200 ETF Mỹ (theo dõi theo cặp đối xứng)
 - Bộ lọc, chấm điểm, biểu đồ nến, mô hình giá, quyền chọn
@@ -10,7 +10,9 @@
 
 | Thư mục | Nội dung |
 |---|---|
-| `src/` | Mã nguồn chia phần (HTML, CSS, JS) |
+| `src/` | Mã nguồn chia phần (HTML, CSS, JS), bản tiếng Việt là bản gốc |
+| `src/en/` | Bản tiếng Anh: cùng mã, chỉ khác nội dung chuỗi |
+| `i18n/` | Quy ước dịch và `tokcmp.js` kiểm tra bản Anh khớp cấu trúc mã với bản Việt (`npm i acorn`) |
 | `build.sh` | Ghép `src/` thành `la-ban-co-phieu.html` (bản đăng lên Claude) và `index.html` (bản GitHub Pages) |
 | `pipeline/` | Tập lệnh tạo danh sách mã và cập nhật dữ liệu hằng ngày |
 | `tests/` | Kiểm thử logic (Node) và kiểm thử giao diện (Playwright) |
@@ -21,10 +23,15 @@
 ./build.sh
 ```
 
+## Ngôn ngữ
+
+Trang chứa cả hai bản; ngôn ngữ chọn trong Cài đặt được lưu vào `localStorage` (`labanCoPhieu.lang`) và trang tải lại. Sửa bản Việt thì sửa cùng chỗ trong `src/en/` rồi chạy `node i18n/tokcmp.js src/X.js src/en/X.js`.
+
 ## Kiểm thử
 
 ```sh
 cd src && for t in test test2 test3; do node ../tests/$t.js; done
+cd src/en && for t in test test2 test3; do node ../../tests/$t.js; done
 ```
 
 `tests/e2e5.py` và `tests/e2e6.py` dùng đường dẫn tuyệt đối của môi trường phát triển gốc; cần sửa đường dẫn trước khi chạy.

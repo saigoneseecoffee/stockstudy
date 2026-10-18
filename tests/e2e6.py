@@ -14,6 +14,7 @@ window.claude={use:async(name)=>{ if(name!=='db') return null; await new Promise
   doc:(p)=>({onSnapshot:(next,err)=>{ setTimeout(()=>next(snap(p)),40+Math.random()*60); return ()=>{}; }, get:()=>new Promise(r=>setTimeout(()=>r(snap(p)),80))})}; }};""" % json.dumps(D)
 def run(pw,name,vp,mobile,scheme):
     b=pw.chromium.launch(); ctx=b.new_context(viewport=vp,device_scale_factor=2 if mobile else 1,is_mobile=mobile,has_touch=mobile,color_scheme=scheme); p=ctx.new_page(); errs=[]
+    if __import__('os').environ.get('LB_LANG')=='en': p.add_init_script("try{localStorage.setItem('labanCoPhieu.lang','en')}catch(e){}"); name=name+'-en'
     p.add_init_script(mock)
     p.on("pageerror",lambda e: errs.append("PAGEERR "+str(e))); p.on("console",lambda m: errs.append(m.text) if m.type=="error" else None)
     p.route("https://cdnjs.cloudflare.com/**",lambda r: r.fulfill(path=GSAP,content_type="application/javascript")); p.route("https://fonts.googleapis.com/**",lambda r: r.fulfill(body="",content_type="text/css"))

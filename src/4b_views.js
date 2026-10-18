@@ -471,6 +471,8 @@ function openSettings(){
   const st=S.settings;
   const inp=(id,label,v,step)=>`<label class="field">${label}<input type="number" step="${step||'0.1'}" inputmode="decimal" id="s-${id}" value="${v}"></label>`;
   const html=`
+  <section style="display:flex;flex-direction:column;gap:10px"><h2 style="font-size:17px">Ngôn ngữ · Language</h2>
+    <div class="seg" role="group" aria-label="Ngôn ngữ" id="langSeg">${[['vi','Tiếng Việt'],['en','English']].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${LANG===k}">${n}</button>`).join('')}</div></section>
   <section style="display:flex;flex-direction:column;gap:10px"><h2 style="font-size:17px">Giao diện</h2>
     <div class="seg" role="group" aria-label="Chủ đề" id="themeSeg">${[['system','Theo máy'],['light','Sáng'],['dark','Tối']].map(([k,n])=>`<button data-th="${k}" aria-pressed="${S.theme===k}">${n}</button>`).join('')}</div></section>
   <section style="display:flex;flex-direction:column;gap:10px"><h2 style="font-size:17px">Giả định định giá</h2>
@@ -491,6 +493,7 @@ function openSettings(){
     <p class="note"><b>Điểm La Bàn:</b> 6 nhân tố, mỗi chỉ số chấm 0–1 bằng 55% thứ hạng phần trăm trong nhóm cùng loại và cùng thị trường cộng 45% thang tuyệt đối; nhân tố là bình quân có trọng số các chỉ số; điểm tổng là bình quân có trọng số các nhân tố nhân với hệ số phạt cờ đỏ. Hạng A ≥ 70, B ≥ 58, C ≥ 45.</p>
     <p class="disc">${esc(DISC)}</p></section>`;
   openSheet('Cài đặt & phương pháp',html,body=>{
+    $$('#langSeg button',body).forEach(b=>b.onclick=()=>{ if(b.dataset.lang!==LANG) setLang(b.dataset.lang); });
     $$('#themeSeg button',body).forEach(b=>b.onclick=()=>{ S.theme=b.dataset.th; saveState(); applyTheme(); $$('#themeSeg button',body).forEach(x=>x.setAttribute('aria-pressed',String(x===b))); });
     $('#sSave').onclick=()=>{ Object.keys(DEFAULT_SETTINGS).forEach(k=>{ const v=parseFloat($('#s-'+k).value); if(isFinite(v)) S.settings[k]=v; }); saveState(); computeAll(); rerenderCurrent(); toast('Đã áp dụng giả định mới'); };
     $('#sDef').onclick=()=>{ S.settings=Object.assign({},DEFAULT_SETTINGS); saveState(); computeAll(); rerenderCurrent(); openSettings(); toast('Đã về giả định mặc định'); };

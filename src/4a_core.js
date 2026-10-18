@@ -16,6 +16,9 @@ const LS_KEY='labanCoPhieu.v1';
 let store={};
 try{ store=JSON.parse(localStorage.getItem(LS_KEY)||'{}')||{}; }catch(e){ store={}; }
 function persist(){ try{ localStorage.setItem(LS_KEY,JSON.stringify(store)); }catch(e){} }
+/* ---------- ngôn ngữ: mỗi ngôn ngữ là một bản ứng dụng riêng, đổi ngôn ngữ thì tải lại trang ---------- */
+const LANG=window.__LB_LANG||'vi';
+function setLang(l){ let ok=false; try{ localStorage.setItem('labanCoPhieu.lang',l); ok=localStorage.getItem('labanCoPhieu.lang')===l; }catch(e){} if(!ok){ try{ window.name='lb-lang='+l; }catch(e){} } location.reload(); }
 
 const DEFAULT_SETTINGS={ aaaUS:5.3, aaaVN:6.0, rfUS:4.3, erpUS:5.0, rfVN:3.2, erpVN:8.0, gtUS:2.5, gtVN:4.0, fx:26300 };
 const S={
