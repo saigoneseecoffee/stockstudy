@@ -8,7 +8,7 @@ bundle(){ # $1 = lang, $2 = dir prefix
   echo '};</script>'
 }
 { cat 1_head.html
-  echo '<template id="lb-body-vi">'; cat 2_body.html; echo '</template>'
+  echo '<body>'; echo '<template id="lb-body-vi">'; cat 2_body.html; echo '</template>'
   echo '<template id="lb-body-en">'; cat en/2_body.html; echo '</template>'
   echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>'
   bundle vi ''
