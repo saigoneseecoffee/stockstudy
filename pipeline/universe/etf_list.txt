@@ -1,0 +1,144 @@
+# CẶP ĐỐI XỨNG: long|inverse|nhóm|tài sản cơ sở
+SPY|SH|Chỉ số Mỹ|S&P 500 (1x)
+SSO|SDS|Chỉ số Mỹ|S&P 500 (2x)
+UPRO|SPXU|Chỉ số Mỹ|S&P 500 (3x)
+SPXL|SPXS|Chỉ số Mỹ|S&P 500 (3x Direxion)
+QQQ|PSQ|Chỉ số Mỹ|Nasdaq-100 (1x)
+QLD|QID|Chỉ số Mỹ|Nasdaq-100 (2x)
+TQQQ|SQQQ|Chỉ số Mỹ|Nasdaq-100 (3x)
+DIA|DOG|Chỉ số Mỹ|Dow Jones (1x)
+DDM|DXD|Chỉ số Mỹ|Dow Jones (2x)
+UDOW|SDOW|Chỉ số Mỹ|Dow Jones (3x)
+IWM|RWM|Chỉ số Mỹ|Russell 2000 (1x)
+UWM|TWM|Chỉ số Mỹ|Russell 2000 (2x)
+TNA|TZA|Chỉ số Mỹ|Russell 2000 (3x)
+URTY|SRTY|Chỉ số Mỹ|Russell 2000 (3x ProShares)
+MVV|MZZ|Chỉ số Mỹ|S&P MidCap 400 (2x)
+SOXL|SOXS|Ngành|Bán dẫn (3x)
+TECL|TECS|Ngành|Công nghệ (3x)
+ROM|REW|Ngành|Công nghệ (2x)
+USD|SSG|Ngành|Bán dẫn (2x)
+FAS|FAZ|Ngành|Tài chính (3x)
+UYG|SKF|Ngành|Tài chính (2x)
+LABU|LABD|Ngành|Công nghệ sinh học (3x)
+ERX|ERY|Ngành|Năng lượng (2x)
+GUSH|DRIP|Ngành|Dầu khí thăm dò (2x)
+DRN|DRV|Ngành|Bất động sản (3x)
+URE|SRS|Ngành|Bất động sản (2x)
+NUGT|DUST|Hàng hóa|Cổ phiếu mỏ vàng (2x)
+JNUG|JDST|Hàng hóa|Mỏ vàng nhỏ (2x)
+UGL|GLL|Hàng hóa|Vàng (2x)
+AGQ|ZSL|Hàng hóa|Bạc (2x)
+UCO|SCO|Hàng hóa|Dầu thô (2x)
+BOIL|KOLD|Hàng hóa|Khí tự nhiên (2x)
+TLT|TBF|Trái phiếu|Trái phiếu KB Mỹ 20+ năm (1x)
+UBT|TBT|Trái phiếu|Trái phiếu KB Mỹ 20+ năm (2x)
+TMF|TMV|Trái phiếu|Trái phiếu KB Mỹ 20+ năm (3x)
+TYD|TYO|Trái phiếu|Trái phiếu KB Mỹ 7–10 năm (3x)
+EFA|EFZ|Quốc tế|Thị trường phát triển ngoài Mỹ (1x)
+EEM|EUM|Quốc tế|Thị trường mới nổi (1x)
+EDC|EDZ|Quốc tế|Thị trường mới nổi (3x)
+YINN|YANG|Quốc tế|Trung Quốc lớn (3x)
+XPP|FXP|Quốc tế|Trung Quốc lớn (2x)
+UVXY|SVXY|Biến động|Hợp đồng VIX ngắn hạn
+VIXY|SVIX|Biến động|Hợp đồng VIX ngắn hạn (1x)
+UUP|UDN|Tiền tệ|Đô la Mỹ
+BITX|SBIT|Tiền mã hóa|Bitcoin (2x)
+BITO|BITI|Tiền mã hóa|Bitcoin (1x)
+ETHT|ETHD|Tiền mã hóa|Ether (2x)
+TSLL|TSLQ|Cổ phiếu đơn|Tesla
+NVDL|NVD|Cổ phiếu đơn|NVIDIA (GraniteShares)
+NVDU|NVDD|Cổ phiếu đơn|NVIDIA (Direxion)
+AAPU|AAPD|Cổ phiếu đơn|Apple
+AMZU|AMZD|Cổ phiếu đơn|Amazon
+MSFU|MSFD|Cổ phiếu đơn|Microsoft
+GGLL|GGLS|Cổ phiếu đơn|Alphabet
+METU|METD|Cổ phiếu đơn|Meta
+MSTU|MSTZ|Cổ phiếu đơn|MicroStrategy
+PLTU|PLTD|Cổ phiếu đơn|Palantir
+# ETF ĐƠN: mã|nhóm
+VOO|Chỉ số Mỹ
+IVV|Chỉ số Mỹ
+VTI|Chỉ số Mỹ
+RSP|Chỉ số Mỹ
+QQQM|Chỉ số Mỹ
+VO|Chỉ số Mỹ
+IJH|Chỉ số Mỹ
+VB|Chỉ số Mỹ
+IJR|Chỉ số Mỹ
+VUG|Phong cách
+VTV|Phong cách
+IWF|Phong cách
+IWD|Phong cách
+SCHG|Phong cách
+MTUM|Nhân tố
+QUAL|Nhân tố
+USMV|Nhân tố
+COWZ|Nhân tố
+SCHD|Cổ tức
+VIG|Cổ tức
+DGRO|Cổ tức
+NOBL|Cổ tức
+VYM|Cổ tức
+HDV|Cổ tức
+JEPI|Thu nhập quyền chọn
+JEPQ|Thu nhập quyền chọn
+QYLD|Thu nhập quyền chọn
+XLK|Ngành
+XLF|Ngành
+XLV|Ngành
+XLE|Ngành
+XLI|Ngành
+XLY|Ngành
+XLP|Ngành
+XLU|Ngành
+XLB|Ngành
+XLRE|Ngành
+XLC|Ngành
+VGT|Ngành
+SMH|Ngành
+SOXX|Ngành
+IGV|Ngành
+IBB|Ngành
+XBI|Ngành
+KRE|Ngành
+ITA|Ngành
+ITB|Ngành
+ARKK|Chủ đề
+VEA|Quốc tế
+IEFA|Quốc tế
+VWO|Quốc tế
+IEMG|Quốc tế
+VXUS|Quốc tế
+ACWI|Quốc tế
+EWJ|Quốc tế
+EWZ|Quốc tế
+INDA|Quốc tế
+FXI|Quốc tế
+MCHI|Quốc tế
+KWEB|Quốc tế
+EWY|Quốc tế
+VNM|Quốc tế
+BND|Trái phiếu
+AGG|Trái phiếu
+BNDX|Trái phiếu
+IEF|Trái phiếu
+SHY|Trái phiếu
+LQD|Trái phiếu
+HYG|Trái phiếu
+TIP|Trái phiếu
+MUB|Trái phiếu
+SGOV|Tiền mặt
+BIL|Tiền mặt
+GLD|Hàng hóa
+IAU|Hàng hóa
+SLV|Hàng hóa
+USO|Hàng hóa
+UNG|Hàng hóa
+DBC|Hàng hóa
+GDX|Hàng hóa
+GDXJ|Hàng hóa
+VNQ|Bất động sản
+IYR|Bất động sản
+IBIT|Tiền mã hóa
+ETHA|Tiền mã hóa
