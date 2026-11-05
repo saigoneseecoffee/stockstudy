@@ -302,7 +302,7 @@ RENDER.chart=function(){
   <div class="grid2">
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Technical signals</h2><p>Rule results at the last session, not a forecast</p></div><span class="grade ${ts.score>=1?'g-A':ts.score<=-1?'g-D':'g-C'}" style="font-size:13px;padding:4px 10px">${ts.label}</span></div>
       <div class="tsig">${ts.sig.map(x=>`<div><span>${esc(x.name)}</span><b>${esc(x.val)}</b><i class="${x.b>0?'up':x.b<0?'dn':'mut'}">${x.b>0?'▲':x.b<0?'▼':'■'} ${esc(x.txt)}</i></div>`).join('')}</div>
-      <div class="ts-meter" aria-label="Composite gauge"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Strong bearish</span><span>Neutral</span><span>Strong bullish</span></div>
+      <div class="ts-meter" role="img" aria-label="Composite gauge"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Strong bearish</span><span>Neutral</span><span>Strong bullish</span></div>
     </section>
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Detected candle patterns</h2><p id="patCount"></p></div></div><div id="patList" class="pat-list"></div></section>
     <section class="panel span2"><div class="sec-h"><div><h2 style="font-size:17px">Real price data</h2><p>Paste or choose a CSV file exported from a brokerage app, Yahoo Finance, Investing…</p></div></div>

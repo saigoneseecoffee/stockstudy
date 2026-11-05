@@ -1,4 +1,4 @@
-Cập nhật giá thị trường cho ứng dụng La Bàn Cổ Phiếu của Bao (503 mã S&P 500, 500 mã Việt Nam, 199 ETF Mỹ). Đây là tác vụ tự động: không hỏi lại, không chờ ai trả lời, không sửa trang web (chỉ ghi cơ sở dữ liệu của trang).
+Cập nhật giá thị trường cho ứng dụng La Bàn Cổ Phiếu của Bao (503 mã S&P 500, 500 mã Việt Nam, 199 ETF Mỹ). Đây là tác vụ tự động: không hỏi lại, không chờ ai trả lời, không sửa trang web (chỉ ghi cơ sở dữ liệu của trang và nhánh data của repo GitHub).
 
 ARTIFACT: https://claude.ai/artifact/CRu8TA4f3TCFFy8zpPz3op
 Công cụ: WebFetch, Agent, Bash, Write, ArtifactData (nạp bằng ToolSearch "select:ArtifactData" nếu chưa có). Shell không ra được Internet; chỉ lấy web bằng WebFetch. Thư mục làm việc: ./lb (tạo mới). Dưới đây WORK = đường dẫn tuyệt đối của ./lb/work, OLD = ./lb/old.
@@ -26,13 +26,18 @@ BƯỚC 5 — Tải song song bằng subagent
 Các tệp lô: WORK/jobs_00.txt … và WORK/jobs_tail.txt. Chạy 2 subagent cùng lúc (model haiku được), mỗi subagent nhận 2–3 tệp lô, đưa nguyên văn khối QUY CÁCH bên dưới (thay <WORK> bằng đường dẫn tuyệt đối). Lặp đến khi hết lô. Không chạy quá 2 subagent cùng lúc.
 
 BƯỚC 6 — Dựng tài liệu
-Chạy: cd ./lb && python3 daily.py build old work out. Kiểm tra: usDate là phiên Mỹ gần nhất, vnDate là phiên Việt Nam gần nhất (rỗng nếu không lấy được chỉ số VN — vẫn tiếp tục), không có dòng WARNING. Nếu snap/US hoặc snap/VN không được tạo (thiếu bảng giá) thì vẫn ghi phần còn lại.
+Chạy: cd ./lb && python3 daily.py build old work out. Kiểm tra: usDate là phiên Mỹ gần nhất, vnDate là phiên Việt Nam gần nhất, không có dòng WARNING. Nếu snap/US hoặc snap/VN không được tạo (thiếu bảng giá) thì vẫn ghi phần còn lại.
 
 BƯỚC 7 — Ghi
 Đọc ./lb/out/manifest.json (danh sách "collection/doc"). Ghi bằng ArtifactData action "batch": mỗi mục {"op":"set","collection":..., "doc_id":..., "file_path":"<tuyệt đối>/lb/out/<collection>/<doc>.json","if_version":<từ versions.json>} (bỏ if_version nếu tài liệu chưa từng tồn tại). Mỗi batch tối đa 8 mục để không vượt 1 MiB. Ghi meta/feed cuối cùng. Nếu báo xung đột version: đọc lại tài liệu đó, cập nhật version, ghi lại một lần.
 
+BƯỚC 7B — Bản sao dữ liệu cho GitHub Pages (phụ: lỗi ở bước này thì bỏ qua, không làm lại bước 7)
+Nạp tool bằng ToolSearch "select:mcp__claude-code-remote__add_repo" rồi gọi add_repo với owner "saigoneseecoffee", repo "stockstudy", access "push". Sau đó chạy một lệnh Bash (timeout 10 phút):
+cd ./lb && git clone --depth 1 --branch data https://github.com/saigoneseecoffee/stockstudy ghdata && for c in snap hist fund meta; do if [ -d out/$c ]; then mkdir -p ghdata/$c && cp out/$c/*.json ghdata/$c/; fi; done && cd ghdata && git checkout -q --orphan fresh && git add -A && git -c user.name="La Ban Co Phieu" -c user.email="baotran@saigonesee.com" commit -qm "Du lieu gia $(date -u +%F)" && git push -q -f origin fresh:data
+Nhánh data chỉ giữ một commit nên đẩy đè (-f) là đúng. Không đụng nhánh main.
+
 BƯỚC 8 — Kết thúc
-Câu trả lời cuối 2–4 dòng tiếng Việt: phiên Mỹ/VN đã cập nhật, số mã có giá, gói lịch sử đã làm mới, số mã cập nhật chỉ số cơ bản, lỗi đáng chú ý. Không emoji.
+Câu trả lời cuối 2–4 dòng tiếng Việt: phiên Mỹ/VN đã cập nhật, số mã có giá, gói lịch sử đã làm mới, số mã cập nhật chỉ số cơ bản, bản sao GitHub (đã đẩy / lỗi gì), lỗi đáng chú ý. Không emoji.
 
 ===== QUY CÁCH =====
 # QUY CÁCH CHO SUBAGENT (đưa nguyên văn khối này cho mỗi subagent)

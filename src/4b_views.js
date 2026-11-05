@@ -64,7 +64,7 @@ RENDER.home=function(){
     </section>
     <section class="panel span2" aria-labelledby="h-dist">
       <div class="sec-h"><div><h2 id="h-dist">Phân bố điểm La Bàn</h2><p>Mỗi chấm là một mã; chạm để xem chi tiết</p></div></div>
-      <div class="scroll-x" id="dist"></div>
+      <div class="scroll-x" id="dist" tabindex="0" role="region" aria-label="Phân bố điểm"></div>
     </section>
     <section class="panel span2" aria-labelledby="h-rules">
       <div class="sec-h"><div><h2 id="h-rules">Luật chơi thị trường</h2><p>Những con số nhà đầu tư cần thuộc</p></div><button class="btn sm ghost" data-lesson="rules">Học sâu</button></div>
@@ -222,8 +222,8 @@ function sortVal(s,k){
   if(k==='mo') return isNum(s.mo)?s.mo:-999; if(k==='pe') return isNum(s.pe)&&s.pe>0? -s.pe : -9999; return 0;
 }
 function rowHTML(s,i){
-  return `<div class="srow" role="button" tabindex="0" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, điểm ${s._score}, hạng ${s._grade}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow" data-open="${esc(s.t)}">
+    <button class="srow-hit" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, điểm ${s._score}, hạng ${s._grade}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} cờ</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">SỬA</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
     <span style="display:flex;align-items:center;gap:8px">${glyphHTML(s)}<button class="star" data-star="${esc(s.t)}" aria-pressed="${isStar(s.t)}" aria-label="${isStar(s.t)?'Bỏ khỏi':'Thêm vào'} danh mục">${starSVG(isStar(s.t))}</button></span>
     <span class="ring">${ringSVG(s._score,46,4.5)}<b>${s._score}</b></span>
@@ -249,7 +249,7 @@ let lastFocus=null, sheetOnClose=null;
 function openSheet(title,html,after){
   lastFocus=document.activeElement;
   $('#sheetTitle').textContent=title; const body=$('#sheetBody'); body.innerHTML=html; body.scrollTop=0;
-  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden';
+  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden'; $$('body > *').forEach(x=>{ if(x!==sh&&!x.classList.contains('toast')&&x.tagName!=='SCRIPT'&&x.tagName!=='TEMPLATE') x.inert=true; });
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.fromTo('#sheetCard',wide?{xPercent:100}:{yPercent:100},wide?{xPercent:0,duration:.42,ease:'power3.out'}:{yPercent:0,duration:.42,ease:'power3.out'});
@@ -260,7 +260,7 @@ function openSheet(title,html,after){
 }
 function closeSheet(){
   const sh=$('#sheet'); if(sh.hidden) return;
-  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
+  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $$('body > *').forEach(x=>{ x.inert=false; }); $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.to('#sheetCard',Object.assign({duration:.28,ease:'power2.in',onComplete:()=>{ gsap.set('#sheetCard',{clearProps:'transform'}); done(); }},wide?{xPercent:100}:{yPercent:100}));
@@ -376,7 +376,7 @@ function openStock(t){
 
   <section class="panel" style="display:flex;flex-direction:column;gap:12px">
     <div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Sức khỏe tài chính</h2><p>Piotroski F-Score ${fsc==null?'—':fsc+'/9'}${s.bank?' · chỉ tiêu ngân hàng':' · Altman Z'}</p></div></div>
-    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 phép thử: có lãi, dòng tiền dương, ROA tăng, dòng tiền lớn hơn lợi nhuận, đòn bẩy giảm, thanh khoản tăng, không pha loãng, biên gộp tăng, vòng quay tài sản tăng. Từ 7 điểm là mạnh, dưới 4 là yếu.</p>`:''}
+    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" role="img" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 phép thử: có lãi, dòng tiền dương, ROA tăng, dòng tiền lớn hơn lợi nhuận, đòn bẩy giảm, thanh khoản tăng, không pha loãng, biên gộp tăng, vòng quay tài sản tăng. Từ 7 điểm là mạnh, dưới 4 là yếu.</p>`:''}
     ${s.bank?bankPanelHTML(s):zBarHTML(s.z)}
   </section>
 

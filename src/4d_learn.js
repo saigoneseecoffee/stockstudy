@@ -222,7 +222,7 @@ RENDER.learn=function(){
     <div class="progress" aria-label="Tiến độ học"><i style="width:${done/LESSONS.length*100}%"></i></div>
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       <button class="btn pri" id="startQuiz">Ôn tập 8 câu</button>
-      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">H${i+1}</span></div>`).join('')}</div>
+      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" role="img" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">H${i+1}</span></div>`).join('')}</div>
       <p class="note" style="flex:1;min-width:180px">Hệ thống hộp Leitner: trả lời đúng, câu hỏi lên hộp cao và ít xuất hiện lại; trả lời sai, câu quay về hộp 1.</p>
     </div>
   </section>

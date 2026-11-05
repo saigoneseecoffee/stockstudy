@@ -309,7 +309,7 @@ function ringSVG(score,size,stroke,col){
 function scoreColor(v){ return v>=70?'var(--up)': v>=58?'var(--gold)': v>=45?'var(--mut)':'var(--dn)'; }
 function heatColor(v){ /* đỏ → vàng → xanh, đồng nhất hai chủ đề */
   const t=clamp((v-30)/50,0,1);
-  const stops=[[184,52,44],[150,106,26],[26,122,84]];
+  const stops=[[166,44,38],[128,88,20],[22,108,74]];
   const seg=t<.5?0:1, lt=t<.5?t*2:(t-.5)*2;
   const a=stops[seg],b=stops[seg+1];
   return `rgb(${Math.round(a[0]+(b[0]-a[0])*lt)},${Math.round(a[1]+(b[1]-a[1])*lt)},${Math.round(a[2]+(b[2]-a[2])*lt)})`;

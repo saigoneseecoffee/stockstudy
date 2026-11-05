@@ -92,8 +92,8 @@ function etfFiltered(){
 }
 function etfRowHTML(e,i){
   const q=liveE(e.t); const p=e.pair;
-  return `<div class="srow erow" role="button" tabindex="0" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow erow" data-etf="${esc(e.t)}">
+    <button class="srow-hit" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(e.t)} ${levBadge(e)}${p?`<span class="mk" title="Cặp đối xứng với ${esc(p.mate)}">⇅ ${esc(p.mate)}</span>`:''}</b><span>${q?pxChip(e.t,{etf:1})+' · ':''}${esc(e.n)}</span></span>
     <span class="emet"><span><i>Tài sản</i><b>${aumTxt(e.aum)}</b></span><span><i>Phí</i><b>${isNum(e.er)?fmt(e.er,2)+'%':'—'}</b></span><span class="hide-xs"><i>12 tháng</i><b class="${e.r1y>=0?'up':'dn'}">${sgn(e.r1y,1)}</b></span></span>
     <button class="star" data-estar="${esc(e.t)}" aria-pressed="${isEStar(e.t)}" aria-label="${isEStar(e.t)?'Bỏ theo dõi':'Theo dõi'} ${esc(e.t)}">${starSVG(isEStar(e.t))}</button>

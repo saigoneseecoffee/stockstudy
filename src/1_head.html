@@ -10,7 +10,7 @@
    Chất liệu: sơn mài — nền đen ánh đỏ, điểm nhấn vàng lá; màu tăng/giảm theo quy ước bảng điện Việt Nam. */
 :root{
   --bg:#150F0E; --s1:#1D1614; --s2:#271E1B; --line:#3A2D29; --line2:#4B3A35;
-  --fg:#F3EADF; --mut:#A99A8E; --mut2:#7E7067;
+  --fg:#F3EADF; --mut:#A99A8E; --mut2:#988A7F; --dn-ink:#F28B82;
   --gold:#D8AE57; --gold-ink:#1A1208; --gold-soft:rgba(216,174,87,.14);
   --up:#3DB98E; --dn:#E85A4F; --ref:#E7C24C; --ceil:#B583EA; --floor:#4CC4E4;
   --us:#86A8F3; --vn:#E58457;
@@ -24,14 +24,14 @@
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
   --bg:#E8ECE9; --s1:#F6F8F6; --s2:#FFFFFF; --line:#CBD3CE; --line2:#B5BFB9;
   --fg:#1B1512; --mut:#5C5751; --mut2:#6B655F;
-  --gold:#8E6416; --gold-ink:#FFF8EA; --gold-soft:rgba(142,100,22,.12);
-  --up:#13805A; --dn:#C3352B; --ref:#866806; --ceil:#7A48BE; --floor:#0F7BA2;
+  --gold:#7A5511; --gold-ink:#FFF8EA; --gold-soft:rgba(122,85,17,.12);
+  --up:#0B6646; --dn:#A82B22; --ref:#866806; --ceil:#7A48BE; --floor:#0B6A8C; --dn-ink:#A82B22;
   --us:#2C5BC2; --vn:#B4461F; --shadow:0 18px 40px rgba(30,40,35,.18); color-scheme:light } }
 :root[data-theme="light"]{
   --bg:#E8ECE9; --s1:#F6F8F6; --s2:#FFFFFF; --line:#CBD3CE; --line2:#B5BFB9;
   --fg:#1B1512; --mut:#5C5751; --mut2:#6B655F;
-  --gold:#8E6416; --gold-ink:#FFF8EA; --gold-soft:rgba(142,100,22,.12);
-  --up:#13805A; --dn:#C3352B; --ref:#866806; --ceil:#7A48BE; --floor:#0F7BA2;
+  --gold:#7A5511; --gold-ink:#FFF8EA; --gold-soft:rgba(122,85,17,.12);
+  --up:#0B6646; --dn:#A82B22; --ref:#866806; --ceil:#7A48BE; --floor:#0B6A8C; --dn-ink:#A82B22;
   --us:#2C5BC2; --vn:#B4461F; --shadow:0 18px 40px rgba(30,40,35,.18); color-scheme:light }
 
 *{box-sizing:border-box}
@@ -491,4 +491,33 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
 .lv-txt span{display:block;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lv-meta{font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:44px}
 .lv-meta i{display:block;width:44px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--gold) var(--p),var(--line) var(--p))}
+
+/* ---------- Nâng cấp 11/2026: trợ năng, vùng chạm, cỡ chữ tối thiểu ---------- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.brand-t{margin:0; font:inherit; font-family:var(--f-disp); font-weight:800; font-size:18px; letter-spacing:-.02em; white-space:nowrap; line-height:1.15}
+.brand-t{overflow:hidden; text-overflow:ellipsis}
+@media (max-width:420px){ .brand-t{font-size:15.5px} }
+@media (max-width:390px){ .brand-t{font-size:14.5px; letter-spacing:-.03em} .brand{gap:6px} .brand svg{width:22px;height:22px} .top .seg button{padding:6px 8px; font-size:12.5px} }
+/* vùng chạm ≥ 44px mà không đổi kích thước hiển thị */
+.icon-btn{width:44px; height:44px}
+.star,.seg button,button.chip,.btn.sm,.mv{position:relative}
+.star::after,.seg button::after,button.chip::after,.btn.sm::after{content:""; position:absolute; left:50%; top:50%; width:max(100%,44px); height:max(100%,44px); transform:translate(-50%,-50%)}
+.mv{min-height:44px}
+.subtabs button{min-height:44px}
+input[type=range]{min-height:44px}
+/* hàng sàng lọc: nút mở là một nút thật, nút sao nằm trên */
+.srow{position:relative}
+.srow-hit{position:absolute; inset:0; z-index:0; border:0; background:none; padding:0; border-radius:inherit; cursor:pointer}
+.srow-hit:focus-visible{outline:2px solid var(--gold); outline-offset:-2px}
+.srow>:not(.srow-hit){position:relative; z-index:1}
+/* cỡ chữ tối thiểu 12px cho chữ đọc, 11px cho nhãn nhỏ */
+.brand small,.hero-stats span,.kv span,.f9 div,.board span,.bt-h,.leg .lk,.emet i,.pc-mid,.ps .mut,.ptab th,.ptab td span.mut,.bigring .v span{font-size:12px}
+.tree .cell span{font-size:12px; color:#fff}
+.mk,.levb,.pc-h .mut,.tabbar button{font-size:11px}
+.lpx small{font-size:.92em}
+.grade{font-size:11.5px}
+/* huy hiệu hạng: nền nhạt hơn để chữ đạt 4.5:1 */
+.g-A{background:color-mix(in srgb,var(--up) 14%,transparent)}
+.g-C{background:color-mix(in srgb,var(--mut) 14%,transparent)}
+.g-D{background:color-mix(in srgb,var(--dn) 14%,transparent); color:var(--dn-ink,var(--dn))}
 </style>

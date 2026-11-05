@@ -123,7 +123,7 @@ function marketPanelHTML(){
   return `<section class="panel live-panel" aria-labelledby="h-live">
     <div class="sec-h" style="margin:0 0 10px"><div><h2 id="h-live" style="font-size:18px">Market</h2><p>${feedTimeText()}</p></div><button class="btn sm" id="liveInfo">Price sources</button></div>
     ${idx.length?`<div class="idx-row">${idx.map(t=>{ const q=LIVE.q[t]; return `<div class="idx"><span class="mut">${esc(IDX_NAME[t]||t)}</span><b>${fmtLivePx(q)}</b><span class="lpx ${boardClass(q)}">${isNum(q.chg)?(q.chg>0?'+':'')+fmt(q.chg,2)+' · ':''}${pctTxt(q)}</span>${sparkSVG(q.hist||[],96,26)}</div>`; }).join('')}</div>`:''}
-    <div class="breadth" aria-label="Market breadth"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
+    <div class="breadth" role="img" aria-label="Market breadth"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
     <p class="note" style="margin-top:4px">${br.up} up${br.ceil?` (${br.ceil} at ceiling)`:''} · ${br.eq} unchanged · ${br.dn} down${br.floor?` (${br.floor} at floor)`:''} of ${fresh.length} tickers with latest-session prices${capAll?` · ${fmt(capUp/capAll*100,0)}% of market cap rising`:''}</p>
     ${movers.length>5?`<div class="movers"><div><span class="mut">Top gainers</span>${movers.slice(0,4).map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div><div><span class="mut">Top losers</span>${movers.slice(-4).reverse().map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div></div>`:''}
     <div class="board-tbl"><div class="bt-h"><span>${stars.length?'Watchlist':'Largest market cap'}</span><span>Price</span><span>%</span><span class="hide-sm">Vol</span><span class="hide-sm">Trend</span></div>
@@ -194,9 +194,18 @@ function applyFundDoc(k,v){
   DBFUND.asof[k]=v.upd||null;
   rebuildUniverse();
 }
+/* Ngoài Claude (GitHub Pages): đọc bản sao dữ liệu mà tác vụ hằng ngày đẩy lên nhánh data của repo */
+const STATIC_DATA='https://raw.githubusercontent.com/saigoneseecoffee/stockstudy/data/';
+function staticDb(base){
+  const get=p=>fetch(base+p+'.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(d=>({exists:!!d,data:()=>d}));
+  return {doc:p=>({get:()=>get(p),onSnapshot:(ok,err)=>{ get(p).then(s=>{ if(s.exists) ok(s); else if(err) err(new Error('missing')); else ok(s); }); return ()=>{}; }})};
+}
 async function initLive(){
   let db=null;
   try{ if(window.claude&&typeof window.claude.use==='function') db=await window.claude.use('db'); }catch(e){ db=null; }
+  if(!db&&typeof fetch==='function'&&/^https?:$/.test(location.protocol)){
+    try{ const r=await fetch(STATIC_DATA+'meta/feed.json',{cache:'no-cache'}); if(r.ok) db=staticDb(STATIC_DATA); }catch(e){ db=null; }
+  }
   if(!db){ LIVE.status='off'; liveChanged(false); return; }
   LIVE.db=db;
   try{

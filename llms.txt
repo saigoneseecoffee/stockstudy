@@ -1,0 +1,13 @@
+# La Bàn Cổ Phiếu (Stock Compass)
+
+> Ứng dụng web miễn phí, song ngữ Việt / Anh, để học và phân tích cổ phiếu Mỹ và Việt Nam. Công cụ học tập, không phải lời khuyên đầu tư.
+
+- Bộ lọc đa nhân tố: khoảng 500 cổ phiếu S&P 500 và 500 cổ phiếu HOSE/HNX, chấm điểm 0–100 theo 6 nhân tố (định giá, chất lượng, tăng trưởng, sức khỏe tài chính, động lượng, thu nhập), có cờ đỏ.
+- ETF Mỹ: khoảng 200 quỹ, theo dõi theo cặp ngược chiều (ví dụ TQQQ / SQQQ).
+- Chuyên gia: 8 trường phái đầu tư (Graham, Buffett, Lynch, Greenblatt, Piotroski, Fisher, O'Neil, cổ tức), phòng thí nghiệm quyền chọn.
+- Học đầu tư 10 cấp: 101 bài có infographic, 121 câu hỏi, bài kiểm tra mỗi cấp — đọc báo cáo tài chính, dòng tiền, định giá, chọn cổ phiếu, phân bổ tài sản và tích sản.
+- Dữ liệu: giá đóng cửa và chỉ số cơ bản từ stockanalysis.com, chỉ số VN từ CafeF, cập nhật mỗi ngày giao dịch (có độ trễ, không phải giá trực tiếp).
+
+## Liên kết
+- Ứng dụng: https://saigoneseecoffee.github.io/stockstudy/
+- Mã nguồn: https://github.com/saigoneseecoffee/stockstudy

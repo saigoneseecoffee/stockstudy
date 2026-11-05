@@ -1,4 +1,17 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="La Bàn Cổ Phiếu (Stock Compass): chấm điểm 500 cổ phiếu S&amp;P 500 và 500 cổ phiếu HOSE/HNX theo 6 nhân tố, theo dõi 200 ETF Mỹ theo cặp đối xứng, và lộ trình học đầu tư 10 cấp (đọc BCTC, dòng tiền, định giá, tích sản). Tiếng Việt và tiếng Anh, miễn phí, chạy trên iPhone.">
+<link rel="canonical" href="https://saigoneseecoffee.github.io/stockstudy/">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="La Bàn Cổ Phiếu">
+<meta property="og:title" content="La Bàn Cổ Phiếu: chấm điểm cổ phiếu Mỹ và Việt Nam, học đầu tư 10 cấp">
+<meta property="og:description" content="Bộ lọc đa nhân tố cho 1.000 cổ phiếu Mỹ và Việt Nam, 200 ETF Mỹ, 101 bài học có infographic. Song ngữ Việt / Anh.">
+<meta property="og:url" content="https://saigoneseecoffee.github.io/stockstudy/">
+<meta property="og:image" content="https://saigoneseecoffee.github.io/stockstudy/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="vi_VN"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"La Bàn Cổ Phiếu","alternateName":"Stock Compass","url":"https://saigoneseecoffee.github.io/stockstudy/","applicationCategory":"FinanceApplication","operatingSystem":"Any (web browser)","inLanguage":["vi","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Chấm điểm cổ phiếu S&P 500 và HOSE/HNX theo 6 nhân tố, theo dõi ETF Mỹ theo cặp đối xứng, lộ trình học đầu tư 10 cấp. Công cụ học tập, không phải lời khuyên đầu tư.","featureList":["Bộ lọc đa nhân tố cho khoảng 1.000 cổ phiếu Mỹ và Việt Nam","200 ETF Mỹ và các cặp ETF ngược chiều","Biểu đồ nến, 34 mẫu nến và 15 mô hình giá","Phòng thí nghiệm quyền chọn","101 bài học có infographic trong 10 cấp","Máy tính tích sản"]}</script>
 <title>La Bàn Cổ Phiếu</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +24,7 @@
    Chất liệu: sơn mài — nền đen ánh đỏ, điểm nhấn vàng lá; màu tăng/giảm theo quy ước bảng điện Việt Nam. */
 :root{
   --bg:#150F0E; --s1:#1D1614; --s2:#271E1B; --line:#3A2D29; --line2:#4B3A35;
-  --fg:#F3EADF; --mut:#A99A8E; --mut2:#7E7067;
+  --fg:#F3EADF; --mut:#A99A8E; --mut2:#988A7F; --dn-ink:#F28B82;
   --gold:#D8AE57; --gold-ink:#1A1208; --gold-soft:rgba(216,174,87,.14);
   --up:#3DB98E; --dn:#E85A4F; --ref:#E7C24C; --ceil:#B583EA; --floor:#4CC4E4;
   --us:#86A8F3; --vn:#E58457;
@@ -25,14 +38,14 @@
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
   --bg:#E8ECE9; --s1:#F6F8F6; --s2:#FFFFFF; --line:#CBD3CE; --line2:#B5BFB9;
   --fg:#1B1512; --mut:#5C5751; --mut2:#6B655F;
-  --gold:#8E6416; --gold-ink:#FFF8EA; --gold-soft:rgba(142,100,22,.12);
-  --up:#13805A; --dn:#C3352B; --ref:#866806; --ceil:#7A48BE; --floor:#0F7BA2;
+  --gold:#7A5511; --gold-ink:#FFF8EA; --gold-soft:rgba(122,85,17,.12);
+  --up:#0B6646; --dn:#A82B22; --ref:#866806; --ceil:#7A48BE; --floor:#0B6A8C; --dn-ink:#A82B22;
   --us:#2C5BC2; --vn:#B4461F; --shadow:0 18px 40px rgba(30,40,35,.18); color-scheme:light } }
 :root[data-theme="light"]{
   --bg:#E8ECE9; --s1:#F6F8F6; --s2:#FFFFFF; --line:#CBD3CE; --line2:#B5BFB9;
   --fg:#1B1512; --mut:#5C5751; --mut2:#6B655F;
-  --gold:#8E6416; --gold-ink:#FFF8EA; --gold-soft:rgba(142,100,22,.12);
-  --up:#13805A; --dn:#C3352B; --ref:#866806; --ceil:#7A48BE; --floor:#0F7BA2;
+  --gold:#7A5511; --gold-ink:#FFF8EA; --gold-soft:rgba(122,85,17,.12);
+  --up:#0B6646; --dn:#A82B22; --ref:#866806; --ceil:#7A48BE; --floor:#0B6A8C; --dn-ink:#A82B22;
   --us:#2C5BC2; --vn:#B4461F; --shadow:0 18px 40px rgba(30,40,35,.18); color-scheme:light }
 
 *{box-sizing:border-box}
@@ -492,6 +505,35 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
 .lv-txt span{display:block;font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lv-meta{font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:44px}
 .lv-meta i{display:block;width:44px;height:4px;border-radius:3px;background:linear-gradient(90deg,var(--gold) var(--p),var(--line) var(--p))}
+
+/* ---------- Nâng cấp 11/2026: trợ năng, vùng chạm, cỡ chữ tối thiểu ---------- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.brand-t{margin:0; font:inherit; font-family:var(--f-disp); font-weight:800; font-size:18px; letter-spacing:-.02em; white-space:nowrap; line-height:1.15}
+.brand-t{overflow:hidden; text-overflow:ellipsis}
+@media (max-width:420px){ .brand-t{font-size:15.5px} }
+@media (max-width:390px){ .brand-t{font-size:14.5px; letter-spacing:-.03em} .brand{gap:6px} .brand svg{width:22px;height:22px} .top .seg button{padding:6px 8px; font-size:12.5px} }
+/* vùng chạm ≥ 44px mà không đổi kích thước hiển thị */
+.icon-btn{width:44px; height:44px}
+.star,.seg button,button.chip,.btn.sm,.mv{position:relative}
+.star::after,.seg button::after,button.chip::after,.btn.sm::after{content:""; position:absolute; left:50%; top:50%; width:max(100%,44px); height:max(100%,44px); transform:translate(-50%,-50%)}
+.mv{min-height:44px}
+.subtabs button{min-height:44px}
+input[type=range]{min-height:44px}
+/* hàng sàng lọc: nút mở là một nút thật, nút sao nằm trên */
+.srow{position:relative}
+.srow-hit{position:absolute; inset:0; z-index:0; border:0; background:none; padding:0; border-radius:inherit; cursor:pointer}
+.srow-hit:focus-visible{outline:2px solid var(--gold); outline-offset:-2px}
+.srow>:not(.srow-hit){position:relative; z-index:1}
+/* cỡ chữ tối thiểu 12px cho chữ đọc, 11px cho nhãn nhỏ */
+.brand small,.hero-stats span,.kv span,.f9 div,.board span,.bt-h,.leg .lk,.emet i,.pc-mid,.ps .mut,.ptab th,.ptab td span.mut,.bigring .v span{font-size:12px}
+.tree .cell span{font-size:12px; color:#fff}
+.mk,.levb,.pc-h .mut,.tabbar button{font-size:11px}
+.lpx small{font-size:.92em}
+.grade{font-size:11.5px}
+/* huy hiệu hạng: nền nhạt hơn để chữ đạt 4.5:1 */
+.g-A{background:color-mix(in srgb,var(--up) 14%,transparent)}
+.g-C{background:color-mix(in srgb,var(--mut) 14%,transparent)}
+.g-D{background:color-mix(in srgb,var(--dn) 14%,transparent); color:var(--dn-ink,var(--dn))}
 </style>
 <body>
 <template id="lb-body-vi">
@@ -500,7 +542,7 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
     <div class="top-in">
       <div class="brand">
         <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" style="stroke:var(--gold)" stroke-width="1.5"/><path d="M16 4 L19 16 L16 28 L13 16 Z" style="fill:var(--gold)"/><path d="M16 4 L19 16 L13 16 Z" style="fill:var(--dn)"/><circle cx="16" cy="16" r="2" style="fill:var(--bg)"/></svg>
-        <div style="min-width:0"><b>La Bàn Cổ Phiếu</b><small id="brandSub">Mỹ &amp; Việt Nam · 6 nhân tố</small></div>
+        <div style="min-width:0"><h1 class="brand-t">La Bàn Cổ Phiếu</h1><small id="brandSub">Mỹ &amp; Việt Nam · 6 nhân tố</small></div>
       </div>
       <div class="seg" role="group" aria-label="Chọn thị trường" id="mktSeg">
         <button data-m="US" aria-pressed="false">Mỹ</button>
@@ -559,7 +601,7 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
     <div class="top-in">
       <div class="brand">
         <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" style="stroke:var(--gold)" stroke-width="1.5"/><path d="M16 4 L19 16 L16 28 L13 16 Z" style="fill:var(--gold)"/><path d="M16 4 L19 16 L13 16 Z" style="fill:var(--dn)"/><circle cx="16" cy="16" r="2" style="fill:var(--bg)"/></svg>
-        <div style="min-width:0"><b>Stock Compass</b><small id="brandSub">US &amp; Vietnam · 6 factors</small></div>
+        <div style="min-width:0"><h1 class="brand-t">Stock Compass</h1><small id="brandSub">US &amp; Vietnam · 6 factors</small></div>
       </div>
       <div class="seg" role="group" aria-label="Choose market" id="mktSeg">
         <button data-m="US" aria-pressed="false">US</button>
@@ -1034,7 +1076,7 @@ function ringSVG(score,size,stroke,col){
 function scoreColor(v){ return v>=70?'var(--up)': v>=58?'var(--gold)': v>=45?'var(--mut)':'var(--dn)'; }
 function heatColor(v){ /* đỏ → vàng → xanh, đồng nhất hai chủ đề */
   const t=clamp((v-30)/50,0,1);
-  const stops=[[184,52,44],[150,106,26],[26,122,84]];
+  const stops=[[166,44,38],[128,88,20],[22,108,74]];
   const seg=t<.5?0:1, lt=t<.5?t*2:(t-.5)*2;
   const a=stops[seg],b=stops[seg+1];
   return `rgb(${Math.round(a[0]+(b[0]-a[0])*lt)},${Math.round(a[1]+(b[1]-a[1])*lt)},${Math.round(a[2]+(b[2]-a[2])*lt)})`;
@@ -1254,7 +1296,7 @@ RENDER.home=function(){
     </section>
     <section class="panel span2" aria-labelledby="h-dist">
       <div class="sec-h"><div><h2 id="h-dist">Phân bố điểm La Bàn</h2><p>Mỗi chấm là một mã; chạm để xem chi tiết</p></div></div>
-      <div class="scroll-x" id="dist"></div>
+      <div class="scroll-x" id="dist" tabindex="0" role="region" aria-label="Phân bố điểm"></div>
     </section>
     <section class="panel span2" aria-labelledby="h-rules">
       <div class="sec-h"><div><h2 id="h-rules">Luật chơi thị trường</h2><p>Những con số nhà đầu tư cần thuộc</p></div><button class="btn sm ghost" data-lesson="rules">Học sâu</button></div>
@@ -1412,8 +1454,8 @@ function sortVal(s,k){
   if(k==='mo') return isNum(s.mo)?s.mo:-999; if(k==='pe') return isNum(s.pe)&&s.pe>0? -s.pe : -9999; return 0;
 }
 function rowHTML(s,i){
-  return `<div class="srow" role="button" tabindex="0" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, điểm ${s._score}, hạng ${s._grade}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow" data-open="${esc(s.t)}">
+    <button class="srow-hit" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, điểm ${s._score}, hạng ${s._grade}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} cờ</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">SỬA</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
     <span style="display:flex;align-items:center;gap:8px">${glyphHTML(s)}<button class="star" data-star="${esc(s.t)}" aria-pressed="${isStar(s.t)}" aria-label="${isStar(s.t)?'Bỏ khỏi':'Thêm vào'} danh mục">${starSVG(isStar(s.t))}</button></span>
     <span class="ring">${ringSVG(s._score,46,4.5)}<b>${s._score}</b></span>
@@ -1439,7 +1481,7 @@ let lastFocus=null, sheetOnClose=null;
 function openSheet(title,html,after){
   lastFocus=document.activeElement;
   $('#sheetTitle').textContent=title; const body=$('#sheetBody'); body.innerHTML=html; body.scrollTop=0;
-  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden';
+  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden'; $$('body > *').forEach(x=>{ if(x!==sh&&!x.classList.contains('toast')&&x.tagName!=='SCRIPT'&&x.tagName!=='TEMPLATE') x.inert=true; });
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.fromTo('#sheetCard',wide?{xPercent:100}:{yPercent:100},wide?{xPercent:0,duration:.42,ease:'power3.out'}:{yPercent:0,duration:.42,ease:'power3.out'});
@@ -1450,7 +1492,7 @@ function openSheet(title,html,after){
 }
 function closeSheet(){
   const sh=$('#sheet'); if(sh.hidden) return;
-  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
+  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $$('body > *').forEach(x=>{ x.inert=false; }); $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.to('#sheetCard',Object.assign({duration:.28,ease:'power2.in',onComplete:()=>{ gsap.set('#sheetCard',{clearProps:'transform'}); done(); }},wide?{xPercent:100}:{yPercent:100}));
@@ -1566,7 +1608,7 @@ function openStock(t){
 
   <section class="panel" style="display:flex;flex-direction:column;gap:12px">
     <div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Sức khỏe tài chính</h2><p>Piotroski F-Score ${fsc==null?'—':fsc+'/9'}${s.bank?' · chỉ tiêu ngân hàng':' · Altman Z'}</p></div></div>
-    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 phép thử: có lãi, dòng tiền dương, ROA tăng, dòng tiền lớn hơn lợi nhuận, đòn bẩy giảm, thanh khoản tăng, không pha loãng, biên gộp tăng, vòng quay tài sản tăng. Từ 7 điểm là mạnh, dưới 4 là yếu.</p>`:''}
+    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" role="img" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 phép thử: có lãi, dòng tiền dương, ROA tăng, dòng tiền lớn hơn lợi nhuận, đòn bẩy giảm, thanh khoản tăng, không pha loãng, biên gộp tăng, vòng quay tài sản tăng. Từ 7 điểm là mạnh, dưới 4 là yếu.</p>`:''}
     ${s.bank?bankPanelHTML(s):zBarHTML(s.z)}
   </section>
 
@@ -1710,7 +1752,7 @@ function renderCouncil(){
   const cons=L.map(s=>({s,n:s._persona.filter(p=>p.pass).length})).sort((a,b)=>b.n-a.n||b.s._score-a.s._score).slice(0,14);
   box.innerHTML=`
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">Ma trận đồng thuận</h2><p>Ô xanh: mã đạt chuẩn của trường phái. Cột cuối: số chuyên gia đồng ý</p></div></div>
-    <div class="scroll-x"><table class="matrix"><thead><tr><th></th>${PERSONAS.map(P=>`<th class="rot"><span>${esc(P.sh)}</span></th>`).join('')}<th class="rot"><span>Đồng thuận</span></th></tr></thead>
+    <div class="scroll-x"><table class="matrix"><thead><tr><th><span class="sr-only">Mã</span></th>${PERSONAS.map(P=>`<th class="rot"><span>${esc(P.sh)}</span></th>`).join('')}<th class="rot"><span>Đồng thuận</span></th></tr></thead>
     <tbody>${cons.map(({s,n})=>`<tr><td class="tk"><button class="star" style="width:auto;font-family:var(--f-disp);font-weight:700;color:var(--fg);font-size:13px" data-open="${esc(s.t)}">${esc(s.t)}</button></td>${s._persona.map((p,i)=>`<td class="${p.pass?'y':'n'}" title="${esc(PERSONAS[i].n)}: ${p.n}/${p.tot} tiêu chí">${p.pass?'✓':''}</td>`).join('')}<td class="ct">${n}/8</td></tr>`).join('')}</tbody></table></div>
   </section>
   <div class="persona-grid">${PERSONAS.map((P,pi)=>{
@@ -1953,7 +1995,7 @@ RENDER.port=function(){
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Hồ sơ nhân tố danh mục</h2><p>So với trung vị ${esc(mktName(S.market))}</p></div></div><div id="pRadar" style="max-width:340px;margin:0 auto">${radarSVG(fac,{size:300,labels:FACTORS.map(F=>F.n),sub:fac.map(v=>String(Math.round(v*100))),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:34,fs:11,aria:'Radar danh mục'})}</div></section>
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Phân bổ ngành</h2><p>Mỹ ${pct(mUS*100,0)} · Việt Nam ${pct((1-mUS)*100,0)}</p></div></div>
       <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:14px;align-items:center"><div>${donutSVG(secArr,160)}</div><div style="display:flex;flex-direction:column;gap:6px;font-size:13px">${secArr.map(x=>`<div style="display:flex;gap:8px;align-items:center"><i style="width:10px;height:10px;border-radius:3px;background:${x.c};flex:none"></i><span style="flex:1;min-width:0">${esc(SECTORS[x.k]||x.k)}</span><b>${pct(x.v*100,0)}</b></div>`).join('')}</div></div>
-      <div style="display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:14px" aria-label="Tỷ trọng theo thị trường"><i style="width:${mUS*100}%;background:var(--us)"></i><i style="width:${(1-mUS)*100}%;background:var(--vn)"></i></div></section>
+      <div style="display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:14px" role="img" aria-label="Tỷ trọng theo thị trường"><i style="width:${mUS*100}%;background:var(--us)"></i><i style="width:${(1-mUS)*100}%;background:var(--vn)"></i></div></section>
   </div>
   <section><div class="sec-h"><h2 style="font-size:17px">Tỷ trọng từng mã</h2></div><div class="list">${H.map((s,i)=>`<div class="prow"><button class="star" style="width:auto;justify-content:start;text-align:left;display:block" data-open="${esc(s.t)}"><b style="font-family:var(--f-disp);font-size:15px;color:var(--fg)">${esc(s.t)}</b> <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._score}</span><span style="display:block;font-size:12px;color:var(--mut)">${esc(s.n)}</span></button><span class="bar"><i style="width:${Math.round(w[i]/mxw*100)}%"></i></span><b style="text-align:right">${pct(w[i]*100,1)}${liveQ(s.t)?`<small style="display:block;font-size:11px" class="${boardClass(liveQ(s.t))}">${pctTxt(liveQ(s.t))}</small>`:''}</b>${sample?'<span></span>':`<button class="star" data-star="${esc(s.t)}" aria-pressed="true" aria-label="Bỏ ${esc(s.t)} khỏi danh mục">${starSVG(true)}</button>`}</div>`).join('')}</div></section>
   <p class="note">Tỷ trọng mô phỏng để đánh giá cấu trúc, không phải khuyến nghị phân bổ. Bình quân trộn hai thị trường chỉ mang tính tham khảo. ${esc(DISC)}</p>`;
@@ -2184,7 +2226,7 @@ RENDER.learn=function(){
     <div class="progress" aria-label="Tiến độ học"><i style="width:${done/LESSONS.length*100}%"></i></div>
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       <button class="btn pri" id="startQuiz">Ôn tập 8 câu</button>
-      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">H${i+1}</span></div>`).join('')}</div>
+      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" role="img" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">H${i+1}</span></div>`).join('')}</div>
       <p class="note" style="flex:1;min-width:180px">Hệ thống hộp Leitner: trả lời đúng, câu hỏi lên hộp cao và ít xuất hiện lại; trả lời sai, câu quay về hộp 1.</p>
     </div>
   </section>
@@ -2589,7 +2631,7 @@ RENDER.chart=function(){
   <div class="grid2">
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Tín hiệu kỹ thuật</h2><p>Kết quả quy tắc tại phiên cuối, không phải dự báo</p></div><span class="grade ${ts.score>=1?'g-A':ts.score<=-1?'g-D':'g-C'}" style="font-size:13px;padding:4px 10px">${ts.label}</span></div>
       <div class="tsig">${ts.sig.map(x=>`<div><span>${esc(x.name)}</span><b>${esc(x.val)}</b><i class="${x.b>0?'up':x.b<0?'dn':'mut'}">${x.b>0?'▲':x.b<0?'▼':'■'} ${esc(x.txt)}</i></div>`).join('')}</div>
-      <div class="ts-meter" aria-label="Thước tổng hợp"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Giảm mạnh</span><span>Trung tính</span><span>Tăng mạnh</span></div>
+      <div class="ts-meter" role="img" aria-label="Thước tổng hợp"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Giảm mạnh</span><span>Trung tính</span><span>Tăng mạnh</span></div>
     </section>
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Mẫu nến phát hiện</h2><p id="patCount"></p></div></div><div id="patList" class="pat-list"></div></section>
     <section class="panel span2"><div class="sec-h"><div><h2 style="font-size:17px">Dữ liệu giá thật</h2><p>Dán hoặc chọn tệp CSV xuất từ phần mềm chứng khoán, Yahoo Finance, Investing…</p></div></div>
@@ -3173,7 +3215,7 @@ function renderOptions(){
   </section>
   <section class="panel" style="display:flex;flex-direction:column;gap:10px">
     <h2 style="font-size:17px">Bảng giá ngang giá (ATM) · K = ${fmt(roundStrike(env.S),1)}</h2>
-    <table class="thr"><thead><tr><th></th><th>Call</th><th>Put</th></tr></thead><tbody>
+    <table class="thr"><thead><tr><th><span class="sr-only">Yếu tố</span></th><th>Call</th><th>Put</th></tr></thead><tbody>
       ${[['Giá (phí)',atm.price,atmP.price,2],['Delta',atm.delta,atmP.delta,3],['Gamma',atm.gamma,atmP.gamma,4],['Theta/ngày',atm.theta,atmP.theta,3],['Vega/1%',atm.vega,atmP.vega,3],['Rho/1%',atm.rho,atmP.rho,3]].map(([n,a,b,d])=>`<tr><td>${n}</td><td><b>${fmt(a,d)}</b></td><td><b>${fmt(b,d)}</b></td></tr>`).join('')}
     </tbody></table>
     <p class="note">Kiểm tra put–call parity: C − P = ${fmt(atm.price-atmP.price,3)} ≈ S − K·e<sup>−rT</sup> = ${fmt(env.S-roundStrike(env.S)*Math.exp(-env.r*OPT.dte/365),3)}. Biên độ kỳ vọng ±1σ trong ${OPT.dte} ngày ≈ ±${fmt(env.S*env.v*Math.sqrt(OPT.dte/365),2)} (${pct(env.v*Math.sqrt(OPT.dte/365)*100,1)}).</p>
@@ -3471,7 +3513,7 @@ function marketPanelHTML(){
   return `<section class="panel live-panel" aria-labelledby="h-live">
     <div class="sec-h" style="margin:0 0 10px"><div><h2 id="h-live" style="font-size:18px">Thị trường</h2><p>${feedTimeText()}</p></div><button class="btn sm" id="liveInfo">Nguồn giá</button></div>
     ${idx.length?`<div class="idx-row">${idx.map(t=>{ const q=LIVE.q[t]; return `<div class="idx"><span class="mut">${esc(IDX_NAME[t]||t)}</span><b>${fmtLivePx(q)}</b><span class="lpx ${boardClass(q)}">${isNum(q.chg)?(q.chg>0?'+':'')+fmt(q.chg,2)+' · ':''}${pctTxt(q)}</span>${sparkSVG(q.hist||[],96,26)}</div>`; }).join('')}</div>`:''}
-    <div class="breadth" aria-label="Độ rộng thị trường"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
+    <div class="breadth" role="img" aria-label="Độ rộng thị trường"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
     <p class="note" style="margin-top:4px">${br.up} mã tăng${br.ceil?` (${br.ceil} trần)`:''} · ${br.eq} đứng giá · ${br.dn} mã giảm${br.floor?` (${br.floor} sàn)`:''} trong ${fresh.length} mã có giá phiên mới nhất${capAll?` · ${fmt(capUp/capAll*100,0)}% vốn hóa đi lên`:''}</p>
     ${movers.length>5?`<div class="movers"><div><span class="mut">Tăng mạnh</span>${movers.slice(0,4).map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div><div><span class="mut">Giảm mạnh</span>${movers.slice(-4).reverse().map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div></div>`:''}
     <div class="board-tbl"><div class="bt-h"><span>${stars.length?'Danh mục theo dõi':'Vốn hóa lớn nhất'}</span><span>Giá</span><span>%</span><span class="hide-sm">KL</span><span class="hide-sm">Xu hướng</span></div>
@@ -3542,9 +3584,18 @@ function applyFundDoc(k,v){
   DBFUND.asof[k]=v.upd||null;
   rebuildUniverse();
 }
+/* Ngoài Claude (GitHub Pages): đọc bản sao dữ liệu mà tác vụ hằng ngày đẩy lên nhánh data của repo */
+const STATIC_DATA='https://raw.githubusercontent.com/saigoneseecoffee/stockstudy/data/';
+function staticDb(base){
+  const get=p=>fetch(base+p+'.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(d=>({exists:!!d,data:()=>d}));
+  return {doc:p=>({get:()=>get(p),onSnapshot:(ok,err)=>{ get(p).then(s=>{ if(s.exists) ok(s); else if(err) err(new Error('missing')); else ok(s); }); return ()=>{}; }})};
+}
 async function initLive(){
   let db=null;
   try{ if(window.claude&&typeof window.claude.use==='function') db=await window.claude.use('db'); }catch(e){ db=null; }
+  if(!db&&typeof fetch==='function'&&/^https?:$/.test(location.protocol)){
+    try{ const r=await fetch(STATIC_DATA+'meta/feed.json',{cache:'no-cache'}); if(r.ok) db=staticDb(STATIC_DATA); }catch(e){ db=null; }
+  }
   if(!db){ LIVE.status='off'; liveChanged(false); return; }
   LIVE.db=db;
   try{
@@ -3655,8 +3706,8 @@ function etfFiltered(){
 }
 function etfRowHTML(e,i){
   const q=liveE(e.t); const p=e.pair;
-  return `<div class="srow erow" role="button" tabindex="0" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow erow" data-etf="${esc(e.t)}">
+    <button class="srow-hit" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(e.t)} ${levBadge(e)}${p?`<span class="mk" title="Cặp đối xứng với ${esc(p.mate)}">⇅ ${esc(p.mate)}</span>`:''}</b><span>${q?pxChip(e.t,{etf:1})+' · ':''}${esc(e.n)}</span></span>
     <span class="emet"><span><i>Tài sản</i><b>${aumTxt(e.aum)}</b></span><span><i>Phí</i><b>${isNum(e.er)?fmt(e.er,2)+'%':'—'}</b></span><span class="hide-xs"><i>12 tháng</i><b class="${e.r1y>=0?'up':'dn'}">${sgn(e.r1y,1)}</b></span></span>
     <button class="star" data-estar="${esc(e.t)}" aria-pressed="${isEStar(e.t)}" aria-label="${isEStar(e.t)?'Bỏ theo dõi':'Theo dõi'} ${esc(e.t)}">${starSVG(isEStar(e.t))}</button>
@@ -4408,7 +4459,7 @@ RENDER.learn=function(){
   </section>
   <section class="panel" style="display:flex;flex-direction:column;gap:12px">
     <div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Ôn tập ngắt quãng</h2><p>Trộn câu hỏi mọi cấp đã mở · kỷ lục ${S.quizBest}/8</p></div><button class="btn sm" id="startQuiz">Ôn 8 câu</button></div>
-    <div style="display:flex;gap:4px;align-items:flex-end;min-height:34px" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+Math.min(26,n*.6)}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px" class="mut">${i+1}</span></div>`).join('')}<p class="note" style="margin-left:10px">Hộp Leitner: trả lời đúng, câu hỏi lên hộp cao và ít xuất hiện lại; sai thì về hộp 1.</p></div>
+    <div style="display:flex;gap:4px;align-items:flex-end;min-height:34px" role="img" aria-label="Phân bố hộp Leitner">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+Math.min(26,n*.6)}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px" class="mut">${i+1}</span></div>`).join('')}<p class="note" style="margin-left:10px">Hộp Leitner: trả lời đúng, câu hỏi lên hộp cao và ít xuất hiện lại; sai thì về hộp 1.</p></div>
   </section>
   <div class="sec-h" style="margin:4px 0 0"><div><h2 style="font-size:18px">Thư viện tra cứu</h2><p>Mẫu nến và mô hình giá cho cấp 9, xem bất cứ lúc nào</p></div></div>`;
   $$('[data-lvgo]',el).forEach(b=>b.onclick=()=>{ S.lvOpen=+b.dataset.lvgo; RENDER.learn(); const d=$('#lvDetail'); if(d) d.scrollIntoView({block:'start',behavior:REDUCED()?'auto':'smooth'}); });
@@ -4933,7 +4984,7 @@ function ringSVG(score,size,stroke,col){
 function scoreColor(v){ return v>=70?'var(--up)': v>=58?'var(--gold)': v>=45?'var(--mut)':'var(--dn)'; }
 function heatColor(v){ /* đỏ → vàng → xanh, đồng nhất hai chủ đề */
   const t=clamp((v-30)/50,0,1);
-  const stops=[[184,52,44],[150,106,26],[26,122,84]];
+  const stops=[[166,44,38],[128,88,20],[22,108,74]];
   const seg=t<.5?0:1, lt=t<.5?t*2:(t-.5)*2;
   const a=stops[seg],b=stops[seg+1];
   return `rgb(${Math.round(a[0]+(b[0]-a[0])*lt)},${Math.round(a[1]+(b[1]-a[1])*lt)},${Math.round(a[2]+(b[2]-a[2])*lt)})`;
@@ -5153,7 +5204,7 @@ RENDER.home=function(){
     </section>
     <section class="panel span2" aria-labelledby="h-dist">
       <div class="sec-h"><div><h2 id="h-dist">Compass Score distribution</h2><p>Each dot is a stock; tap for details</p></div></div>
-      <div class="scroll-x" id="dist"></div>
+      <div class="scroll-x" id="dist" tabindex="0" role="region" aria-label="Score distribution"></div>
     </section>
     <section class="panel span2" aria-labelledby="h-rules">
       <div class="sec-h"><div><h2 id="h-rules">Market rules</h2><p>The numbers every investor should know</p></div><button class="btn sm ghost" data-lesson="rules">Learn more</button></div>
@@ -5311,8 +5362,8 @@ function sortVal(s,k){
   if(k==='mo') return isNum(s.mo)?s.mo:-999; if(k==='pe') return isNum(s.pe)&&s.pe>0? -s.pe : -9999; return 0;
 }
 function rowHTML(s,i){
-  return `<div class="srow" role="button" tabindex="0" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, score ${s._score}, grade ${s._grade}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow" data-open="${esc(s.t)}">
+    <button class="srow-hit" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, score ${s._score}, grade ${s._grade}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} flags</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">EDITED</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
     <span style="display:flex;align-items:center;gap:8px">${glyphHTML(s)}<button class="star" data-star="${esc(s.t)}" aria-pressed="${isStar(s.t)}" aria-label="${isStar(s.t)?'Remove from':'Add to'} watchlist">${starSVG(isStar(s.t))}</button></span>
     <span class="ring">${ringSVG(s._score,46,4.5)}<b>${s._score}</b></span>
@@ -5338,7 +5389,7 @@ let lastFocus=null, sheetOnClose=null;
 function openSheet(title,html,after){
   lastFocus=document.activeElement;
   $('#sheetTitle').textContent=title; const body=$('#sheetBody'); body.innerHTML=html; body.scrollTop=0;
-  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden';
+  const sh=$('#sheet'); sh.hidden=false; document.documentElement.style.overflow='hidden'; $$('body > *').forEach(x=>{ if(x!==sh&&!x.classList.contains('toast')&&x.tagName!=='SCRIPT'&&x.tagName!=='TEMPLATE') x.inert=true; });
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.fromTo('#sheetCard',wide?{xPercent:100}:{yPercent:100},wide?{xPercent:0,duration:.42,ease:'power3.out'}:{yPercent:0,duration:.42,ease:'power3.out'});
@@ -5349,7 +5400,7 @@ function openSheet(title,html,after){
 }
 function closeSheet(){
   const sh=$('#sheet'); if(sh.hidden) return;
-  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
+  const done=()=>{ sh.hidden=true; document.documentElement.style.overflow=''; $$('body > *').forEach(x=>{ x.inert=false; }); $('#sheetBody').innerHTML=''; if(lastFocus&&lastFocus.focus) try{lastFocus.focus({preventScroll:true});}catch(e){} const cb=sheetOnClose; sheetOnClose=null; cb&&cb(); };
   if(HAS_GSAP()&&!REDUCED()){
     const wide=window.innerWidth>=960;
     gsap.to('#sheetCard',Object.assign({duration:.28,ease:'power2.in',onComplete:()=>{ gsap.set('#sheetCard',{clearProps:'transform'}); done(); }},wide?{xPercent:100}:{yPercent:100}));
@@ -5465,7 +5516,7 @@ function openStock(t){
 
   <section class="panel" style="display:flex;flex-direction:column;gap:12px">
     <div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Financial health</h2><p>Piotroski F-Score ${fsc==null?'—':fsc+'/9'}${s.bank?' · bank metrics':' · Altman Z'}</p></div></div>
-    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 tests: profitable, positive cash flow, rising ROA, cash flow above earnings, lower leverage, better liquidity, no dilution, rising gross margin, rising asset turnover. 7+ is strong, below 4 is weak.</p>`:''}
+    ${s.f&&!isNum(s.fsn)?`<div class="f9">${F9.map((x,i)=>{ const ok=s.f[i]==='1'; return `<div class="${ok?'y':'n'}"><b>${ok?'✓':'✗'} ${esc(x[0])}</b>${esc(x[1])}</div>`; }).join('')}</div>`:fsc!=null?`<div class="fsbar" role="img" aria-label="F-Score ${fsc}/9">${[...Array(9)].map((_,i)=>`<i class="${i<fsc?(fsc>=7?'y':fsc>=4?'m':'n'):''}"></i>`).join('')}</div><p class="note">9 tests: profitable, positive cash flow, rising ROA, cash flow above earnings, lower leverage, better liquidity, no dilution, rising gross margin, rising asset turnover. 7+ is strong, below 4 is weak.</p>`:''}
     ${s.bank?bankPanelHTML(s):zBarHTML(s.z)}
   </section>
 
@@ -5609,7 +5660,7 @@ function renderCouncil(){
   const cons=L.map(s=>({s,n:s._persona.filter(p=>p.pass).length})).sort((a,b)=>b.n-a.n||b.s._score-a.s._score).slice(0,14);
   box.innerHTML=`
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">Consensus matrix</h2><p>Green cell: the stock meets that school's criteria. Last column: number of experts in agreement</p></div></div>
-    <div class="scroll-x"><table class="matrix"><thead><tr><th></th>${PERSONAS.map(P=>`<th class="rot"><span>${esc(P.sh)}</span></th>`).join('')}<th class="rot"><span>Consensus</span></th></tr></thead>
+    <div class="scroll-x"><table class="matrix"><thead><tr><th><span class="sr-only">Ticker</span></th>${PERSONAS.map(P=>`<th class="rot"><span>${esc(P.sh)}</span></th>`).join('')}<th class="rot"><span>Consensus</span></th></tr></thead>
     <tbody>${cons.map(({s,n})=>`<tr><td class="tk"><button class="star" style="width:auto;font-family:var(--f-disp);font-weight:700;color:var(--fg);font-size:13px" data-open="${esc(s.t)}">${esc(s.t)}</button></td>${s._persona.map((p,i)=>`<td class="${p.pass?'y':'n'}" title="${esc(PERSONAS[i].n)}: ${p.n}/${p.tot} criteria">${p.pass?'✓':''}</td>`).join('')}<td class="ct">${n}/8</td></tr>`).join('')}</tbody></table></div>
   </section>
   <div class="persona-grid">${PERSONAS.map((P,pi)=>{
@@ -5852,7 +5903,7 @@ RENDER.port=function(){
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Portfolio factor profile</h2><p>Compared with the ${esc(mktName(S.market))} median</p></div></div><div id="pRadar" style="max-width:340px;margin:0 auto">${radarSVG(fac,{size:300,labels:FACTORS.map(F=>F.n),sub:fac.map(v=>String(Math.round(v*100))),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:34,fs:11,aria:'Portfolio radar'})}</div></section>
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Sector allocation</h2><p>US ${pct(mUS*100,0)} · Vietnam ${pct((1-mUS)*100,0)}</p></div></div>
       <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:14px;align-items:center"><div>${donutSVG(secArr,160)}</div><div style="display:flex;flex-direction:column;gap:6px;font-size:13px">${secArr.map(x=>`<div style="display:flex;gap:8px;align-items:center"><i style="width:10px;height:10px;border-radius:3px;background:${x.c};flex:none"></i><span style="flex:1;min-width:0">${esc(SECTORS[x.k]||x.k)}</span><b>${pct(x.v*100,0)}</b></div>`).join('')}</div></div>
-      <div style="display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:14px" aria-label="Weight by market"><i style="width:${mUS*100}%;background:var(--us)"></i><i style="width:${(1-mUS)*100}%;background:var(--vn)"></i></div></section>
+      <div style="display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:14px" role="img" aria-label="Weight by market"><i style="width:${mUS*100}%;background:var(--us)"></i><i style="width:${(1-mUS)*100}%;background:var(--vn)"></i></div></section>
   </div>
   <section><div class="sec-h"><h2 style="font-size:17px">Weight per stock</h2></div><div class="list">${H.map((s,i)=>`<div class="prow"><button class="star" style="width:auto;justify-content:start;text-align:left;display:block" data-open="${esc(s.t)}"><b style="font-family:var(--f-disp);font-size:15px;color:var(--fg)">${esc(s.t)}</b> <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._score}</span><span style="display:block;font-size:12px;color:var(--mut)">${esc(s.n)}</span></button><span class="bar"><i style="width:${Math.round(w[i]/mxw*100)}%"></i></span><b style="text-align:right">${pct(w[i]*100,1)}${liveQ(s.t)?`<small style="display:block;font-size:11px" class="${boardClass(liveQ(s.t))}">${pctTxt(liveQ(s.t))}</small>`:''}</b>${sample?'<span></span>':`<button class="star" data-star="${esc(s.t)}" aria-pressed="true" aria-label="Remove ${esc(s.t)} from portfolio">${starSVG(true)}</button>`}</div>`).join('')}</div></section>
   <p class="note">Weights are simulated to assess structure, not an allocation recommendation. Averages that mix two markets are for reference only. ${esc(DISC)}</p>`;
@@ -6083,7 +6134,7 @@ RENDER.learn=function(){
     <div class="progress" aria-label="Learning progress"><i style="width:${done/LESSONS.length*100}%"></i></div>
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       <button class="btn pri" id="startQuiz">Review 8 questions</button>
-      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" aria-label="Leitner box distribution">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">B${i+1}</span></div>`).join('')}</div>
+      <div style="display:flex;gap:4px;align-items:flex-end;height:34px" role="img" aria-label="Leitner box distribution">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+n*1.4}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px;color:var(--mut)">B${i+1}</span></div>`).join('')}</div>
       <p class="note" style="flex:1;min-width:180px">Leitner box system: answer correctly and a question moves up a box and comes back less often; answer wrong and it returns to box 1.</p>
     </div>
   </section>
@@ -6488,7 +6539,7 @@ RENDER.chart=function(){
   <div class="grid2">
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Technical signals</h2><p>Rule results at the last session, not a forecast</p></div><span class="grade ${ts.score>=1?'g-A':ts.score<=-1?'g-D':'g-C'}" style="font-size:13px;padding:4px 10px">${ts.label}</span></div>
       <div class="tsig">${ts.sig.map(x=>`<div><span>${esc(x.name)}</span><b>${esc(x.val)}</b><i class="${x.b>0?'up':x.b<0?'dn':'mut'}">${x.b>0?'▲':x.b<0?'▼':'■'} ${esc(x.txt)}</i></div>`).join('')}</div>
-      <div class="ts-meter" aria-label="Composite gauge"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Strong bearish</span><span>Neutral</span><span>Strong bullish</span></div>
+      <div class="ts-meter" role="img" aria-label="Composite gauge"><span style="left:${clamp((ts.score+5)/10*100,2,98)}%"></span></div><div style="display:flex;justify-content:space-between" class="note"><span>Strong bearish</span><span>Neutral</span><span>Strong bullish</span></div>
     </section>
     <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Detected candle patterns</h2><p id="patCount"></p></div></div><div id="patList" class="pat-list"></div></section>
     <section class="panel span2"><div class="sec-h"><div><h2 style="font-size:17px">Real price data</h2><p>Paste or choose a CSV file exported from a brokerage app, Yahoo Finance, Investing…</p></div></div>
@@ -7072,7 +7123,7 @@ function renderOptions(){
   </section>
   <section class="panel" style="display:flex;flex-direction:column;gap:10px">
     <h2 style="font-size:17px">At-the-money (ATM) quotes · K = ${fmt(roundStrike(env.S),1)}</h2>
-    <table class="thr"><thead><tr><th></th><th>Call</th><th>Put</th></tr></thead><tbody>
+    <table class="thr"><thead><tr><th><span class="sr-only">Factor</span></th><th>Call</th><th>Put</th></tr></thead><tbody>
       ${[['Price (premium)',atm.price,atmP.price,2],['Delta',atm.delta,atmP.delta,3],['Gamma',atm.gamma,atmP.gamma,4],['Theta/day',atm.theta,atmP.theta,3],['Vega/1%',atm.vega,atmP.vega,3],['Rho/1%',atm.rho,atmP.rho,3]].map(([n,a,b,d])=>`<tr><td>${n}</td><td><b>${fmt(a,d)}</b></td><td><b>${fmt(b,d)}</b></td></tr>`).join('')}
     </tbody></table>
     <p class="note">Put–call parity check: C − P = ${fmt(atm.price-atmP.price,3)} ≈ S − K·e<sup>−rT</sup> = ${fmt(env.S-roundStrike(env.S)*Math.exp(-env.r*OPT.dte/365),3)}. Expected ±1σ move over ${OPT.dte} days ≈ ±${fmt(env.S*env.v*Math.sqrt(OPT.dte/365),2)} (${pct(env.v*Math.sqrt(OPT.dte/365)*100,1)}).</p>
@@ -7370,7 +7421,7 @@ function marketPanelHTML(){
   return `<section class="panel live-panel" aria-labelledby="h-live">
     <div class="sec-h" style="margin:0 0 10px"><div><h2 id="h-live" style="font-size:18px">Market</h2><p>${feedTimeText()}</p></div><button class="btn sm" id="liveInfo">Price sources</button></div>
     ${idx.length?`<div class="idx-row">${idx.map(t=>{ const q=LIVE.q[t]; return `<div class="idx"><span class="mut">${esc(IDX_NAME[t]||t)}</span><b>${fmtLivePx(q)}</b><span class="lpx ${boardClass(q)}">${isNum(q.chg)?(q.chg>0?'+':'')+fmt(q.chg,2)+' · ':''}${pctTxt(q)}</span>${sparkSVG(q.hist||[],96,26)}</div>`; }).join('')}</div>`:''}
-    <div class="breadth" aria-label="Market breadth"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
+    <div class="breadth" role="img" aria-label="Market breadth"><i style="width:${br.up/tot*100}%;background:var(--up)"></i><i style="width:${br.eq/tot*100}%;background:var(--ref)"></i><i style="width:${br.dn/tot*100}%;background:var(--dn)"></i></div>
     <p class="note" style="margin-top:4px">${br.up} up${br.ceil?` (${br.ceil} at ceiling)`:''} · ${br.eq} unchanged · ${br.dn} down${br.floor?` (${br.floor} at floor)`:''} of ${fresh.length} tickers with latest-session prices${capAll?` · ${fmt(capUp/capAll*100,0)}% of market cap rising`:''}</p>
     ${movers.length>5?`<div class="movers"><div><span class="mut">Top gainers</span>${movers.slice(0,4).map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div><div><span class="mut">Top losers</span>${movers.slice(-4).reverse().map(s=>`<button class="mv" data-open="${esc(s.t)}"><b>${esc(s.t)}</b>${pxChip(s.t)}</button>`).join('')}</div></div>`:''}
     <div class="board-tbl"><div class="bt-h"><span>${stars.length?'Watchlist':'Largest market cap'}</span><span>Price</span><span>%</span><span class="hide-sm">Vol</span><span class="hide-sm">Trend</span></div>
@@ -7441,9 +7492,18 @@ function applyFundDoc(k,v){
   DBFUND.asof[k]=v.upd||null;
   rebuildUniverse();
 }
+/* Ngoài Claude (GitHub Pages): đọc bản sao dữ liệu mà tác vụ hằng ngày đẩy lên nhánh data của repo */
+const STATIC_DATA='https://raw.githubusercontent.com/saigoneseecoffee/stockstudy/data/';
+function staticDb(base){
+  const get=p=>fetch(base+p+'.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(d=>({exists:!!d,data:()=>d}));
+  return {doc:p=>({get:()=>get(p),onSnapshot:(ok,err)=>{ get(p).then(s=>{ if(s.exists) ok(s); else if(err) err(new Error('missing')); else ok(s); }); return ()=>{}; }})};
+}
 async function initLive(){
   let db=null;
   try{ if(window.claude&&typeof window.claude.use==='function') db=await window.claude.use('db'); }catch(e){ db=null; }
+  if(!db&&typeof fetch==='function'&&/^https?:$/.test(location.protocol)){
+    try{ const r=await fetch(STATIC_DATA+'meta/feed.json',{cache:'no-cache'}); if(r.ok) db=staticDb(STATIC_DATA); }catch(e){ db=null; }
+  }
   if(!db){ LIVE.status='off'; liveChanged(false); return; }
   LIVE.db=db;
   try{
@@ -7554,8 +7614,8 @@ function etfFiltered(){
 }
 function etfRowHTML(e,i){
   const q=liveE(e.t); const p=e.pair;
-  return `<div class="srow erow" role="button" tabindex="0" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}">
-    <span class="rk">${i+1}</span>
+  return `<div class="srow erow" data-etf="${esc(e.t)}">
+    <button class="srow-hit" data-etf="${esc(e.t)}" aria-label="${esc(e.t)} ${esc(e.n)}"></button><span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(e.t)} ${levBadge(e)}${p?`<span class="mk" title="Inverse pair with ${esc(p.mate)}">⇅ ${esc(p.mate)}</span>`:''}</b><span>${q?pxChip(e.t,{etf:1})+' · ':''}${esc(e.n)}</span></span>
     <span class="emet"><span><i>Assets</i><b>${aumTxt(e.aum)}</b></span><span><i>Fee</i><b>${isNum(e.er)?fmt(e.er,2)+'%':'—'}</b></span><span class="hide-xs"><i>12 months</i><b class="${e.r1y>=0?'up':'dn'}">${sgn(e.r1y,1)}</b></span></span>
     <button class="star" data-estar="${esc(e.t)}" aria-pressed="${isEStar(e.t)}" aria-label="${isEStar(e.t)?'Unwatch':'Watch'} ${esc(e.t)}">${starSVG(isEStar(e.t))}</button>
@@ -8307,7 +8367,7 @@ RENDER.learn=function(){
   </section>
   <section class="panel" style="display:flex;flex-direction:column;gap:12px">
     <div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Spaced review</h2><p>Mixed questions from every unlocked level · best ${S.quizBest}/8</p></div><button class="btn sm" id="startQuiz">Review 8 questions</button></div>
-    <div style="display:flex;gap:4px;align-items:flex-end;min-height:34px" aria-label="Leitner box distribution">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+Math.min(26,n*.6)}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px" class="mut">${i+1}</span></div>`).join('')}<p class="note" style="margin-left:10px">Leitner boxes: answer correctly and the question moves up a box and shows up less often; answer wrong and it goes back to box 1.</p></div>
+    <div style="display:flex;gap:4px;align-items:flex-end;min-height:34px" role="img" aria-label="Leitner box distribution">${boxes.map((n,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><i style="display:block;width:18px;height:${4+Math.min(26,n*.6)}px;border-radius:3px;background:var(--gold);opacity:${.35+i*.16}"></i><span style="font-size:10px" class="mut">${i+1}</span></div>`).join('')}<p class="note" style="margin-left:10px">Leitner boxes: answer correctly and the question moves up a box and shows up less often; answer wrong and it goes back to box 1.</p></div>
   </section>
   <div class="sec-h" style="margin:4px 0 0"><div><h2 style="font-size:18px">Reference library</h2><p>Candlestick and chart patterns for level 9, available anytime</p></div></div>`;
   $$('[data-lvgo]',el).forEach(b=>b.onclick=()=>{ S.lvOpen=+b.dataset.lvgo; RENDER.learn(); const d=$('#lvDetail'); if(d) d.scrollIntoView({block:'start',behavior:REDUCED()?'auto':'smooth'}); });
@@ -8422,4 +8482,5 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
   document.body.insertBefore(t.content.cloneNode(true), document.body.firstChild);
   window['__LB_APP_'+L]();
 })();</script>
+<noscript><h1>La Bàn Cổ Phiếu</h1><p>Ứng dụng cần JavaScript. Chấm điểm cổ phiếu Mỹ và Việt Nam theo 6 nhân tố, theo dõi ETF Mỹ, học đầu tư 10 cấp. Xem mã nguồn tại <a href="https://github.com/saigoneseecoffee/stockstudy">github.com/saigoneseecoffee/stockstudy</a>.</p></noscript>
 </html>

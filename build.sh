@@ -28,5 +28,22 @@ bundle(){ # $1 = lang, $2 = dir prefix
 EOF
 } > ../la-ban-co-phieu.html
 ls -l ../la-ban-co-phieu.html | awk '{print $5" bytes"}'
-{ echo '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-  cat ../la-ban-co-phieu.html; echo '</html>'; } > ../index.html
+cat > ../index.html <<'HEAD'
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="La Bàn Cổ Phiếu (Stock Compass): chấm điểm 500 cổ phiếu S&amp;P 500 và 500 cổ phiếu HOSE/HNX theo 6 nhân tố, theo dõi 200 ETF Mỹ theo cặp đối xứng, và lộ trình học đầu tư 10 cấp (đọc BCTC, dòng tiền, định giá, tích sản). Tiếng Việt và tiếng Anh, miễn phí, chạy trên iPhone.">
+<link rel="canonical" href="https://saigoneseecoffee.github.io/stockstudy/">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="La Bàn Cổ Phiếu">
+<meta property="og:title" content="La Bàn Cổ Phiếu: chấm điểm cổ phiếu Mỹ và Việt Nam, học đầu tư 10 cấp">
+<meta property="og:description" content="Bộ lọc đa nhân tố cho 1.000 cổ phiếu Mỹ và Việt Nam, 200 ETF Mỹ, 101 bài học có infographic. Song ngữ Việt / Anh.">
+<meta property="og:url" content="https://saigoneseecoffee.github.io/stockstudy/">
+<meta property="og:image" content="https://saigoneseecoffee.github.io/stockstudy/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="vi_VN"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"La Bàn Cổ Phiếu","alternateName":"Stock Compass","url":"https://saigoneseecoffee.github.io/stockstudy/","applicationCategory":"FinanceApplication","operatingSystem":"Any (web browser)","inLanguage":["vi","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Chấm điểm cổ phiếu S&P 500 và HOSE/HNX theo 6 nhân tố, theo dõi ETF Mỹ theo cặp đối xứng, lộ trình học đầu tư 10 cấp. Công cụ học tập, không phải lời khuyên đầu tư.","featureList":["Bộ lọc đa nhân tố cho khoảng 1.000 cổ phiếu Mỹ và Việt Nam","200 ETF Mỹ và các cặp ETF ngược chiều","Biểu đồ nến, 34 mẫu nến và 15 mô hình giá","Phòng thí nghiệm quyền chọn","101 bài học có infographic trong 10 cấp","Máy tính tích sản"]}</script>
+HEAD
+{ cat ../la-ban-co-phieu.html
+  echo '<noscript><h1>La Bàn Cổ Phiếu</h1><p>Ứng dụng cần JavaScript. Chấm điểm cổ phiếu Mỹ và Việt Nam theo 6 nhân tố, theo dõi ETF Mỹ, học đầu tư 10 cấp. Xem mã nguồn tại <a href="https://github.com/saigoneseecoffee/stockstudy">github.com/saigoneseecoffee/stockstudy</a>.</p></noscript>'
+  echo '</html>'; } >> ../index.html

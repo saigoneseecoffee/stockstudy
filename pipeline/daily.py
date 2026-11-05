@@ -81,7 +81,6 @@ def parse_stats(txt, fin, m):
     for k in ('fsn', 'anc', 'ydg'):
         if f[k] is not None: f[k] = int(f[k])
     if f['ic'] is not None and f['ic'] > 999: f['ic'] = 999
-    if f['dy'] is None: f['dy'] = 0.0
     f['rg'], f['eg'] = parse_fin(fin); f['rg'] = r1(f['rg']); f['eg'] = r1(f['eg'])
     return f
 def load_list(work, name):
@@ -276,3 +275,4 @@ if __name__ == '__main__':
     if cmd == 'plan': plan(sys.argv[2], sys.argv[3])
     elif cmd == 'tail': tail(sys.argv[2], sys.argv[3])
     elif cmd == 'build': build(sys.argv[2], sys.argv[3], sys.argv[4])
+

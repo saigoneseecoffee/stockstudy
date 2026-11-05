@@ -157,7 +157,7 @@ function renderOptions(){
   </section>
   <section class="panel" style="display:flex;flex-direction:column;gap:10px">
     <h2 style="font-size:17px">Bảng giá ngang giá (ATM) · K = ${fmt(roundStrike(env.S),1)}</h2>
-    <table class="thr"><thead><tr><th></th><th>Call</th><th>Put</th></tr></thead><tbody>
+    <table class="thr"><thead><tr><th><span class="sr-only">Yếu tố</span></th><th>Call</th><th>Put</th></tr></thead><tbody>
       ${[['Giá (phí)',atm.price,atmP.price,2],['Delta',atm.delta,atmP.delta,3],['Gamma',atm.gamma,atmP.gamma,4],['Theta/ngày',atm.theta,atmP.theta,3],['Vega/1%',atm.vega,atmP.vega,3],['Rho/1%',atm.rho,atmP.rho,3]].map(([n,a,b,d])=>`<tr><td>${n}</td><td><b>${fmt(a,d)}</b></td><td><b>${fmt(b,d)}</b></td></tr>`).join('')}
     </tbody></table>
     <p class="note">Kiểm tra put–call parity: C − P = ${fmt(atm.price-atmP.price,3)} ≈ S − K·e<sup>−rT</sup> = ${fmt(env.S-roundStrike(env.S)*Math.exp(-env.r*OPT.dte/365),3)}. Biên độ kỳ vọng ±1σ trong ${OPT.dte} ngày ≈ ±${fmt(env.S*env.v*Math.sqrt(OPT.dte/365),2)} (${pct(env.v*Math.sqrt(OPT.dte/365)*100,1)}).</p>

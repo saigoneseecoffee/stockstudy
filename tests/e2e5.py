@@ -1,11 +1,13 @@
 import json,glob,sys,random,math
 from playwright.sync_api import sync_playwright
-SCR="/tmp/claude-0/-home-claude/3d0e7046-bf55-520e-bb99-30e0af9e9b36/scratchpad"; GSAP=SCR+"/node_modules/gsap/dist/gsap.min.js"
-src=open("/home/claude/labans/la-ban-co-phieu.html",encoding="utf8").read()
+import os,tempfile
+ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); FIX=os.path.join(ROOT,"tests","fixtures")
+SCR=os.environ.get("LB_TMP",tempfile.gettempdir()); GSAP=os.path.join(FIX,"gsap.min.js")
+src=open(os.path.join(ROOT,"la-ban-co-phieu.html"),encoding="utf8").read()
 open(SCR+"/test.html","w",encoding="utf8").write('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}</style></head><body>'+src+'</body></html>')
 D={}
-for p in glob.glob("/home/claude/labans/out3/snap/*.json"): D["snap/"+p.split('/')[-1][:-5]]=json.load(open(p))
-for p in glob.glob("/home/claude/labans/out3/hist/*.json"): D["hist/"+p.split('/')[-1][:-5]]=json.load(open(p))
+for p in glob.glob(os.path.join(FIX,"snap","*.json")): D["snap/"+p.split('/')[-1][:-5]]=json.load(open(p))
+for p in glob.glob(os.path.join(FIX,"hist","*.json")): D["hist/"+p.split('/')[-1][:-5]]=json.load(open(p))
 D["meta/feed"]={"upd":"2026-10-17T12:06:49+00:00","usDate":"2026-10-16","vnDate":"2026-10-16","ok":58,"failed":[]}
 mock="""window.__D=%s;
 window.claude={use:async(name)=>{ if(name!=='db') return null; await new Promise(r=>setTimeout(r,200));

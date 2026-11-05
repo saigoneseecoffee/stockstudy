@@ -34,10 +34,19 @@ cd src && for t in test test2 test3; do node ../tests/$t.js; done
 cd src/en && for t in test test2 test3; do node ../../tests/$t.js; done
 ```
 
-`tests/e2e5.py` và `tests/e2e6.py` dùng đường dẫn tuyệt đối của môi trường phát triển gốc; cần sửa đường dẫn trước khi chạy.
+Kiểm thử giao diện (cần Playwright + Chromium), dùng dữ liệu mẫu trong `tests/fixtures/`:
+
+```sh
+python3 tests/e2e5.py iphone && LB_LANG=en python3 tests/e2e5.py iphone
+python3 tests/e2e6.py && LB_LANG=en python3 tests/e2e6.py
+```
 
 ## Dữ liệu
 
-Chỉ số cơ bản được nhúng sẵn trong `src/3c_universe.js` (nguồn: stockanalysis.com). Giá cập nhật hằng ngày và lịch sử nến được lưu trong cơ sở dữ liệu của bản đăng trên Claude, nên **bản GitHub Pages chỉ dùng dữ liệu nhúng**, không có giá mới mỗi ngày.
+Chỉ số cơ bản được nhúng sẵn trong `src/3c_universe.js` (nguồn: stockanalysis.com). Giá cập nhật hằng ngày và lịch sử nến được tác vụ hẹn giờ ghi vào cơ sở dữ liệu của bản trên Claude, rồi đẩy một bản sao lên nhánh `data` của repo này (nhánh chỉ giữ một commit, bị ghi đè mỗi ngày). Bản GitHub Pages đọc nhánh đó qua `raw.githubusercontent.com`; nếu không đọc được thì dùng dữ liệu nhúng.
+
+## SEO
+
+`index.html` có mô tả, Open Graph (`og.png`), JSON-LD `WebApplication`; kèm `robots.txt`, `sitemap.xml`, `llms.txt`.
 
 Ứng dụng phục vụ học tập và nghiên cứu, không phải lời khuyên đầu tư.
