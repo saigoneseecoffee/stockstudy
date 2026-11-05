@@ -4,7 +4,7 @@ ARTIFACT: https://claude.ai/artifact/CRu8TA4f3TCFFy8zpPz3op
 Công cụ: WebFetch, Agent, Bash, Write, ArtifactData (nạp bằng ToolSearch "select:ArtifactData" nếu chưa có). Shell không ra được Internet; chỉ lấy web bằng WebFetch. Thư mục làm việc: ./lb (tạo mới). Dưới đây WORK = đường dẫn tuyệt đối của ./lb/work, OLD = ./lb/old.
 
 BƯỚC 1 — Chuẩn bị
-Lưu khối DAILY_PY ở cuối thành ./lb/daily.py (Write, nguyên văn). Tạo ./lb/work/raw, ./lb/work/lists.
+Nạp tool bằng ToolSearch "select:mcp__claude-code-remote__add_repo" rồi gọi add_repo với owner "saigoneseecoffee", repo "stockstudy", access "push". Chạy Bash: mkdir -p ./lb && git clone --depth 1 https://github.com/saigoneseecoffee/stockstudy ./lb/repo && cp ./lb/repo/pipeline/daily.py ./lb/daily.py && python3 -c "import ast;ast.parse(open('./lb/daily.py').read())". Bản daily.py trong repo là bản mới nhất (có lưu lịch sử EPS). Chỉ khi bước này lỗi mới lưu khối DAILY_PY ở cuối thành ./lb/daily.py (Write, nguyên văn — bản dự phòng cũ). Tạo ./lb/work/raw, ./lb/work/lists.
 
 BƯỚC 2 — Đọc dữ liệu hiện có
 Gọi ArtifactData action "get" với out_dir "./lb/old" cho từng tài liệu: meta/uni, meta/rot, meta/feed, snap/US, snap/VN, snap/ETF, snap/IDX, fund/US, fund/VN, hist/E-0, hist/E-1, hist/E-2, hist/E-3, hist/E-4 (fund/* có thể chưa tồn tại — bỏ qua). Mỗi tệp được lưu tại ./lb/old/<collection>/<doc>.json. Ghi lại version của từng tài liệu từ kết quả vào ./lb/old/versions.json dạng {"snap/US": 3, ...} (Write). Kiểm tra bằng Bash rằng ./lb/old/snap/US.json là đối tượng có khóa "q" (nếu tệp bọc trong {"data": ...} thì tách phần data ra ghi đè lại).
@@ -37,7 +37,7 @@ cd ./lb && git clone --depth 1 --branch data https://github.com/saigoneseecoffee
 Nhánh data chỉ giữ một commit nên đẩy đè (-f) là đúng. Không đụng nhánh main.
 
 BƯỚC 8 — Kết thúc
-Câu trả lời cuối 2–4 dòng tiếng Việt: phiên Mỹ/VN đã cập nhật, số mã có giá, gói lịch sử đã làm mới, số mã cập nhật chỉ số cơ bản, bản sao GitHub (đã đẩy / lỗi gì), lỗi đáng chú ý. Không emoji.
+Câu trả lời cuối 2–4 dòng tiếng Việt: daily.py lấy từ repo hay bản dự phòng, phiên Mỹ/VN đã cập nhật, số mã có giá, gói lịch sử đã làm mới, số mã cập nhật chỉ số cơ bản, bản sao GitHub (đã đẩy / lỗi gì), lỗi đáng chú ý. Không emoji.
 
 ===== QUY CÁCH =====
 # QUY CÁCH CHO SUBAGENT (đưa nguyên văn khối này cho mỗi subagent)
