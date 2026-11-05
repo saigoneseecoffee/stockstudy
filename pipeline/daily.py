@@ -63,6 +63,37 @@ def parse_fin(txt):
     rg = cagr(rev[0], rev[3], 3) if len(rev) >= 4 else None
     eg = cagr(eps[0], eps[3], 3) if len(eps) >= 4 else None
     return rg, (eg if eg is None or abs(eg) <= 300 else None)
+# Lịch sử EPS theo năm (mới nhất trước) cho nhận diện đỉnh chu kỳ; mã chưa có lịch sử được ưu tiên tải trước
+EH_MISSING = set(["US.APTV", "US.BDX", "US.CARR", "US.CAT", "US.CB", "US.CDNS", "US.CF", "US.COIN", "US.CPT", "US.CTVA", "US.DD", "US.EMR", "US.EQT", "US.EVRG", "US.GDDY", "US.GM", "US.GPN", "US.HIG", "US.HLT", "US.HONA", "US.HOOD", "US.HUBB", "US.IR", "US.JCI", "US.LH", "US.META", "US.MGM", "US.MLM", "US.MS", "US.MTD", "US.NCLH", "US.NDSN", "US.NI", "US.NOC", "US.NSC", "US.NTRS", "US.NUE", "US.PCG", "US.PEG", "US.PFE", "US.PFG", "US.PHM", "US.PM", "US.PNC", "US.PNW", "US.PPG", "US.PSX", "US.REGN", "US.RF", "US.RMD", "US.ROK", "US.ROL", "US.ROP", "US.ROST", "US.RSG", "US.RVTY", "US.SPGI", "US.SYY", "US.TMO", "US.TMUS", "US.TROW", "US.TSN", "US.TTWO", "US.UAL", "US.UBER", "US.UDR", "US.ULTA", "US.UNP", "US.UPS", "US.USB", "US.VMC", "US.VMRK", "VN.ABR", "VN.AFX", "VN.BMP", "VN.C47", "VN.CCC", "VN.CIG", "VN.CRC", "VN.DHG", "VN.ECO", "VN.FCM", "VN.FPT", "VN.GEX", "VN.GHC", "VN.HCD", "VN.HID", "VN.HLD", "VN.HTG", "VN.HU1", "VN.KLB", "VN.LPB", "VN.MAC", "VN.MZG", "VN.NHH", "VN.NO1", "VN.OCB", "VN.PDV", "VN.PLP", "VN.QNP", "VN.RYG", "VN.SBG", "VN.SBV", "VN.SHB", "VN.SJS", "VN.TCX", "VN.TNI", "VN.TPB", "VN.TSA", "VN.VCA", "VN.VCG", "VN.VIB", "VN.VPS", "VN.VPX", "VN.VSC", "VN.VSH", "VN.VVS"])
+def eps_hist(txt):
+    if not txt: return None, []
+    lines = [l.strip().strip('`') for l in txt.strip().split('\n') if l.strip()]
+    lines = [re.sub(r'^([A-Za-z][A-Za-z ()/&.-]*):\s*', r'\1, ', l) for l in lines]
+    labels = None
+    for l in lines:
+        labs = re.findall(r'\bTTM\b|\bFY ?\d{4}\b', l)
+        if len(labs) >= 3: labels = labs; break
+    if not labels: return None, []
+    best = None
+    for l in lines:
+        if 'per share' in l.lower() or re.match(r'^-?[\d.]', l) or l.lower().startswith('eps'):
+            toks = [t.strip() for t in l.split(',')]
+            while toks and re.match(r'^[A-Za-z]', toks[0]) and toks[0].lower() != 'n/a': toks.pop(0)
+            if len(toks) != len(labels): continue
+            if all(re.match(r'^(-?\d+(\.\d+)?|-|n/a|—)$', t) for t in toks) and sum('.' in t for t in toks) >= len(toks) // 2 and ('per share' in l.lower() or best is None): best = toks
+    if not best: return None, []
+    ttm = None; fy = []
+    for lab, t in zip(labels, best):
+        v = float(t) if re.match(r'^-?\d', t) else None
+        if lab == 'TTM': ttm = v
+        elif v is not None: fy.append((int(re.search(r'\d{4}', lab).group(0)), v))
+    fy.sort(reverse=True)
+    return ttm, fy[:6]
+def eh_string(fin, price, pe):
+    ttm, fy = eps_hist(fin)
+    if len(fy) < 3: return None
+    if ttm is not None and price and pe and pe > 0 and not (0.75 < ttm / (price / pe) < 1.33): return None   # tệp lệch mã
+    return (f'T:{round(ttm, 2)};' if ttm is not None else '') + ';'.join(f'{y}:{round(v, 2)}' for y, v in fy)
 def parse_stats(txt, fin, m):
     d = kv(txt); capv = num(g(d, 'market cap'))
     cap = (capv / 1e9 if m == 'US' else capv / 1e12) if capv else None
@@ -82,6 +113,7 @@ def parse_stats(txt, fin, m):
         if f[k] is not None: f[k] = int(f[k])
     if f['ic'] is not None and f['ic'] > 999: f['ic'] = 999
     f['rg'], f['eg'] = parse_fin(fin); f['rg'] = r1(f['rg']); f['eg'] = r1(f['eg'])
+    f['eh'] = eh_string(fin, f['pxf'], pe)
     return f
 def load_list(work, name):
     o = {}
@@ -116,7 +148,7 @@ def plan(old, work):
     # fundamentals: pending first, then the 20 oldest
     frot = rot.get('fund', {}); allid = [f'US.{t}' for t in uni['US']] + [f'VN.{x[0]}' for x in uni['VN']]
     exm = {x[0]: x[1] for x in uni['VN']}
-    order = sorted(allid, key=lambda k: (k in frot, frot.get(k, ''), k))[:20]
+    order = sorted(allid, key=lambda k: (k not in EH_MISSING, k in frot, frot.get(k, ''), k))[:20]
     for k in order:
         m, t = k.split('.', 1)
         jobs['fund'] += [f'S|{k}|{url(m, t, exm.get(t))}statistics/{D}', f'F|{k}|{url(m, t, exm.get(t))}financials/{D}']
@@ -244,7 +276,7 @@ def build(old, work, out):
         ch['upd'] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'); ch['srcAll'] = 'stockanalysis.com'
         W(f'{out}/hist/{ck}.json', ch); man.append('hist/' + ck)
     # ----- fundamentals
-    FK = uni['FKEYS']; changed = set()
+    FK = list(uni['FKEYS']) + ([] if 'eh' in uni['FKEYS'] else ['eh']); changed = set()
     funds = {m: (J(f'{old}/fund/{m}.json', None) or {'keys': FK, 'rows': {}}) for m in ('US', 'VN')}
     for k in plan_.get('fund', []):
         m, t = k.split('.', 1)

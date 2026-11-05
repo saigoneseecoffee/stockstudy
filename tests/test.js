@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm');
-const code=['3_data.js','3c_universe.js','4a_core.js','3d_build.js','4b_views.js','4c_more.js','4d_learn.js','4h_live.js'].map(f=>fs.readFileSync(f,'utf8')).join('\n');
+const code=['3_data.js','3c_universe.js','3e_epsh.js','4a_core.js','4a1_cycle.js','3d_build.js','4b_views.js','4c_more.js','4d_learn.js','4h_live.js'].map(f=>fs.readFileSync(f,'utf8')).join('\n');
 const ctx={window:{},document:{readyState:'loading',addEventListener(){}},console,Math,JSON,location:{hash:''},history:{}};
 vm.createContext(ctx);
 vm.runInContext(code+`

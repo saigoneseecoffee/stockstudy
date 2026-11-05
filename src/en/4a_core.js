@@ -102,7 +102,11 @@ const fscore=s=> isNum(s.fsn)? s.fsn : (s.f&&/^[01]{9}$/.test(s.f))? s.f.split('
 const kn=(v,f)=> isNum(v)? f(v) : null; /* tiêu chí không có dữ liệu → null */
 function metric(s,k){
   switch(k){
-    case 'peg': return (isNum(s.pe)&&s.pe>0&&isNum(s.fg)&&s.fg>0)? s.pe/s.fg : null;
+    case 'pe': return s._peak? s._eps.peAvg : (isNum(s.pe)? s.pe : null);
+    case 'ev': return s._peak&&isNum(s.ev)? (isFinite(s._k)? s.ev*s._k : -1) : (isNum(s.ev)? s.ev : null);
+    case 'fcf': return s._peak&&isNum(s.fcf)? (isFinite(s._k)? s.fcf/s._k : 0) : (isNum(s.fcf)? s.fcf : null);
+    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : null);
+    case 'peg': return (!s._peak&&isNum(s.pe)&&s.pe>0&&isNum(s.fg)&&s.fg>0)? s.pe/s.fg : null;
     case 'fs': return fscore(s);
     case 'pbroe': return (isNum(s.pb)&&s.pb>0&&isNum(s.roe)&&s.roe>0)? s.pb/s.roe*10 : null;
     case 'posafe':
@@ -147,6 +151,7 @@ function universe(){
 function computeAll(){
   U=universe(); BY={};
   U.forEach(s=>{ s._type=s.bank?'bank':'gen'; BY[s.t]=s; });
+  U.forEach(prepCycle);
   const groupCache={};
   const peersOf=s=>{
     const key=s._type+'|'+s.m;
@@ -193,6 +198,8 @@ function computeAll(){
     if(isNum(s.fcf)&&s.fcf<0){ flags.push('Negative free cash flow'); mult*=.95; }
     if(isNum(s.pe)&&(s.pe>60||s.pe<=0)){ flags.push(s.pe<=0?'Loss-making':'Very high P/E ('+fmt(s.pe,0)+'x)'); mult*=.93; }
     if(isNum(s.po)&&s.po>100){ flags.push('Payout exceeds earnings'); mult*=.95; }
+    if(s._peak){ flags.push('Earnings at a cyclical peak'+(s._eps.avg>0?' (EPS '+fmt(s._eps.ratio,1)+'× its 5-year average)':' (5-year average ≤ 0)')); mult*=.86; }
+    if(s._eps&&s._eps.neg>=2){ flags.push('Losses in '+s._eps.neg+' of the last '+s._eps.n+' years'); mult*=.95; }
     s._flags=flags;
     s._score=Math.round(clamp(comp*mult,0,100));
     const vals=FACTORS.map(F=>s._f[F.k]); const mean=vals.reduce((a,b)=>a+b,0)/6;
@@ -220,9 +227,9 @@ function marketMedianFactors(m){ const L=U.filter(s=>m==='ALL'||s.m===m); const 
 function mktAssump(s){ const st=S.settings; return s.m==='US'? {aaa:st.aaaUS,rf:st.rfUS,erp:st.erpUS,gt:st.gtUS} : {aaa:st.aaaVN,rf:st.rfVN,erp:st.erpVN,gt:st.gtVN}; }
 function costOfEquity(s){ const a=mktAssump(s); return +(a.rf+(isNum(s.b)?s.b:1)*a.erp).toFixed(2); }
 function dcfBase(s){
-  const eps= isNum(s.pe)&&s.pe>0? 100/s.pe : 0;
+  const pe=metric(s,'pe'); const eps= isNum(pe)&&pe>0? 100/pe : 0;
   if(s.bank){ const g=clamp(s.fg||0,0,25); const reinv= isNum(s.roe)&&s.roe>0? clamp(g/s.roe,0,.9):.5; return eps*(1-reinv); }
-  if(isNum(s.fcf)&&s.fcf>0) return s.fcf;
+  const fcf=metric(s,'fcf'); if(isNum(fcf)&&fcf>0) return fcf;
   return eps*.55;
 }
 function dcf(s,g1,r,gt,years){
@@ -243,17 +250,18 @@ function reverseDCF(s,r,gt){
 }
 function valuation(s){
   const a=mktAssump(s);
+  const pe=metric(s,'pe');
   const g=clamp(isNum(s.fg)?s.fg:(isNum(s.eg)?s.eg:0),0,15);
   const grahamPE=(8.5+2*g)*4.4/a.aaa;
-  const grahamMoS= isNum(s.pe)&&s.pe>0? 1-s.pe/grahamPE : null;
-  const gnUp= isNum(s.pe)&&s.pe>0&&isNum(s.pb)&&s.pb>0? Math.sqrt(22.5/(s.pe*s.pb))-1 : null;
-  const r=costOfEquity(s); const g1=clamp(isNum(s.fg)?s.fg:5,-10,30);
+  const grahamMoS= isNum(pe)&&pe>0? 1-pe/grahamPE : null;
+  const gnUp= isNum(pe)&&pe>0&&isNum(s.pb)&&s.pb>0? Math.sqrt(22.5/(pe*s.pb))-1 : null;
+  const r=costOfEquity(s); const g1= s._cyc? clamp(isNum(s.fg)?s.fg:a.gt,-10,a.gt) : clamp(isNum(s.fg)?s.fg:5,-10,30);
   const d=dcf(s,g1,r,a.gt);
   const dcfUp= d.valid&&d.base>0? d.total/100-1 : null;
   const implied=reverseDCF(s,r,a.gt);
   let fairPB=null; if(s.bank&&isNum(s.roe)){ const gg=Math.min(a.gt+2,r-1); fairPB=(s.roe-gg)/(r-gg); }
   const pbUp= fairPB&&isNum(s.pb)? fairPB/s.pb-1 : null;
-  const ests=[grahamMoS!=null?grahamPE/s.pe-1:null, dcfUp, s.bank?pbUp:gnUp].filter(isNum).map(v=>clamp(v,-.9,2));
+  const ests=[grahamMoS!=null?grahamPE/pe-1:null, dcfUp, s.bank?pbUp:gnUp].filter(isNum).map(v=>clamp(v,-.9,2));
   const blend= ests.length? median(ests) : null;
   return {grahamPE,grahamMoS,gnUp,r,g1,dcfUp,implied,fairPB,pbUp,blend};
 }
@@ -262,18 +270,18 @@ function valuation(s){
 const PERSONAS=[
   {k:'graham',sh:"Graham",n:'Benjamin Graham',ini:'BG',role:'Defensive value',
     phil:'Buy when the price is clearly below earnings and assets, with a margin of safety, a solid balance sheet and a dividend record.',
-    rules:[['P/E below 15',s=>s.pe>0&&s.pe<15],['P/E × P/B below 22.5',s=>s.pe>0&&s.pb>0&&s.pe*s.pb<22.5],
+    rules:[['P/E below 15 (on 5-year average EPS when available)',s=>{const p=s._eps&&isNum(s._eps.peAvg)?s._eps.peAvg:s.pe;return p>0&&p<15;}],['P/E × P/B below 22.5 (average P/E when available)',s=>{const p=s._eps&&isNum(s._eps.peAvg)?s._eps.peAvg:s.pe;return p>0&&s.pb>0&&p*s.pb<22.5;}],
       ['Current ratio above 2 (banks: CAR ≥ 10%)',s=>s.bank?kn(s.car,v=>v>=10):kn(s.cr,v=>v>2)],['Debt/Equity below 0.5 (banks: NPL below 2%)',s=>s.bank?kn(s.npl,v=>v<2):kn(s.de,v=>v<0.5)],
-      ['Pays a cash dividend',s=>s.dy>0],['Positive 3-year EPS growth',s=>kn(s.eg,v=>v>0)]]},
-  {k:'buffett',sh:"Buffett",n:'Warren Buffett',ini:'WB',role:'Wonderful business, fair price',
+      ['Pays a cash dividend',s=>s.dy>0],['Positive 3-year EPS growth',s=>kn(s.eg,v=>v>0)],['Profitable every year of the last 5',s=>s._eps?s._eps.neg===0:null]]},
+  {k:'buffett',sh:"Buffett",must:[6],n:'Warren Buffett',ini:'WB',role:'Wonderful business, fair price',
     phil:'Look for a durable economic moat: consistently high ROE and ROIC, fat margins, little debt, plentiful owner earnings.',
     rules:[['ROE above 15%',s=>s.roe>15],['ROIC above 12% (banks: NIM above 3%)',s=>s.bank?(isNum(s.nim)?s.nim>3:kn(s.roa,v=>v>1.2)):kn(s.roic,v=>v>12)],
       ['Gross margin above 40% (banks: CASA above 25%)',s=>s.bank?kn(s.casa,v=>v>25):kn(s.gm,v=>v>40)],['Debt/Equity below 0.6 (banks: CAR ≥ 11%)',s=>s.bank?kn(s.car,v=>v>=11):kn(s.de,v=>v<0.6)],
-      ['FCF yield above 3% (banks: P/B below 2)',s=>s.bank?kn(s.pb,v=>v<2):kn(s.fcf,v=>v>3)],['P/E below 25',s=>s.pe>0&&s.pe<25]]},
-  {k:'lynch',sh:"Lynch",n:'Peter Lynch',ini:'PL',must:[0],role:'Growth at a reasonable price (GARP)',
+      ['FCF yield above 3% (banks: P/B below 2)',s=>s.bank?kn(s.pb,v=>v<2):kn(s.fcf,v=>v>3)],['P/E below 25',s=>s.pe>0&&s.pe<25],['Profitable every year of the last 5',s=>s._eps?s._eps.neg===0:null],['Not a commodity price-taker (has pricing power)',s=>s._cyc!=='commodity']]},
+  {k:'lynch',sh:"Lynch",n:'Peter Lynch',ini:'PL',must:[0,5],role:'Growth at a reasonable price (GARP)',
     phil:'Companies growing 10–35%/year that the market has not fully priced in: PEG below 1, low debt, an easy-to-understand story.',
     rules:[['PEG below 1',s=>{const p=metric(s,'peg');return p!=null&&p<1;}],['Expected EPS growth 10–35%/year',s=>s.fg>=10&&s.fg<=35],
-      ['3-year EPS growth above 8%/year',s=>kn(s.eg,v=>v>8)],['Debt/Equity below 0.8 (banks: NPL below 2%)',s=>s.bank?kn(s.npl,v=>v<2):kn(s.de,v=>v<0.8)],['P/E below 30',s=>s.pe>0&&s.pe<30]]},
+      ['3-year EPS growth above 8%/year',s=>kn(s.eg,v=>v>8)],['Debt/Equity below 0.8 (banks: NPL below 2%)',s=>s.bank?kn(s.npl,v=>v<2):kn(s.de,v=>v<0.8)],['P/E below 30',s=>s.pe>0&&s.pe<30],['Not a cyclical stock at peak earnings',s=>!s._peak]]},
   {k:'greenblatt',sh:"Greenblatt",n:'Joel Greenblatt',ini:'JG',must:[3],role:'Magic Formula',
     phil:'Rank the whole market on two things, earnings yield (cheap) and ROIC (good), and buy the group with the lowest combined rank.',
     rules:[['Earnings yield (1 ÷ EV/EBITDA) above 7%',s=>s.ev>0&&100/s.ev>7],['ROIC above 18%',s=>s.roic>18],

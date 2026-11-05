@@ -520,4 +520,19 @@ input[type=range]{min-height:44px}
 .g-A{background:color-mix(in srgb,var(--up) 14%,transparent)}
 .g-C{background:color-mix(in srgb,var(--mut) 14%,transparent)}
 .g-D{background:color-mix(in srgb,var(--dn) 14%,transparent); color:var(--dn-ink,var(--dn))}
+
+/* ---------- chu kỳ lợi nhuận & lý do của từng chuyên gia ---------- */
+.mk.cyc{color:var(--vn); border-color:currentColor}
+.chip.cyc{color:var(--vn); border-color:color-mix(in srgb,var(--vn) 45%,transparent); background:color-mix(in srgb,var(--vn) 10%,transparent); font-size:12px}
+.why{display:flex; flex-direction:column; gap:6px}
+.why-i{border:1px solid var(--line); border-radius:12px; background:var(--s2)}
+.why-i>summary{min-height:44px; display:flex; align-items:center; padding:4px 12px; cursor:pointer; list-style:none; justify-content:space-between}
+.why-i>summary::-webkit-details-marker{display:none}
+.why-i .verdict{border:0; background:none; padding:0}
+.why-r{list-style:none; margin:0; padding:0 12px 10px; display:flex; flex-direction:column; gap:5px; font-size:13px}
+.why-r li{display:flex; gap:8px; align-items:baseline}
+.why-r li>.ic{width:14px; flex:none; font-weight:800}
+.why-r li.y>.ic{color:var(--up)} .why-r li.n>.ic{color:var(--dn)} .why-r li.u{color:var(--mut)}
+.why-r i{font-style:normal; color:var(--mut); font-size:12px}
+.why-i>.note{padding:0 12px 12px; margin:0}
 </style>

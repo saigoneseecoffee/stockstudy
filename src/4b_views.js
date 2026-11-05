@@ -224,7 +224,7 @@ function sortVal(s,k){
 function rowHTML(s,i){
   return `<div class="srow" data-open="${esc(s.t)}">
     <button class="srow-hit" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, điểm ${s._score}, hạng ${s._grade}"></button><span class="rk">${i+1}</span>
-    <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} cờ</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">SỬA</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
+    <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._cyc?`<span class="mk cyc" title="${esc(CYC_LABEL[s._cyc])}">${s._peak?'⟲ ĐỈNH':'⟲'}</span>`:''}${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} cờ</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">SỬA</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
     <span style="display:flex;align-items:center;gap:8px">${glyphHTML(s)}<button class="star" data-star="${esc(s.t)}" aria-pressed="${isStar(s.t)}" aria-label="${isStar(s.t)?'Bỏ khỏi':'Thêm vào'} danh mục">${starSVG(isStar(s.t))}</button></span>
     <span class="ring">${ringSVG(s._score,46,4.5)}<b>${s._score}</b></span>
   </div>`;
@@ -357,6 +357,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Chi tiết từng nhân tố</h2>${factorDetailHTML(s)}</section>
 
+  ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Định giá nội tại</h2><p>Giá hiện tại quy chuẩn = 100 để so sánh mọi mã</p></div></div>
     ${gaugeSVG(v.blend,'Biên an toàn tổng hợp (trung vị 3 mô hình)')}
     <div class="kv">
@@ -381,7 +382,7 @@ function openStock(t){
   </section>
 
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Hội đồng chuyên gia</h2><p>Mã đạt ít nhất 75% tiêu chí của trường phái</p></div></div>
-    <div class="verdicts">${s._persona.map((p,i)=>`<span class="verdict ${p.pass?'y':'n'}">${p.pass?'✓':'·'} ${esc(PERSONAS[i].n)} <b>${p.n}/${p.tot}</b></span>`).join('')}</div>
+    ${personaWhyHTML(s)}
   </section>
 
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Báo cáo thuật toán</h2><p>Tự sinh từ số liệu, cập nhật theo trọng số bạn chọn</p></div></div>${autoReport(s)}</section>
@@ -490,7 +491,7 @@ function openSettings(){
     <div class="row-btns"><button class="btn sm" id="sClrEd">Xóa mọi chỉnh sửa số liệu</button><button class="btn sm" id="sClrSt">Xóa danh mục theo dõi</button><button class="btn sm" id="sClrLn">Đặt lại tiến độ học</button></div></section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Về phương pháp</h2>
     <p class="note"><b>Nguồn số liệu:</b> ${esc(DATA_ASOF)}. Đây là ảnh chụp tĩnh để minh họa thuật toán, không kết nối dữ liệu trực tiếp. Hãy cập nhật bằng “Sửa số liệu” từ BCTC, báo cáo thường niên hoặc nền tảng dữ liệu bạn tin cậy.</p>
-    <p class="note"><b>Điểm La Bàn:</b> 6 nhân tố, mỗi chỉ số chấm 0–1 bằng 55% thứ hạng phần trăm trong nhóm cùng loại và cùng thị trường cộng 45% thang tuyệt đối; nhân tố là bình quân có trọng số các chỉ số; điểm tổng là bình quân có trọng số các nhân tố nhân với hệ số phạt cờ đỏ. Hạng A ≥ 70, B ≥ 58, C ≥ 45.</p>
+    <p class="note"><b>Điểm La Bàn:</b> 6 nhân tố, mỗi chỉ số chấm 0–1 bằng 55% thứ hạng phần trăm trong nhóm cùng loại và cùng thị trường cộng 45% thang tuyệt đối; nhân tố là bình quân có trọng số các chỉ số; điểm tổng là bình quân có trọng số các nhân tố nhân với hệ số phạt cờ đỏ. Hạng A ≥ 70, B ≥ 58, C ≥ 45. Cổ phiếu chu kỳ (giá hàng hóa, chip nhớ, thép, dầu khí, chứng khoán…) có EPS 12 tháng từ 2 lần bình quân 5 năm trở lên được chấm định giá trên lợi nhuận bình quân và bị trừ điểm “đỉnh chu kỳ”.</p>
     <p class="disc">${esc(DISC)}</p></section>`;
   openSheet('Cài đặt & phương pháp',html,body=>{
     $$('#langSeg button',body).forEach(b=>b.onclick=()=>{ if(b.dataset.lang!==LANG) setLang(b.dataset.lang); });

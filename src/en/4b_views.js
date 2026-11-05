@@ -224,7 +224,7 @@ function sortVal(s,k){
 function rowHTML(s,i){
   return `<div class="srow" data-open="${esc(s.t)}">
     <button class="srow-hit" data-open="${esc(s.t)}" aria-label="${esc(s.t)} ${esc(s.n)}, score ${s._score}, grade ${s._grade}"></button><span class="rk">${i+1}</span>
-    <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} flags</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">EDITED</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
+    <span class="nm"><b>${esc(s.t)} <span class="mk ${s.m}">${s.m}</span> <span class="grade g-${s._grade}">${s._grade}</span>${s._cyc?`<span class="mk cyc" title="${esc(CYC_LABEL[s._cyc])}">${s._peak?'⟲ PEAK':'⟲'}</span>`:''}${s._flags.length?`<span class="flag" style="padding:0 5px;font-size:10.5px" title="${esc(s._flags.join('; '))}">${s._flags.length} flags</span>`:''}${s.edited||s.custom?'<span class="mk" style="color:var(--gold)">EDITED</span>':''}</b><span>${pxChip(s.t)}${liveQ(s.t)?' · ':''}${esc(s.n)} · ${esc(SECTORS[s.s]||s.s)}</span></span>
     <span style="display:flex;align-items:center;gap:8px">${glyphHTML(s)}<button class="star" data-star="${esc(s.t)}" aria-pressed="${isStar(s.t)}" aria-label="${isStar(s.t)?'Remove from':'Add to'} watchlist">${starSVG(isStar(s.t))}</button></span>
     <span class="ring">${ringSVG(s._score,46,4.5)}<b>${s._score}</b></span>
   </div>`;
@@ -357,6 +357,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Factor details</h2>${factorDetailHTML(s)}</section>
 
+  ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Intrinsic valuation</h2><p>Current price normalized to 100 to compare all stocks</p></div></div>
     ${gaugeSVG(v.blend,'Blended margin of safety (3-model median)')}
     <div class="kv">
@@ -381,7 +382,7 @@ function openStock(t){
   </section>
 
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Expert panel</h2><p>A stock passes when it meets at least 75% of a school's criteria</p></div></div>
-    <div class="verdicts">${s._persona.map((p,i)=>`<span class="verdict ${p.pass?'y':'n'}">${p.pass?'✓':'·'} ${esc(PERSONAS[i].n)} <b>${p.n}/${p.tot}</b></span>`).join('')}</div>
+    ${personaWhyHTML(s)}
   </section>
 
   <section class="panel"><div class="sec-h"><div><h2 style="font-size:17px">Algorithmic report</h2><p>Auto-generated from the data, updated with your chosen weights</p></div></div>${autoReport(s)}</section>
@@ -490,7 +491,7 @@ function openSettings(){
     <div class="row-btns"><button class="btn sm" id="sClrEd">Clear all data edits</button><button class="btn sm" id="sClrSt">Clear watchlist</button><button class="btn sm" id="sClrLn">Reset learning progress</button></div></section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">About the method</h2>
     <p class="note"><b>Data source:</b> ${esc(DATA_ASOF)}. This is a static snapshot to illustrate the algorithm, not a live data feed. Update it via “Edit data” using financial statements, annual reports or a data platform you trust.</p>
-    <p class="note"><b>Compass Score:</b> 6 factors; each metric is scored 0–1 as 55% percentile rank within the same type and market plus 45% absolute scale; a factor is the weighted average of its metrics; the total score is the weighted average of the factors times the red-flag penalty multiplier. Grade A ≥ 70, B ≥ 58, C ≥ 45.</p>
+    <p class="note"><b>Compass Score:</b> 6 factors; each metric is scored 0–1 as 55% percentile rank within the same type and market plus 45% absolute scale; a factor is the weighted average of its metrics; the total score is the weighted average of the factors times the red-flag penalty multiplier. Grade A ≥ 70, B ≥ 58, C ≥ 45. Cyclical stocks (commodities, memory chips, steel, oil & gas, brokers…) whose trailing EPS is 2× or more their 5-year average are valued on average earnings and get a “cyclical peak” penalty.</p>
     <p class="disc">${esc(DISC)}</p></section>`;
   openSheet('Settings & method',html,body=>{
     $$('#langSeg button',body).forEach(b=>b.onclick=()=>{ if(b.dataset.lang!==LANG) setLang(b.dataset.lang); });
