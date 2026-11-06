@@ -1,7 +1,7 @@
 #!/bin/sh
 # Một trang, hai bản ứng dụng (vi, en). Ngôn ngữ được chọn trước khi chạy; đổi ngôn ngữ thì tải lại trang.
 cd "$(dirname "$0")/src"
-FILES="3_data.js 3c_universe.js 3e_epsh.js 4a_core.js 4a1_cycle.js 3d_build.js 4b_views.js 4c_more.js 4d_learn.js 4e_chart.js 4f_patterns.js 4g_options.js 4h_live.js 4j_etf.js 4k0_lessons2.js 4k_levels.js 4z_boot.js"
+FILES="3_data.js 3c_universe.js 3e_epsh.js 4a_core.js 4a1_cycle.js 3d_build.js 4b_views.js 4c_more.js 4d_learn.js 4e_chart.js 4f_patterns.js 4g_options.js 4h_live.js 4j_etf.js 4k0_lessons2.js 4k_levels.js 4l_search.js 4z_boot.js"
 bundle(){ # $1 = lang, $2 = dir prefix
   echo "<script>window.__LB_APP_$1=function(){"
   for f in $FILES; do cat "$2$f"; done

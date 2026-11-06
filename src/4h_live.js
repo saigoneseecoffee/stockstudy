@@ -129,6 +129,7 @@ function marketPanelHTML(){
     <div class="board-tbl"><div class="bt-h"><span>${stars.length?'Danh mục theo dõi':'Vốn hóa lớn nhất'}</span><span>Giá</span><span>%</span><span class="hide-sm">KL</span><span class="hide-sm">Xu hướng</span></div>
       ${rows.map(s=>{ const q=LIVE.q[s.t]; const c=boardClass(q); return `<div class="bt-r" role="button" tabindex="0" data-open="${esc(s.t)}"><span><b>${esc(s.t)}</b> <span class="mk ${s.m}">${s.m}</span>${isStale(q)?' <small class="mut">'+esc(q.d.slice(8,10)+'/'+q.d.slice(5,7))+'</small>':''}</span><span class="${c}" style="font-weight:700">${fmtLivePx(q)}</span><span class="${c}">${pctTxt(q)}</span><span class="hide-sm mut">${isNum(q.v)?fmtVol(q.v):'—'}</span><span class="hide-sm">${sparkSVG(q,80,22)}</span></div>`; }).join('')}
     </div>
+    ${rows.length>6?`<button class="btn sm bt-more" data-bt-more>${T_SEARCH.more}</button>`:''}
     ${typeof pairsStripHTML==='function'?pairsStripHTML():''}
     <p class="note" style="margin-top:6px">Giá cuối ngày, có độ trễ; màu theo quy ước bảng điện (tím trần, xanh lam sàn, vàng tham chiếu). Gắn sao một mã để đưa vào bảng này.</p>
   </section>`;

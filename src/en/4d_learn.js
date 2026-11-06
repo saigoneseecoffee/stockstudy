@@ -317,7 +317,7 @@ function bindGlobal(){
 }
 function boot(){
   if(S.theme!=='system') applyTheme();
-  computeAll(); bindGlobal(); initLive();
+  computeAll(); bindGlobal(); initLive(); initSearch();
   $$('#mktSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===S.market)));
   const h=(location.hash||'').replace('#','');
   setView(VIEWS.includes(h)?h:'home',{keepScroll:true});

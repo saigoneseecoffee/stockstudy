@@ -30,10 +30,10 @@ RENDER.home=function(){
   const fsorted=FACTORS.map(F=>({F,v:s._f[F.k]})).sort((a,b)=>b.v-a.v);
   const nA=L.filter(x=>x._grade==='A').length;
   const medScore=median(L.map(x=>x._score));
-  el.innerHTML=marketPanelHTML()+`
+  el.innerHTML=`<div class="home-top">${marketPanelHTML()}<div class="home-hero">
   <section class="hero" aria-label="La bàn">
     <div class="hero-copy">
-      <h1><span class="tk">${esc(s.t)}</span> đang dẫn đầu la bàn ${S.market==='ALL'?'hai thị trường':esc(mktName(S.market))}</h1>
+      <h2 class="hero-t"><span class="tk">${esc(s.t)}</span> đang dẫn đầu la bàn ${S.market==='ALL'?'hai thị trường':esc(mktName(S.market))}</h2>
       <p class="lead">${esc(s.n)} đạt <b style="color:var(--fg)">${s._score}/100</b>, hạng ${s._grade}. Mạnh nhất ở ${esc(fsorted[0].F.n.toLowerCase())} và ${esc(fsorted[1].F.n.toLowerCase())}; yếu nhất ở ${esc(fsorted[5].F.n.toLowerCase())} (${fsorted[5].v}).</p>
       <div class="pick-rail" role="group" aria-label="Năm mã điểm cao nhất">
         ${top.map((x,i)=>`<button class="pick" data-i="${i}" aria-pressed="${i===S.heroIdx}"><b>${esc(x.t)}</b><span>${x._score}</span></button>`).join('')}
@@ -50,7 +50,7 @@ RENDER.home=function(){
     </div>
     <div class="compass" id="compass">${radarSVG(FACTORS.map(F=>s._f[F.k]/100),{size:320,bezel:true,labels:FACTORS.map(F=>F.n),sub:FACTORS.map(F=>String(s._f[F.k])),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:30,aria:'La bàn 6 nhân tố của '+s.t})}</div>
   </section>
-  <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p>
+  <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -109,7 +109,7 @@ function renderTree(){
   const items=Object.values(g).map(x=>Object.assign(x,{sc:x.ws/x.v}));
   const cells=squarify(items,0,0,100,100);
   box.innerHTML=cells.map(c=>{
-    const showName=c.w>13&&c.h>11, showSc=c.w>7&&c.h>7;
+    const bw=box.clientWidth||340, wp=c.w*bw/100, hp=c.h*bw*11/1600; const showName=wp>=74&&hp>=38, showSc=wp>=30&&hp>=20;
     return `<button class="cell" data-sector="${c.k}" style="left:${c.x}%;top:${c.y}%;width:${c.w}%;height:${c.h}%;background:${heatColor(c.sc)}" aria-label="${esc(SECTORS[c.k]||c.k)}: ${c.n} mã, điểm bình quân ${Math.round(c.sc)}">${showName?`<b>${esc(SECTORS[c.k]||c.k)}</b>`:'<b></b>'}${showSc?`<span>${Math.round(c.sc)}${c.w>20?' · '+c.n+' mã':''}</span>`:''}</button>`;
   }).join('');
   $$('.cell',box).forEach(b=>b.onclick=()=>{ S.filters.sector=b.dataset.sector; setView('screen'); });
@@ -135,12 +135,12 @@ function renderScatter(){
 }
 function renderDist(){
   const box=$('#dist'); if(!box) return;
-  const L=ranked(); const W=860,H=190,p={l:16,r:16,t:22,b:30}; const place=labelPlacer();
+  const L=ranked(); const W=Math.max(320,Math.min(1100,Math.round(box.clientWidth||860))),H=W<600?200:190,p={l:16,r:16,t:22,b:30}; const place=labelPlacer();
   const X=v=>p.l+v/100*(W-p.l-p.r);
   let g='';
   [[0,45,'D','var(--dn)'],[45,58,'C','var(--mut)'],[58,70,'B','var(--gold)'],[70,100,'A','var(--up)']].forEach(([a,b,l,c])=>{
-    g+=`<rect x="${X(a)}" y="${p.t}" width="${X(b)-X(a)}" height="${H-p.t-p.b}" style="fill:${c};fill-opacity:.07"/><text x="${(X(a)+X(b))/2}" y="${p.t-7}" text-anchor="middle" style="fill:${c};font-weight:800;font-family:var(--f-disp);font-size:12px">Hạng ${l}</text>`; });
-  for(let v=0;v<=100;v+=10) g+=`<line class="axis" x1="${X(v)}" x2="${X(v)}" y1="${H-p.b}" y2="${H-p.b+5}"/><text x="${X(v)}" y="${H-p.b+18}" text-anchor="middle">${v}</text>`;
+    g+=`<rect x="${X(a)}" y="${p.t}" width="${X(b)-X(a)}" height="${H-p.t-p.b}" style="fill:${c};fill-opacity:.07"/><text x="${(X(a)+X(b))/2}" y="${p.t-7}" text-anchor="middle" style="fill:${c};font-weight:800;font-family:var(--f-disp);font-size:12px">${X(b)-X(a)<70?'':'Hạng '}${l}</text>`; });
+  for(let v=0;v<=100;v+=(W<600?20:10)) g+=`<line class="axis" x1="${X(v)}" x2="${X(v)}" y1="${H-p.b}" y2="${H-p.b+5}"/><text x="${X(v)}" y="${H-p.b+18}" text-anchor="middle">${v}</text>`;
   g+=`<line class="axis" x1="${X(0)}" x2="${X(100)}" y1="${H-p.b}" y2="${H-p.b}"/>`;
   if(L.length>120){
     const cnt=new Array(50).fill(0), us=new Array(50).fill(0); L.forEach(s=>{ const k=clamp(Math.floor(s._score/2),0,49); cnt[k]++; if(s.m==='US') us[k]++; });
@@ -150,10 +150,10 @@ function renderDist(){
       if(S.market==='ALL'){ const hu=us[k]/mx*hh; g+=`<rect x="${(x+1).toFixed(1)}" y="${(H-p.b-h).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${(h-hu).toFixed(1)}" style="fill:var(--vn);fill-opacity:.85"/><rect x="${(x+1).toFixed(1)}" y="${(H-p.b-hu).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${hu.toFixed(1)}" style="fill:var(--us);fill-opacity:.85"/>`; }
       else g+=`<rect x="${(x+1).toFixed(1)}" y="${(H-p.b-h).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" style="fill:${col};fill-opacity:.85"/>`;
       g+=`<rect data-bin="${k*2}" x="${x.toFixed(1)}" y="${p.t}" width="${bw.toFixed(1)}" height="${H-p.t-p.b}" fill="transparent" style="cursor:pointer"><title>${n} mã có điểm ${k*2}–${k*2+1}</title></rect>`;
-      if(n===mx||h>hh*.55) g+=`<text x="${(x+bw/2).toFixed(1)}" y="${(H-p.b-h-4).toFixed(1)}" text-anchor="middle" style="font-size:9.5px;fill:var(--fg);pointer-events:none">${n}</text>`; });
-    const top=L.slice(0,6);
-    top.forEach((s,i)=>{ const x=X(s._score); const y=p.t+4+i*13; g+=`<g data-open="${esc(s.t)}" style="cursor:pointer"><line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${y+3}" y2="${H-p.b}" style="stroke:var(--gold)" stroke-opacity=".5" stroke-dasharray="2 3"/><text x="${(x-4).toFixed(1)}" y="${y+3}" text-anchor="end" style="font-size:10px;font-weight:700;fill:var(--gold)">${esc(s.t)} ${s._score}</text></g>`; });
-    box.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" style="min-width:700px" role="img" aria-label="Biểu đồ tần suất điểm La Bàn của ${L.length} mã">${g}</svg><div class="legend">${S.market==='ALL'?'<span><i style="background:var(--us)"></i>Mỹ</span><span><i style="background:var(--vn)"></i>Việt Nam</span>':''}<span>Cột = số mã theo khoảng 2 điểm · chạm cột để lọc từ mức điểm đó</span></div>`;
+      if(n===mx||(W>=600&&h>hh*.55)) g+=`<text x="${(x+bw/2).toFixed(1)}" y="${(H-p.b-h-4).toFixed(1)}" text-anchor="middle" style="font-size:11px;fill:var(--fg);pointer-events:none">${n}</text>`; });
+    const top=L.slice(0,W<600?3:6);
+    top.forEach((s,i)=>{ const x=X(s._score); const y=p.t+4+i*15; g+=`<g data-open="${esc(s.t)}" style="cursor:pointer"><line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${y+3}" y2="${H-p.b}" style="stroke:var(--gold)" stroke-opacity=".5" stroke-dasharray="2 3"/><text x="${(x-4).toFixed(1)}" y="${y+3}" text-anchor="end" style="font-size:11.5px;font-weight:700;fill:var(--gold)">${esc(s.t)} ${s._score}</text></g>`; });
+    box.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Biểu đồ tần suất điểm La Bàn của ${L.length} mã">${g}</svg><div class="legend">${S.market==='ALL'?'<span><i style="background:var(--us)"></i>Mỹ</span><span><i style="background:var(--vn)"></i>Việt Nam</span>':''}<span>Cột = số mã theo khoảng 2 điểm · chạm cột để lọc từ mức điểm đó</span></div>`;
     $$('[data-bin]',box).forEach(r=>r.addEventListener('click',()=>{ S.filters.min=+r.dataset.bin; S.filters.sort='score'; S.listN=60; S.scrMode='stock'; setView('screen'); }));
     return;
   }
@@ -162,7 +162,7 @@ function renderDist(){
     const x=X(s._score), y=H-p.b-12-lvl*18; const col=S.market==='ALL'?(s.m==='US'?'var(--us)':'var(--vn)'):scoreColor(s._score);
     g+=`<g data-open="${esc(s.t)}" style="cursor:pointer"><circle cx="${x.toFixed(1)}" cy="${y}" r="7.5" style="fill:${col};fill-opacity:.9;stroke:var(--s1)" stroke-width="1.5"/><title>${esc(s.t)}: ${s._score}</title></g>`;
     const tk=s.t.replace('.B',''); if(lvl<7&&place(x,y-10,tk.length*5.6+3,10)) g+=`<text x="${(x).toFixed(1)}" y="${y-10}" text-anchor="middle" style="font-size:9px;fill:var(--fg);pointer-events:none">${esc(tk)}</text>`; });
-  box.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" style="min-width:700px" role="img" aria-label="Phân bố điểm La Bàn theo hạng">${g}</svg>`;
+  box.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Phân bố điểm La Bàn theo hạng">${g}</svg>`;
 }
 
 /* ---------------- SÀNG LỌC ---------------- */
