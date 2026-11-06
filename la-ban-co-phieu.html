@@ -583,6 +583,36 @@ input[type=range]{min-height:44px}
 .trk-k span{font-size:12.5px; color:var(--mut); line-height:1.3}
 .trk-k b{font-family:var(--f-disp); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.1}
 .trk-k small{font-size:12px; color:var(--mut)}
+
+/* dự báo giá & bảng so sánh mô hình */
+.fc-t td,.fc-b td{vertical-align:top}
+.fc-t td.num small,.fc-b td.num small{display:block; font-size:11.5px; color:var(--mut); font-weight:400}
+.fc-t td.num small.up{color:var(--up)} .fc-t td.num small.dn{color:var(--dn)}
+.fc-b td:first-child small{display:block; font-size:11.5px; color:var(--mut)}
+.fc-b td.best{font-weight:800} .fc-b tr.base td{color:var(--mut)}
+.fc-m{font-size:12.5px; color:var(--mut)} .fc-m.ok{color:var(--up); font-weight:700}
+@media (max-width:640px){
+  .fc-t{min-width:0; width:100%} .fc-t thead{display:none}
+  .fc-t tr{display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; padding:10px 0; border-bottom:1px solid var(--line)}
+  .fc-t td{display:block; border:0; padding:0; text-align:left}
+  .fc-t td.fc-hz{grid-column:1/-1; font-weight:800; font-family:var(--f-disp)}
+  .fc-t td[data-l]::before{content:attr(data-l); display:block; font-size:11.5px; color:var(--mut); font-weight:400}
+}
+.fc-b{min-width:0; width:100%; table-layout:fixed; font-size:13px}
+.fc-b th,.fc-b td{padding:7px 4px; white-space:normal; overflow-wrap:anywhere; position:static}
+.fc-b th:first-child,.fc-b td:first-child{width:34%}
+@media (max-width:640px){ .fc-b td:first-child small{display:none} }
+/* tin kinh tế – chính trị */
+.news-l{display:flex; flex-direction:column}
+.news-i{padding:12px 0; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:6px}
+.news-i:first-child{border-top:0; padding-top:4px}
+.news-m{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--mut)}
+.news-i h3{font-size:15px; line-height:1.35; margin:0}
+.news-i p{margin:0; font-size:14px; line-height:1.5; color:var(--fg)}
+.news-f{display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:12.5px}
+.news-f a{color:var(--mut); min-height:32px; display:inline-flex; align-items:center}
+.chip.imp{font-size:11.5px; padding:2px 8px; min-height:0}
+.chip.imp.up{color:var(--up); border-color:color-mix(in srgb,var(--up) 40%,transparent)} .chip.imp.dn{color:var(--dn); border-color:color-mix(in srgb,var(--dn) 40%,transparent)}
 </style>
 <body>
 <template id="lb-body-vi">
@@ -1445,6 +1475,7 @@ RENDER.home=function(){
     <div class="compass" id="compass">${radarSVG(FACTORS.map(F=>s._f[F.k]/100),{size:320,bezel:true,labels:FACTORS.map(F=>F.n),sub:FACTORS.map(F=>String(s._f[F.k])),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:30,aria:'La bàn 6 nhân tố của '+s.t})}</div>
   </section>
   <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
+  ${newsHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -1751,6 +1782,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Chi tiết từng nhân tố</h2>${factorDetailHTML(s)}</section>
 
+  <div id="fcSlot" data-t="${esc(s.t)}">${forecastPanelHTML(s)}</div>${newsForStockHTML(s)}
   ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Định giá nội tại</h2><p>Giá hiện tại quy chuẩn = 100 để so sánh mọi mã</p></div></div>
     ${gaugeSVG(v.blend,'Biên an toàn tổng hợp (trung vị 3 mô hình)')}
@@ -1903,12 +1935,12 @@ function openSettings(){
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Hội đồng'],['track','Kiểm chứng'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
+  const tabs=[['council','Hội đồng'],['track','Kiểm chứng'],['fc','Dự báo'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Góc chuyên gia</h2><p>8 trường phái, phòng thí nghiệm quyền chọn, trợ lý AI và công cụ định lượng</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,fc:renderFcBoard,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);
@@ -3732,6 +3764,7 @@ function liveChanged(full,info){
     if(!$('#sheet').hidden){
       $$('[data-px]').forEach(el=>{ const t=el.dataset.px; const tmp=document.createElement('span'); tmp.innerHTML=pxChip(t,{etf:!!el.dataset.pxe}); if(tmp.firstElementChild) el.replaceWith(tmp.firstElementChild); });
       const lb=$('#liveSlot'); if(lb&&lb.dataset.t){ const etf=!!lb.dataset.etf; const s=etf?EBY[lb.dataset.t]:BY[lb.dataset.t]; if(s) lb.innerHTML=liveBlockHTML(s,etf); }
+      const fsl=$('#fcSlot'); if(fsl&&fsl.dataset.t&&typeof forecastPanelHTML==='function'&&BY[fsl.dataset.t]) fsl.innerHTML=forecastPanelHTML(BY[fsl.dataset.t]);
       if(typeof refreshEtfSheet==='function') refreshEtfSheet(info);
       return;
     }
@@ -3774,6 +3807,7 @@ async function initLive(){
       db.doc('fund/'+k).onSnapshot(s=>{ if(s.exists){ applyFundDoc(k,s.data()); liveChanged(true); } },()=>{});
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }
 /* ============================================================
@@ -4793,7 +4827,7 @@ const TRK_IX={US:'IDX.SPX',VN:'IDX.VNINDEX'};
 function loadTrack(cb){
   if(LIVE.trk!==undefined){ cb(); return; }
   const db=LIVE.db; if(!db){ LIVE.trk=null; cb(); return; }
-  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
+  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; LIVE.fc=d&&d.fc?d.fc:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
 }
 function trackEval(m){
   const L=(LIVE.trk&&LIVE.trk[m])||[]; const ixq= m==='US'? liveE('SPY') : LIVE.q[TRK_IX[m]]; const ixNow=ixq&&isNum(ixq.px)?ixq.px:null;
@@ -4849,6 +4883,153 @@ k4:'Top 20 trừ 20 mã thấp nhất',k4s:'chênh lệch bình quân',chart:'M�
 table:'Từng lần ghi',c1:'Ngày ghi',c2:'Top 20',c3:'Vượt chỉ số',c4:'20 mã thấp nhất',empty:'Chưa có lần ghi nào đủ cũ để đo.',loading:'Đang tải sổ kiểm chứng…',
 none:'Chưa có sổ kiểm chứng (cần dữ liệu cập nhật hằng ngày).',
 caveat:'Mẫu còn rất nhỏ: vài tuần và vài chục lần ghi chồng nhau. Điểm La Bàn được thiết kế cho tầm nắm giữ 6–12 tháng, nên kết quả vài tuần chủ yếu là nhiễu, kể cả khi đẹp. Cần ít nhất 6–12 tháng ghi liên tục mới bắt đầu kết luận được. Hiệu quả quá khứ không đảm bảo kết quả tương lai.'};
+/* ============================================================
+   DỰ BÁO GIÁ NGẮN HẠN — các mô hình thống kê đơn giản, minh bạch, chỉ dùng chuỗi giá đóng cửa đến ngày t.
+   Dùng chung cho app (dự báo từng mã) và cho kiểm định quay lui hằng ngày (pipeline/fc_eval.js).
+   ============================================================ */
+const FC_H=[1,3,7,21];
+const FC_MODELS=['naive','trend','ma','rev','ens'];
+function fcStats(c){
+  const n=c.length; const r=[]; for(let i=Math.max(1,n-41);i<n;i++){ if(c[i]>0&&c[i-1]>0) r.push(Math.log(c[i]/c[i-1])); }
+  if(r.length<15) return null;
+  const m=r.reduce((a,b)=>a+b,0)/r.length; const sd=Math.sqrt(r.reduce((a,b)=>a+(b-m)*(b-m),0)/(r.length-1));
+  const last=c[n-1]; const sma=k=>{ const s=c.slice(-k); return s.reduce((a,b)=>a+b,0)/s.length; };
+  const r20=r.slice(-20), mu20=r20.reduce((a,b)=>a+b,0)/r20.length;
+  return {last,sd:Math.max(sd,1e-4),mu20,ma5:sma(5),ma20:sma(Math.min(20,n)),r5:n>5&&c[n-6]>0?Math.log(last/c[n-6]):0};
+}
+/* trả về log-lợi nhuận kỳ vọng sau h phiên cho từng mô hình */
+function fcDrift(st,model,h){
+  switch(model){
+    case 'naive': return 0;
+    case 'trend': return st.mu20*h;                                   /* tiếp nối xu hướng 20 phiên */
+    case 'ma': return Math.log(st.ma5/st.ma20)/7.5*h;                   /* MA5 so với MA20: độ dốc ngắn hạn */
+    case 'rev': return -0.5*st.r5/5*Math.min(h,5);                      /* đảo chiều một nửa nhịp 5 phiên, tối đa 5 phiên */
+    case 'ens': return (fcDrift(st,'trend',h)+fcDrift(st,'ma',h)+fcDrift(st,'rev',h))/3;
+  }
+  return 0;
+}
+function fcForecast(c,h,model){
+  const st=fcStats(c); if(!st) return null;
+  const d=fcDrift(st,model||'ens',h); const s=st.sd*Math.sqrt(h);
+  const z=d/s; const pUp=0.5*(1+erf(z/Math.SQRT2));
+  return {px:st.last*Math.exp(d),lo:st.last*Math.exp(d-1.2816*s),hi:st.last*Math.exp(d+1.2816*s),ret:Math.exp(d)-1,pUp,sd:st.sd};
+}
+function erf(x){ const t=1/(1+0.3275911*Math.abs(x)); const y=1-((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; }
+/* kiểm định quay lui trên một chuỗi: mỗi ngày t dự báo bằng dữ liệu đến t, so với giá thật ở t+h */
+function fcBacktest(c,acc,minHist){
+  const n=c.length, start=Math.max(minHist||30,25);
+  for(let t=start;t<n-1;t++){
+    const hist=c.slice(0,t+1); const st=fcStats(hist); if(!st) continue;
+    FC_H.forEach(h=>{
+      if(t+h>=n||!(c[t+h]>0)) return; const actual=Math.log(c[t+h]/c[t]); const s=st.sd*Math.sqrt(h);
+      const A=acc[h]||(acc[h]={n:0,up:0,cov:0,m:{}});
+      A.n++; if(actual>0) A.up++;
+      FC_MODELS.forEach(mo=>{ const d=fcDrift(st,mo,h); const M=A.m[mo]||(A.m[mo]={hit:0,dn:0,ae:0});
+        M.ae+=Math.abs(Math.exp(d-actual)-1);
+        if(mo!=='naive'&&Math.abs(actual)>1e-9&&Math.abs(d)>1e-9){ M.dn++; if((d>0)===(actual>0)) M.hit++; } });
+      const de=fcDrift(st,'ens',h); if(Math.abs(actual-de)<=1.2816*s) A.cov++;
+    });
+  }
+  return acc;
+}
+/* ============================================================
+   DỰ BÁO GIÁ (giao diện) · BẢNG XẾP HẠNG MÔ HÌNH · TIN KINH TẾ – CHÍNH TRỊ
+   Mô hình và kiểm định nằm ở 4n_forecast_core.js. Kết quả kiểm định quay lui đọc từ meta/rot.fc
+   (tác vụ hằng ngày chạy pipeline/fc_eval.js trên các gói lịch sử nến), tin đọc từ meta/news.
+   ============================================================ */
+function fcGroupOf(s){ return s&&s.m==='VN'?'VN':'US'; }
+/* gộp kết quả kiểm định của mọi gói cùng nhóm (US-*, VN-*, E-*) */
+function fcAgg(grp){
+  const F=LIVE.fc; if(!F) return null; const out={};
+  Object.keys(F).forEach(ck=>{ if(ck.split('-')[0]!==grp) return; const v=F[ck];
+    FC_H.forEach(h=>{ const A=v[h]; if(!A) return; const G=out[h]||(out[h]={n:0,up:0,cov:0,m:{}}); G.n+=A.n; G.up+=A.up; G.cov+=A.cov||0;
+      Object.keys(A.m||{}).forEach(mo=>{ const M=A.m[mo], g=G.m[mo]||(G.m[mo]={hit:0,dn:0,ae:0}); g.hit+=M.hit; g.dn+=M.dn; g.ae+=M.ae; }); }); });
+  return Object.keys(out).length? out : null;
+}
+function fcBest(G){ let b=null; FC_MODELS.forEach(mo=>{ if(mo==='naive') return; const M=G.m[mo]; if(!M||!M.dn) return; const hit=M.hit/M.dn; if(!b||hit>b.hit) b={mo,hit,n:M.dn}; }); return b; }
+/* có tốt hơn đoán bừa không: vượt cả 50% lẫn tỷ lệ "luôn đoán tăng/giảm theo đa số" hơn 2 sai số chuẩn */
+function fcEdge(G,b){ if(!b) return false; const base=Math.max(G.up/G.n,1-G.up/G.n,.5); return b.hit-base>2*Math.sqrt(.25/b.n); }
+function closesOf(s){ const q=LIVE.q[s.t]; if(!q) return []; return seriesOf(q).filter(v=>isNum(v)&&v>0); }
+function forecastPanelHTML(s){
+  const c=closesOf(s); const G=fcAgg(fcGroupOf(s));
+  if(c.length<17) return `<section class="panel"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.h}</h2><p>${T_FC.nodata}</p></div></div></section>`;
+  const rows=FC_H.map(h=>{ const f=fcForecast(c,h,'ens'); if(!f) return ''; const A=G&&G[h]; const b=A&&fcBest(A); const edge=A&&fcEdge(A,b);
+    const arrow=f.pUp>=.55?'▲':f.pUp<=.45?'▼':'◆'; const cls=f.pUp>=.55?'up':f.pUp<=.45?'dn':'';
+    return `<tr><td class="fc-hz">${T_FC.hl[h]}</td><td class="num" data-l="${T_FC.c1}"><b>${fmtPx(f.px,s)}</b><small class="${cls}">${f.ret>0?'+':''}${fmt(f.ret*100,1)}%</small></td><td class="num" data-l="${T_FC.c2}">${fmtPx(f.lo,s)} – ${fmtPx(f.hi,s)}</td><td class="num ${cls}" data-l="${T_FC.c3}">${arrow} ${fmt(f.pUp*100,0)}%</td>
+      <td data-l="${T_FC.c4}">${b?`<span class="fc-m ${edge?'ok':''}">${esc(T_FC.mn[b.mo])} ${fmt(b.hit*100,0)}%</span>`:'—'}</td></tr>`; }).join('');
+  return `<section class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.h}</h2><p>${T_FC.sub.replace('{n}',c.length)}</p></div></div>
+    <div class="scroll-x" tabindex="0"><table class="ptab fc-t"><thead><tr><th>${T_FC.c0}</th><th>${T_FC.c1}</th><th>${T_FC.c2}</th><th>${T_FC.c3}</th><th>${T_FC.c4}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="note">${T_FC.note}</p></section>`;
+}
+function fmtPx(v,s){ return s&&s.m==='VN'? fmt(v,0) : fmt(v,v>=100?1:2); }
+/* Điểm La Bàn như một "mô hình" chọn mã: 20 mã điểm cao nhất ở mỗi lần ghi có thắng mã trung vị của thị trường sau h phiên không */
+function scoreHits(m){
+  const L=(LIVE.trk&&LIVE.trk[m])||[]; const snap=LIVE.snap&&LIVE.snap[m]; if(!snap||!snap.dates) return null; const out={};
+  const key=t=>{ const s=BY[t]; return s? (s.tk||s.t) : t; };
+  [1,3,7,21].forEach(h=>{ let hit=0,n=0;
+    L.forEach(e=>{ const i=snap.dates.indexOf(e.d); if(i<0||i+h>=snap.dates.length) return;
+      const rets=[]; for(const t in snap.c){ const a=snap.c[t]; if(a[i]>0&&a[i+h]>0) rets.push(a[i+h]/a[i]-1); } if(rets.length<50) return;
+      rets.sort((x,y)=>x-y); const med=rets[rets.length>>1];
+      e.top.forEach(([t])=>{ const a=snap.c[key(t)]; if(a&&a[i]>0&&a[i+h]>0){ n++; if(a[i+h]/a[i]-1>med) hit++; } }); });
+    out[h]= n? {hit:hit/n,n} : null; });
+  return out;
+}
+function renderFcBoard(){
+  const box=$('#expertBody'); box.innerHTML=`<p class="note">${T_FC.loading}</p>`;
+  loadTrack(()=>{
+    const groups=[['US',T_FC.gUS],['VN',T_FC.gVN],['E',T_FC.gE]].filter(([g])=>S.market==='ALL'||g===S.market||(g==='E'&&S.market==='US'));
+    const pc=v=>v==null?'—':fmt(v*100,1)+'%';
+    const tab=([g,name])=>{ const G=fcAgg(g); if(!G) return `<section class="panel"><h2 style="font-size:18px">${name}</h2><p class="note">${T_FC.noboard}</p></section>`;
+      const SH= g==='E'? null : scoreHits(g);
+      const hs=FC_H.filter(h=>G[h]);
+      return `<section class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:18px">${name}</h2><p>${T_FC.bsub.replace('{n}',hs.reduce((a,h)=>a+G[h].n,0).toLocaleString(LOCALE))}</p></div></div>
+      <div class="scroll-x" tabindex="0"><table class="ptab fc-b"><thead><tr><th>${T_FC.mcol}</th>${hs.map(h=>`<th class="num">${T_FC.hl[h]}</th>`).join('')}</tr></thead><tbody>
+        <tr class="base"><td>${T_FC.always}</td>${hs.map(h=>{ const u=G[h].up/G[h].n; return `<td class="num">${pc(Math.max(u,1-u))}<small>${u>=.5?T_FC.upw:T_FC.dnw}</small></td>`; }).join('')}</tr>
+        ${FC_MODELS.filter(mo=>mo!=='naive').map(mo=>`<tr><td>${esc(T_FC.mn[mo])}<small>${esc(T_FC.md[mo])}</small></td>${hs.map(h=>{ const M=G[h].m[mo]; const b=fcBest(G[h]); const hit=M&&M.dn?M.hit/M.dn:null; const edge=b&&b.mo===mo&&fcEdge(G[h],b);
+          return `<td class="num ${b&&b.mo===mo?'best':''}">${pc(hit)}${edge?' ✓':''}<small>${T_FC.mae} ${pc(M?M.ae/G[h].n:null)}</small></td>`; }).join('')}</tr>`).join('')}
+        <tr><td>${T_FC.naive}<small>${T_FC.naived}</small></td>${hs.map(h=>`<td class="num">—<small>${T_FC.mae} ${pc(G[h].m.naive?G[h].m.naive.ae/G[h].n:null)}</small></td>`).join('')}</tr>
+        ${SH?`<tr><td>${T_FC.score}<small>${T_FC.scored}</small></td>${hs.map(h=>`<td class="num">${SH[h]?pc(SH[h].hit):'—'}<small>${SH[h]?SH[h].n+' '+T_FC.picks:T_FC.wait}</small></td>`).join('')}</tr>`:''}
+      </tbody></table></div></section>`; };
+    box.innerHTML=`<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${T_FC.bh}</h2><p>${T_FC.bp}</p></div></div><p class="note">${T_FC.bhow}</p></section>${groups.map(tab).join('')}<p class="note">${T_FC.bcav}</p>`;
+  });
+}
+/* ---------- tin kinh tế – chính trị ---------- */
+const IMP_CLS={pos:'up',neg:'dn',mix:''};
+function newsItemHTML(n,compact){
+  const L=n[LANG]||n.vi||n.en||{}; const tk=(n.tk||[]).filter(t=>BY[t]||BY[t+'.VN']).slice(0,6);
+  return `<article class="news-i"><div class="news-m"><span class="chip imp ${IMP_CLS[n.imp]||''}">${T_FC.imp[n.imp]||T_FC.imp.mix}</span><span>${esc((n.d||'').split('-').reverse().join('/'))}</span><span class="mk ${n.m==='VN'?'VN':n.m==='US'?'US':''}">${n.m==='ALL'?T_FC.all:esc(n.m||'')}</span></div>
+    <h3>${esc(L.t||'')}</h3>${compact?'':`<p>${esc(L.s||'')}</p>`}
+    <div class="news-f">${tk.map(t=>`<button class="chip" data-open="${esc(BY[t]?t:t+'.VN')}">${esc(t)}</button>`).join('')}${(n.src||[]).slice(0,2).map(x=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.n)} ↗</a>`).join('')}</div></article>`;
+}
+function newsHomeHTML(){
+  const N=LIVE.news&&LIVE.news.items; if(!N||!N.length) return '';
+  const L=N.filter(n=>S.market==='ALL'||n.m===S.market||n.m==='ALL').slice(0,6);
+  if(!L.length) return '';
+  return `<section class="panel news" aria-labelledby="h-news"><div class="sec-h"><div><h2 id="h-news">${T_FC.nh}</h2><p>${T_FC.np.replace('{d}',esc(String(LIVE.news.upd||'').slice(0,10).split('-').reverse().join('/')))}</p></div></div>
+    <div class="news-l">${L.map(n=>newsItemHTML(n,false)).join('')}</div></section>`;
+}
+function newsForStockHTML(s){
+  const N=LIVE.news&&LIVE.news.items; if(!N) return '';
+  const tk=s.tk||s.t; const sc=n=>((n.tk||[]).includes(tk)?3:0)+((n.sec||[]).includes(s.s)?2:0)+(n.m===s.m?1:n.m==='ALL'?.5:0);
+  const L=N.map(n=>({n,v:sc(n)})).filter(x=>x.v>=2).sort((a,b)=>b.v-a.v||String(b.n.d).localeCompare(String(a.n.d))).slice(0,4);
+  if(!L.length) return '';
+  return `<section class="panel news"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.nst}</h2><p>${T_FC.nsp}</p></div></div><div class="news-l">${L.map(x=>newsItemHTML(x.n,false)).join('')}</div></section>`;
+}
+const LOCALE='vi-VN';
+const T_FC={h:'Dự báo giá ngắn hạn',sub:'Mô hình tổng hợp (xu hướng + trung bình động + đảo chiều) trên {n} phiên giá gần nhất',
+nodata:'Chưa đủ lịch sử giá (cần ít nhất 17 phiên).',hl:{1:'1 phiên',3:'3 phiên',7:'7 phiên',21:'1 tháng'},
+c0:'Tầm',c1:'Giá dự kiến',c2:'Khoảng 80%',c3:'Xác suất tăng',c4:'Mô hình đoán chiều tốt nhất',
+note:'Giá dự kiến là trung tâm của một khoảng rộng: 80% khả năng giá rơi vào khoảng bên cạnh nếu biến động giữ như 40 phiên qua. Cột cuối là mô hình đoán đúng chiều nhiều nhất khi kiểm định quay lui trên cùng thị trường; dấu xanh chỉ khi nó tốt hơn đoán bừa một cách có ý nghĩa thống kê. Dự báo giá ngắn hạn gần như luôn chỉ nhỉnh hơn tung đồng xu — đừng dùng để giao dịch.',
+mn:{trend:'Xu hướng',ma:'Trung bình động',rev:'Đảo chiều',ens:'Tổng hợp',naive:'Giữ nguyên'},
+md:{trend:'tiếp nối lợi nhuận bình quân 20 phiên',ma:'độ dốc MA5 so với MA20',rev:'hoàn lại một nửa nhịp 5 phiên',ens:'bình quân ba mô hình'},
+loading:'Đang tải kết quả kiểm định…',gUS:'Cổ phiếu Mỹ',gVN:'Cổ phiếu Việt Nam',gE:'ETF Mỹ',noboard:'Chưa có kết quả kiểm định cho nhóm này.',
+bsub:'{n} lần dự báo đã kiểm định',mcol:'Mô hình',always:'Luôn đoán theo đa số',upw:'luôn tăng',dnw:'luôn giảm',mae:'sai số',
+naive:'Giữ nguyên giá',naived:'mốc so sánh sai số',score:'Điểm La Bàn',scored:'top 20 thắng mã trung vị',picks:'lượt',wait:'chờ thêm dữ liệu',
+bh:'So sánh thuật toán dự báo',bp:'Mỗi ngày t trong lịch sử, mô hình chỉ thấy giá đến t rồi đoán chiều và giá sau 1, 3, 7 phiên và 1 tháng; sau đó so với giá thật.',
+bhow:'Ô số lớn là tỷ lệ đoán đúng chiều, dòng nhỏ là sai số giá bình quân. Ô in đậm là mô hình đúng chiều nhiều nhất ở tầm đó; dấu ✓ chỉ khi nó vượt cả 50% lẫn cách "luôn đoán theo đa số" hơn 2 sai số chuẩn. Dòng Điểm La Bàn đo việc khác: 20 mã điểm cao nhất có tăng hơn mã trung vị của thị trường hay không.',
+bcav:'Lịch sử dùng để kiểm định chỉ khoảng 80 phiên và chồng lấn nhau, nên tỷ lệ chênh 1–3% so với 50% thường chỉ là nhiễu. Nếu không mô hình nào có dấu ✓, nghĩa là ở tầm đó giá ngắn hạn không dự báo được bằng các mô hình này — đó là kết quả trung thực, không phải lỗi.',
+imp:{pos:'Tích cực',neg:'Tiêu cực',mix:'Hai chiều'},all:'Toàn cầu',nh:'Tin kinh tế – chính trị',np:'Sự kiện có thể ảnh hưởng cổ phiếu · cập nhật {d}',
+nst:'Tin liên quan',nsp:'Sự kiện gần đây ảnh hưởng tới mã, ngành hoặc thị trường của mã này'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>window.__LB_APP_en=function(){
@@ -5586,6 +5767,7 @@ RENDER.home=function(){
     <div class="compass" id="compass">${radarSVG(FACTORS.map(F=>s._f[F.k]/100),{size:320,bezel:true,labels:FACTORS.map(F=>F.n),sub:FACTORS.map(F=>String(s._f[F.k])),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:30,aria:'6-factor compass for '+s.t})}</div>
   </section>
   <p class="note">Gold line: ${esc(s.t)} profile. Dashed line: ${esc(mktName(S.market))} median. Weight set: <b>${esc(S.preset==='custom'?'Custom':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
+  ${newsHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -5892,6 +6074,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Factor details</h2>${factorDetailHTML(s)}</section>
 
+  <div id="fcSlot" data-t="${esc(s.t)}">${forecastPanelHTML(s)}</div>${newsForStockHTML(s)}
   ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Intrinsic valuation</h2><p>Current price normalized to 100 to compare all stocks</p></div></div>
     ${gaugeSVG(v.blend,'Blended margin of safety (3-model median)')}
@@ -6044,12 +6227,12 @@ function openSettings(){
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Council'],['track','Track record'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
+  const tabs=[['council','Council'],['track','Track record'],['fc','Forecasts'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Expert corner</h2><p>8 investing schools, an options lab, an AI assistant and quantitative tools</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,fc:renderFcBoard,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);
@@ -7873,6 +8056,7 @@ function liveChanged(full,info){
     if(!$('#sheet').hidden){
       $$('[data-px]').forEach(el=>{ const t=el.dataset.px; const tmp=document.createElement('span'); tmp.innerHTML=pxChip(t,{etf:!!el.dataset.pxe}); if(tmp.firstElementChild) el.replaceWith(tmp.firstElementChild); });
       const lb=$('#liveSlot'); if(lb&&lb.dataset.t){ const etf=!!lb.dataset.etf; const s=etf?EBY[lb.dataset.t]:BY[lb.dataset.t]; if(s) lb.innerHTML=liveBlockHTML(s,etf); }
+      const fsl=$('#fcSlot'); if(fsl&&fsl.dataset.t&&typeof forecastPanelHTML==='function'&&BY[fsl.dataset.t]) fsl.innerHTML=forecastPanelHTML(BY[fsl.dataset.t]);
       if(typeof refreshEtfSheet==='function') refreshEtfSheet(info);
       return;
     }
@@ -7915,6 +8099,7 @@ async function initLive(){
       db.doc('fund/'+k).onSnapshot(s=>{ if(s.exists){ applyFundDoc(k,s.data()); liveChanged(true); } },()=>{});
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }
 /* ============================================================
@@ -8934,7 +9119,7 @@ const TRK_IX={US:'IDX.SPX',VN:'IDX.VNINDEX'};
 function loadTrack(cb){
   if(LIVE.trk!==undefined){ cb(); return; }
   const db=LIVE.db; if(!db){ LIVE.trk=null; cb(); return; }
-  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
+  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; LIVE.fc=d&&d.fc?d.fc:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
 }
 function trackEval(m){
   const L=(LIVE.trk&&LIVE.trk[m])||[]; const ixq= m==='US'? liveE('SPY') : LIVE.q[TRK_IX[m]]; const ixNow=ixq&&isNum(ixq.px)?ixq.px:null;
@@ -8990,6 +9175,153 @@ k4:'Top 20 minus bottom 20',k4s:'average spread',chart:'Each bar: top-20 return 
 table:'Every entry',c1:'Recorded',c2:'Top 20',c3:'Versus index',c4:'Bottom 20',empty:'No entry is old enough to measure yet.',loading:'Loading the track record…',
 none:'No track record yet (needs the daily data update).',
 caveat:'The sample is still tiny: a few weeks and a few dozen overlapping entries. The Compass Score is designed for a 6–12 month holding period, so a few weeks of results are mostly noise, even when they look good. At least 6–12 months of continuous records are needed before drawing conclusions. Past performance does not guarantee future results.'};
+/* ============================================================
+   DỰ BÁO GIÁ NGẮN HẠN — các mô hình thống kê đơn giản, minh bạch, chỉ dùng chuỗi giá đóng cửa đến ngày t.
+   Dùng chung cho app (dự báo từng mã) và cho kiểm định quay lui hằng ngày (pipeline/fc_eval.js).
+   ============================================================ */
+const FC_H=[1,3,7,21];
+const FC_MODELS=['naive','trend','ma','rev','ens'];
+function fcStats(c){
+  const n=c.length; const r=[]; for(let i=Math.max(1,n-41);i<n;i++){ if(c[i]>0&&c[i-1]>0) r.push(Math.log(c[i]/c[i-1])); }
+  if(r.length<15) return null;
+  const m=r.reduce((a,b)=>a+b,0)/r.length; const sd=Math.sqrt(r.reduce((a,b)=>a+(b-m)*(b-m),0)/(r.length-1));
+  const last=c[n-1]; const sma=k=>{ const s=c.slice(-k); return s.reduce((a,b)=>a+b,0)/s.length; };
+  const r20=r.slice(-20), mu20=r20.reduce((a,b)=>a+b,0)/r20.length;
+  return {last,sd:Math.max(sd,1e-4),mu20,ma5:sma(5),ma20:sma(Math.min(20,n)),r5:n>5&&c[n-6]>0?Math.log(last/c[n-6]):0};
+}
+/* trả về log-lợi nhuận kỳ vọng sau h phiên cho từng mô hình */
+function fcDrift(st,model,h){
+  switch(model){
+    case 'naive': return 0;
+    case 'trend': return st.mu20*h;                                   /* tiếp nối xu hướng 20 phiên */
+    case 'ma': return Math.log(st.ma5/st.ma20)/7.5*h;                   /* MA5 so với MA20: độ dốc ngắn hạn */
+    case 'rev': return -0.5*st.r5/5*Math.min(h,5);                      /* đảo chiều một nửa nhịp 5 phiên, tối đa 5 phiên */
+    case 'ens': return (fcDrift(st,'trend',h)+fcDrift(st,'ma',h)+fcDrift(st,'rev',h))/3;
+  }
+  return 0;
+}
+function fcForecast(c,h,model){
+  const st=fcStats(c); if(!st) return null;
+  const d=fcDrift(st,model||'ens',h); const s=st.sd*Math.sqrt(h);
+  const z=d/s; const pUp=0.5*(1+erf(z/Math.SQRT2));
+  return {px:st.last*Math.exp(d),lo:st.last*Math.exp(d-1.2816*s),hi:st.last*Math.exp(d+1.2816*s),ret:Math.exp(d)-1,pUp,sd:st.sd};
+}
+function erf(x){ const t=1/(1+0.3275911*Math.abs(x)); const y=1-((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; }
+/* kiểm định quay lui trên một chuỗi: mỗi ngày t dự báo bằng dữ liệu đến t, so với giá thật ở t+h */
+function fcBacktest(c,acc,minHist){
+  const n=c.length, start=Math.max(minHist||30,25);
+  for(let t=start;t<n-1;t++){
+    const hist=c.slice(0,t+1); const st=fcStats(hist); if(!st) continue;
+    FC_H.forEach(h=>{
+      if(t+h>=n||!(c[t+h]>0)) return; const actual=Math.log(c[t+h]/c[t]); const s=st.sd*Math.sqrt(h);
+      const A=acc[h]||(acc[h]={n:0,up:0,cov:0,m:{}});
+      A.n++; if(actual>0) A.up++;
+      FC_MODELS.forEach(mo=>{ const d=fcDrift(st,mo,h); const M=A.m[mo]||(A.m[mo]={hit:0,dn:0,ae:0});
+        M.ae+=Math.abs(Math.exp(d-actual)-1);
+        if(mo!=='naive'&&Math.abs(actual)>1e-9&&Math.abs(d)>1e-9){ M.dn++; if((d>0)===(actual>0)) M.hit++; } });
+      const de=fcDrift(st,'ens',h); if(Math.abs(actual-de)<=1.2816*s) A.cov++;
+    });
+  }
+  return acc;
+}
+/* ============================================================
+   DỰ BÁO GIÁ (giao diện) · BẢNG XẾP HẠNG MÔ HÌNH · TIN KINH TẾ – CHÍNH TRỊ
+   Mô hình và kiểm định nằm ở 4n_forecast_core.js. Kết quả kiểm định quay lui đọc từ meta/rot.fc
+   (tác vụ hằng ngày chạy pipeline/fc_eval.js trên các gói lịch sử nến), tin đọc từ meta/news.
+   ============================================================ */
+function fcGroupOf(s){ return s&&s.m==='VN'?'VN':'US'; }
+/* gộp kết quả kiểm định của mọi gói cùng nhóm (US-*, VN-*, E-*) */
+function fcAgg(grp){
+  const F=LIVE.fc; if(!F) return null; const out={};
+  Object.keys(F).forEach(ck=>{ if(ck.split('-')[0]!==grp) return; const v=F[ck];
+    FC_H.forEach(h=>{ const A=v[h]; if(!A) return; const G=out[h]||(out[h]={n:0,up:0,cov:0,m:{}}); G.n+=A.n; G.up+=A.up; G.cov+=A.cov||0;
+      Object.keys(A.m||{}).forEach(mo=>{ const M=A.m[mo], g=G.m[mo]||(G.m[mo]={hit:0,dn:0,ae:0}); g.hit+=M.hit; g.dn+=M.dn; g.ae+=M.ae; }); }); });
+  return Object.keys(out).length? out : null;
+}
+function fcBest(G){ let b=null; FC_MODELS.forEach(mo=>{ if(mo==='naive') return; const M=G.m[mo]; if(!M||!M.dn) return; const hit=M.hit/M.dn; if(!b||hit>b.hit) b={mo,hit,n:M.dn}; }); return b; }
+/* có tốt hơn đoán bừa không: vượt cả 50% lẫn tỷ lệ "luôn đoán tăng/giảm theo đa số" hơn 2 sai số chuẩn */
+function fcEdge(G,b){ if(!b) return false; const base=Math.max(G.up/G.n,1-G.up/G.n,.5); return b.hit-base>2*Math.sqrt(.25/b.n); }
+function closesOf(s){ const q=LIVE.q[s.t]; if(!q) return []; return seriesOf(q).filter(v=>isNum(v)&&v>0); }
+function forecastPanelHTML(s){
+  const c=closesOf(s); const G=fcAgg(fcGroupOf(s));
+  if(c.length<17) return `<section class="panel"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.h}</h2><p>${T_FC.nodata}</p></div></div></section>`;
+  const rows=FC_H.map(h=>{ const f=fcForecast(c,h,'ens'); if(!f) return ''; const A=G&&G[h]; const b=A&&fcBest(A); const edge=A&&fcEdge(A,b);
+    const arrow=f.pUp>=.55?'▲':f.pUp<=.45?'▼':'◆'; const cls=f.pUp>=.55?'up':f.pUp<=.45?'dn':'';
+    return `<tr><td class="fc-hz">${T_FC.hl[h]}</td><td class="num" data-l="${T_FC.c1}"><b>${fmtPx(f.px,s)}</b><small class="${cls}">${f.ret>0?'+':''}${fmt(f.ret*100,1)}%</small></td><td class="num" data-l="${T_FC.c2}">${fmtPx(f.lo,s)} – ${fmtPx(f.hi,s)}</td><td class="num ${cls}" data-l="${T_FC.c3}">${arrow} ${fmt(f.pUp*100,0)}%</td>
+      <td data-l="${T_FC.c4}">${b?`<span class="fc-m ${edge?'ok':''}">${esc(T_FC.mn[b.mo])} ${fmt(b.hit*100,0)}%</span>`:'—'}</td></tr>`; }).join('');
+  return `<section class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.h}</h2><p>${T_FC.sub.replace('{n}',c.length)}</p></div></div>
+    <div class="scroll-x" tabindex="0"><table class="ptab fc-t"><thead><tr><th>${T_FC.c0}</th><th>${T_FC.c1}</th><th>${T_FC.c2}</th><th>${T_FC.c3}</th><th>${T_FC.c4}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="note">${T_FC.note}</p></section>`;
+}
+function fmtPx(v,s){ return s&&s.m==='VN'? fmt(v,0) : fmt(v,v>=100?1:2); }
+/* Điểm La Bàn như một "mô hình" chọn mã: 20 mã điểm cao nhất ở mỗi lần ghi có thắng mã trung vị của thị trường sau h phiên không */
+function scoreHits(m){
+  const L=(LIVE.trk&&LIVE.trk[m])||[]; const snap=LIVE.snap&&LIVE.snap[m]; if(!snap||!snap.dates) return null; const out={};
+  const key=t=>{ const s=BY[t]; return s? (s.tk||s.t) : t; };
+  [1,3,7,21].forEach(h=>{ let hit=0,n=0;
+    L.forEach(e=>{ const i=snap.dates.indexOf(e.d); if(i<0||i+h>=snap.dates.length) return;
+      const rets=[]; for(const t in snap.c){ const a=snap.c[t]; if(a[i]>0&&a[i+h]>0) rets.push(a[i+h]/a[i]-1); } if(rets.length<50) return;
+      rets.sort((x,y)=>x-y); const med=rets[rets.length>>1];
+      e.top.forEach(([t])=>{ const a=snap.c[key(t)]; if(a&&a[i]>0&&a[i+h]>0){ n++; if(a[i+h]/a[i]-1>med) hit++; } }); });
+    out[h]= n? {hit:hit/n,n} : null; });
+  return out;
+}
+function renderFcBoard(){
+  const box=$('#expertBody'); box.innerHTML=`<p class="note">${T_FC.loading}</p>`;
+  loadTrack(()=>{
+    const groups=[['US',T_FC.gUS],['VN',T_FC.gVN],['E',T_FC.gE]].filter(([g])=>S.market==='ALL'||g===S.market||(g==='E'&&S.market==='US'));
+    const pc=v=>v==null?'—':fmt(v*100,1)+'%';
+    const tab=([g,name])=>{ const G=fcAgg(g); if(!G) return `<section class="panel"><h2 style="font-size:18px">${name}</h2><p class="note">${T_FC.noboard}</p></section>`;
+      const SH= g==='E'? null : scoreHits(g);
+      const hs=FC_H.filter(h=>G[h]);
+      return `<section class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:18px">${name}</h2><p>${T_FC.bsub.replace('{n}',hs.reduce((a,h)=>a+G[h].n,0).toLocaleString(LOCALE))}</p></div></div>
+      <div class="scroll-x" tabindex="0"><table class="ptab fc-b"><thead><tr><th>${T_FC.mcol}</th>${hs.map(h=>`<th class="num">${T_FC.hl[h]}</th>`).join('')}</tr></thead><tbody>
+        <tr class="base"><td>${T_FC.always}</td>${hs.map(h=>{ const u=G[h].up/G[h].n; return `<td class="num">${pc(Math.max(u,1-u))}<small>${u>=.5?T_FC.upw:T_FC.dnw}</small></td>`; }).join('')}</tr>
+        ${FC_MODELS.filter(mo=>mo!=='naive').map(mo=>`<tr><td>${esc(T_FC.mn[mo])}<small>${esc(T_FC.md[mo])}</small></td>${hs.map(h=>{ const M=G[h].m[mo]; const b=fcBest(G[h]); const hit=M&&M.dn?M.hit/M.dn:null; const edge=b&&b.mo===mo&&fcEdge(G[h],b);
+          return `<td class="num ${b&&b.mo===mo?'best':''}">${pc(hit)}${edge?' ✓':''}<small>${T_FC.mae} ${pc(M?M.ae/G[h].n:null)}</small></td>`; }).join('')}</tr>`).join('')}
+        <tr><td>${T_FC.naive}<small>${T_FC.naived}</small></td>${hs.map(h=>`<td class="num">—<small>${T_FC.mae} ${pc(G[h].m.naive?G[h].m.naive.ae/G[h].n:null)}</small></td>`).join('')}</tr>
+        ${SH?`<tr><td>${T_FC.score}<small>${T_FC.scored}</small></td>${hs.map(h=>`<td class="num">${SH[h]?pc(SH[h].hit):'—'}<small>${SH[h]?SH[h].n+' '+T_FC.picks:T_FC.wait}</small></td>`).join('')}</tr>`:''}
+      </tbody></table></div></section>`; };
+    box.innerHTML=`<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${T_FC.bh}</h2><p>${T_FC.bp}</p></div></div><p class="note">${T_FC.bhow}</p></section>${groups.map(tab).join('')}<p class="note">${T_FC.bcav}</p>`;
+  });
+}
+/* ---------- tin kinh tế – chính trị ---------- */
+const IMP_CLS={pos:'up',neg:'dn',mix:''};
+function newsItemHTML(n,compact){
+  const L=n[LANG]||n.vi||n.en||{}; const tk=(n.tk||[]).filter(t=>BY[t]||BY[t+'.VN']).slice(0,6);
+  return `<article class="news-i"><div class="news-m"><span class="chip imp ${IMP_CLS[n.imp]||''}">${T_FC.imp[n.imp]||T_FC.imp.mix}</span><span>${esc((n.d||'').split('-').reverse().join('/'))}</span><span class="mk ${n.m==='VN'?'VN':n.m==='US'?'US':''}">${n.m==='ALL'?T_FC.all:esc(n.m||'')}</span></div>
+    <h3>${esc(L.t||'')}</h3>${compact?'':`<p>${esc(L.s||'')}</p>`}
+    <div class="news-f">${tk.map(t=>`<button class="chip" data-open="${esc(BY[t]?t:t+'.VN')}">${esc(t)}</button>`).join('')}${(n.src||[]).slice(0,2).map(x=>`<a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.n)} ↗</a>`).join('')}</div></article>`;
+}
+function newsHomeHTML(){
+  const N=LIVE.news&&LIVE.news.items; if(!N||!N.length) return '';
+  const L=N.filter(n=>S.market==='ALL'||n.m===S.market||n.m==='ALL').slice(0,6);
+  if(!L.length) return '';
+  return `<section class="panel news" aria-labelledby="h-news"><div class="sec-h"><div><h2 id="h-news">${T_FC.nh}</h2><p>${T_FC.np.replace('{d}',esc(String(LIVE.news.upd||'').slice(0,10).split('-').reverse().join('/')))}</p></div></div>
+    <div class="news-l">${L.map(n=>newsItemHTML(n,false)).join('')}</div></section>`;
+}
+function newsForStockHTML(s){
+  const N=LIVE.news&&LIVE.news.items; if(!N) return '';
+  const tk=s.tk||s.t; const sc=n=>((n.tk||[]).includes(tk)?3:0)+((n.sec||[]).includes(s.s)?2:0)+(n.m===s.m?1:n.m==='ALL'?.5:0);
+  const L=N.map(n=>({n,v:sc(n)})).filter(x=>x.v>=2).sort((a,b)=>b.v-a.v||String(b.n.d).localeCompare(String(a.n.d))).slice(0,4);
+  if(!L.length) return '';
+  return `<section class="panel news"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">${T_FC.nst}</h2><p>${T_FC.nsp}</p></div></div><div class="news-l">${L.map(x=>newsItemHTML(x.n,false)).join('')}</div></section>`;
+}
+const LOCALE='en-US';
+const T_FC={h:'Short-term price forecast',sub:'Combined model (trend + moving average + reversal) on the last {n} sessions',
+nodata:'Not enough price history yet (needs at least 17 sessions).',hl:{1:'1 session',3:'3 sessions',7:'7 sessions',21:'1 month'},
+c0:'Horizon',c1:'Expected price',c2:'80% range',c3:'Chance of rise',c4:'Best direction model',
+note:'The expected price is the middle of a wide range: there is an 80% chance the price lands in the range beside it if volatility stays as in the last 40 sessions. The last column is the model that called the direction right most often in the walk-forward test on the same market; it gets a green mark only when it beats guessing by a statistically meaningful margin. Short-term price forecasts are almost always only slightly better than a coin flip — do not trade on them.',
+mn:{trend:'Trend',ma:'Moving average',rev:'Reversal',ens:'Combined',naive:'No change'},
+md:{trend:'continues the 20-session average return',ma:'slope of MA5 versus MA20',rev:'gives back half of the 5-session move',ens:'average of the three models'},
+loading:'Loading test results…',gUS:'US stocks',gVN:'Vietnam stocks',gE:'US ETFs',noboard:'No test results for this group yet.',
+bsub:'{n} forecasts tested',mcol:'Model',always:'Always guess the majority',upw:'always up',dnw:'always down',mae:'error',
+naive:'Price unchanged',naived:'error benchmark',score:'Compass Score',scored:'top 20 beat the median stock',picks:'picks',wait:'waiting for data',
+bh:'Forecast model comparison',bp:'On each past day t the model only sees prices up to t, then calls the direction and price 1, 3, 7 sessions and 1 month ahead; the call is then checked against the real price.',
+bhow:'The large figure is the share of correct direction calls, the small line the average price error. The bold cell is the best direction model at that horizon; the ✓ appears only when it beats both 50% and "always guess the majority" by more than 2 standard errors. The Compass Score row measures something else: whether the 20 top-scoring stocks rose more than the median stock.',
+bcav:'The test history is only about 80 sessions and the windows overlap, so a 1–3% edge over 50% is usually noise. If no model has a ✓, short-term prices at that horizon are not predictable with these models — that is an honest result, not a bug.',
+imp:{pos:'Positive',neg:'Negative',mix:'Mixed'},all:'Global',nh:'Economic & political news',np:'Events that may move stocks · updated {d}',
+nst:'Related news',nsp:'Recent events affecting this stock, its sector or its market'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>(function(){

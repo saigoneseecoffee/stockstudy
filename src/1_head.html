@@ -583,4 +583,34 @@ input[type=range]{min-height:44px}
 .trk-k span{font-size:12.5px; color:var(--mut); line-height:1.3}
 .trk-k b{font-family:var(--f-disp); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.1}
 .trk-k small{font-size:12px; color:var(--mut)}
+
+/* dự báo giá & bảng so sánh mô hình */
+.fc-t td,.fc-b td{vertical-align:top}
+.fc-t td.num small,.fc-b td.num small{display:block; font-size:11.5px; color:var(--mut); font-weight:400}
+.fc-t td.num small.up{color:var(--up)} .fc-t td.num small.dn{color:var(--dn)}
+.fc-b td:first-child small{display:block; font-size:11.5px; color:var(--mut)}
+.fc-b td.best{font-weight:800} .fc-b tr.base td{color:var(--mut)}
+.fc-m{font-size:12.5px; color:var(--mut)} .fc-m.ok{color:var(--up); font-weight:700}
+@media (max-width:640px){
+  .fc-t{min-width:0; width:100%} .fc-t thead{display:none}
+  .fc-t tr{display:grid; grid-template-columns:1fr 1fr; gap:6px 12px; padding:10px 0; border-bottom:1px solid var(--line)}
+  .fc-t td{display:block; border:0; padding:0; text-align:left}
+  .fc-t td.fc-hz{grid-column:1/-1; font-weight:800; font-family:var(--f-disp)}
+  .fc-t td[data-l]::before{content:attr(data-l); display:block; font-size:11.5px; color:var(--mut); font-weight:400}
+}
+.fc-b{min-width:0; width:100%; table-layout:fixed; font-size:13px}
+.fc-b th,.fc-b td{padding:7px 4px; white-space:normal; overflow-wrap:anywhere; position:static}
+.fc-b th:first-child,.fc-b td:first-child{width:34%}
+@media (max-width:640px){ .fc-b td:first-child small{display:none} }
+/* tin kinh tế – chính trị */
+.news-l{display:flex; flex-direction:column}
+.news-i{padding:12px 0; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:6px}
+.news-i:first-child{border-top:0; padding-top:4px}
+.news-m{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--mut)}
+.news-i h3{font-size:15px; line-height:1.35; margin:0}
+.news-i p{margin:0; font-size:14px; line-height:1.5; color:var(--fg)}
+.news-f{display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:12.5px}
+.news-f a{color:var(--mut); min-height:32px; display:inline-flex; align-items:center}
+.chip.imp{font-size:11.5px; padding:2px 8px; min-height:0}
+.chip.imp.up{color:var(--up); border-color:color-mix(in srgb,var(--up) 40%,transparent)} .chip.imp.dn{color:var(--dn); border-color:color-mix(in srgb,var(--dn) 40%,transparent)}
 </style>

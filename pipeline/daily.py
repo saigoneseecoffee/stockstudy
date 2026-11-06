@@ -329,6 +329,21 @@ def build(old, work, out):
             print('track: skipped (no repo or node)')
     except Exception as ex:
         print('track: error', str(ex)[:200])
+    # ----- kiểm định quay lui các mô hình dự báo giá trên các gói lịch sử vừa có (ETF + 2 gói luân phiên)
+    try:
+        import subprocess, shutil
+        repo = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'repo')
+        fj, core = os.path.join(repo, 'pipeline', 'fc_eval.js'), os.path.join(repo, 'src', '4n_forecast_core.js')
+        if os.path.exists(fj) and os.path.exists(core) and shutil.which('node'):
+            r = subprocess.run(['node', fj, core, out, old], capture_output=True, text=True, timeout=300)
+            res = json.loads(r.stdout or '{}')
+            def rnd(o):
+                if isinstance(o, dict): return {k: rnd(v) for k, v in o.items()}
+                return round(o, 4) if isinstance(o, float) else o
+            rot.setdefault('fc', {}).update(rnd(res))
+            print(json.dumps({'fc_chunks': sorted(res)}))
+    except Exception as ex:
+        print('fc: error', str(ex)[:200])
     W(f'{out}/meta/rot.json', rot); man.append('meta/rot')
     nq = lambda k: len((J(f'{out}/snap/{k}.json', {}) or {}).get('q', {}))
     meta = {'upd': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'usDate': us_date, 'vnDate': vn_date,

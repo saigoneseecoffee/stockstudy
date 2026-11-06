@@ -4,12 +4,12 @@
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Council'],['track','Track record'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
+  const tabs=[['council','Council'],['track','Track record'],['fc','Forecasts'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Expert corner</h2><p>8 investing schools, an options lab, an AI assistant and quantitative tools</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,fc:renderFcBoard,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);

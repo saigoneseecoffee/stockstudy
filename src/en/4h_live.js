@@ -179,6 +179,7 @@ function liveChanged(full,info){
     if(!$('#sheet').hidden){
       $$('[data-px]').forEach(el=>{ const t=el.dataset.px; const tmp=document.createElement('span'); tmp.innerHTML=pxChip(t,{etf:!!el.dataset.pxe}); if(tmp.firstElementChild) el.replaceWith(tmp.firstElementChild); });
       const lb=$('#liveSlot'); if(lb&&lb.dataset.t){ const etf=!!lb.dataset.etf; const s=etf?EBY[lb.dataset.t]:BY[lb.dataset.t]; if(s) lb.innerHTML=liveBlockHTML(s,etf); }
+      const fsl=$('#fcSlot'); if(fsl&&fsl.dataset.t&&typeof forecastPanelHTML==='function'&&BY[fsl.dataset.t]) fsl.innerHTML=forecastPanelHTML(BY[fsl.dataset.t]);
       if(typeof refreshEtfSheet==='function') refreshEtfSheet(info);
       return;
     }
@@ -221,5 +222,6 @@ async function initLive(){
       db.doc('fund/'+k).onSnapshot(s=>{ if(s.exists){ applyFundDoc(k,s.data()); liveChanged(true); } },()=>{});
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }

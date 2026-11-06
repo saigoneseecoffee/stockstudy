@@ -51,6 +51,7 @@ RENDER.home=function(){
     <div class="compass" id="compass">${radarSVG(FACTORS.map(F=>s._f[F.k]/100),{size:320,bezel:true,labels:FACTORS.map(F=>F.n),sub:FACTORS.map(F=>String(s._f[F.k])),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:30,aria:'La bàn 6 nhân tố của '+s.t})}</div>
   </section>
   <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
+  ${newsHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -357,6 +358,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Chi tiết từng nhân tố</h2>${factorDetailHTML(s)}</section>
 
+  <div id="fcSlot" data-t="${esc(s.t)}">${forecastPanelHTML(s)}</div>${newsForStockHTML(s)}
   ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Định giá nội tại</h2><p>Giá hiện tại quy chuẩn = 100 để so sánh mọi mã</p></div></div>
     ${gaugeSVG(v.blend,'Biên an toàn tổng hợp (trung vị 3 mô hình)')}

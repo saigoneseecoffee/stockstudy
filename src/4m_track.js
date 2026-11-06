@@ -6,7 +6,7 @@ const TRK_IX={US:'IDX.SPX',VN:'IDX.VNINDEX'};
 function loadTrack(cb){
   if(LIVE.trk!==undefined){ cb(); return; }
   const db=LIVE.db; if(!db){ LIVE.trk=null; cb(); return; }
-  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
+  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; LIVE.fc=d&&d.fc?d.fc:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
 }
 function trackEval(m){
   const L=(LIVE.trk&&LIVE.trk[m])||[]; const ixq= m==='US'? liveE('SPY') : LIVE.q[TRK_IX[m]]; const ixNow=ixq&&isNum(ixq.px)?ixq.px:null;

@@ -51,6 +51,7 @@ RENDER.home=function(){
     <div class="compass" id="compass">${radarSVG(FACTORS.map(F=>s._f[F.k]/100),{size:320,bezel:true,labels:FACTORS.map(F=>F.n),sub:FACTORS.map(F=>String(s._f[F.k])),median:FACTORS.map(F=>(med[F.k]||0)/100),pad:30,aria:'6-factor compass for '+s.t})}</div>
   </section>
   <p class="note">Gold line: ${esc(s.t)} profile. Dashed line: ${esc(mktName(S.market))} median. Weight set: <b>${esc(S.preset==='custom'?'Custom':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
+  ${newsHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -357,6 +358,7 @@ function openStock(t){
   </section>
   <section style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:17px">Factor details</h2>${factorDetailHTML(s)}</section>
 
+  <div id="fcSlot" data-t="${esc(s.t)}">${forecastPanelHTML(s)}</div>${newsForStockHTML(s)}
   ${cyclePanelHTML(s)}
   <section class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:17px">Intrinsic valuation</h2><p>Current price normalized to 100 to compare all stocks</p></div></div>
     ${gaugeSVG(v.blend,'Blended margin of safety (3-model median)')}
