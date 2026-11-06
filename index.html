@@ -586,6 +586,17 @@ input[type=range]{min-height:44px}
 :root[data-theme="light"] .panel, :root[data-theme="light"] .board-tbl, :root[data-theme="light"] .idx{border-color:#dde3df}
 @media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .panel, :root:not([data-theme="dark"]) .board-tbl, :root:not([data-theme="dark"]) .idx{border-color:#dde3df} }
 .pick span{font-size:12px}
+
+/* độ đầy đủ dữ liệu dưới vòng điểm */
+.bigring .v .cov{font-size:11px; color:var(--mut)} .bigring .v .cov.lo{color:var(--dn); font-weight:700}
+
+/* sổ kiểm chứng */
+.trk-k{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (min-width:760px){ .trk-k{grid-template-columns:repeat(4,1fr)} }
+.trk-k>div{display:flex; flex-direction:column; gap:3px; padding:12px; border-radius:12px; background:var(--s2); border:1px solid var(--line)}
+.trk-k span{font-size:12.5px; color:var(--mut); line-height:1.3}
+.trk-k b{font-family:var(--f-disp); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.1}
+.trk-k small{font-size:12px; color:var(--mut)}
 </style>
 <body>
 <template id="lb-body-vi">
@@ -881,8 +892,8 @@ const FACTORS=[
     gen:[['pe',-1,1],['pb',-1,.6],['ev',-1,1],['fcf',1,1],['peg',-1,.8]],
     bank:[['pe',-1,1],['pb',-1,1],['pbroe',-1,1],['dy',1,.4]]},
   {k:'qual',n:'Chất lượng',  d:'Khả năng sinh lời và hào kinh tế',
-    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8]],
-    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5]]},
+    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8],['epsy',1,.7]],
+    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5],['epsy',1,.6]]},
   {k:'grow',n:'Tăng trưởng', d:'Doanh thu, EPS quá khứ và kỳ vọng',
     gen:[['rg',1,1],['eg',1,1],['fg',1,1.2]],
     bank:[['rg',1,1],['eg',1,1],['fg',1,1.2]]},
@@ -902,7 +913,7 @@ const MET={
   om:{n:'Biên hoạt động',u:'%'},nm:{n:'Biên ròng',u:'%'},fs:{n:'Piotroski F-Score',u:'/9'},nim:{n:'NIM',u:'%'},npl:{n:'Nợ xấu (NPL)',u:'%',lo:true},
   casa:{n:'CASA',u:'%'},car:{n:'CAR / CET1',u:'%'},rg:{n:'Doanh thu CAGR 3N',u:'%'},eg:{n:'EPS CAGR 3N',u:'%'},fg:{n:'EPS kỳ vọng',u:'%'},
   de:{n:'Nợ / Vốn CSH',u:'x',lo:true},cr:{n:'Thanh toán hiện hành',u:'x'},ic:{n:'Khả năng trả lãi',u:'x'},z:{n:'Altman Z',u:''},
-  mo:{n:'Lợi nhuận 12 tháng',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Độ an toàn chi trả',u:''},po:{n:'Tỷ lệ chi trả',u:'%'}
+  epsy:{n:'Số năm có lãi (5 năm)',u:'%'},mo:{n:'Lợi nhuận 12 tháng',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Độ an toàn chi trả',u:''},po:{n:'Tỷ lệ chi trả',u:'%'}
 };
 /* điểm tuyệt đối: các mốc (giá trị, điểm 0–1), nội suy tuyến tính */
 const ABS={
@@ -930,9 +941,10 @@ const kn=(v,f)=> isNum(v)? f(v) : null; /* tiêu chí không có dữ liệu →
 function metric(s,k){
   switch(k){
     case 'pe': return s._peak? s._eps.peAvg : (isNum(s.pe)? s.pe : null);
+    case 'epsy': return s._eps? 100*(s._eps.n-s._eps.neg)/s._eps.n : null;
     case 'ev': return s._peak&&isNum(s.ev)? (isFinite(s._k)? s.ev*s._k : -1) : (isNum(s.ev)? s.ev : null);
     case 'fcf': return s._peak&&isNum(s.fcf)? (isFinite(s._k)? s.fcf/s._k : 0) : (isNum(s.fcf)? s.fcf : null);
-    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : null);
+    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : epsCagr(s));
     case 'peg': return (!s._peak&&isNum(s.pe)&&s.pe>0&&isNum(s.fg)&&s.fg>0)? s.pe/s.fg : null;
     case 'fs': return fscore(s);
     case 'pbroe': return (isNum(s.pb)&&s.pb>0&&isNum(s.roe)&&s.roe>0)? s.pb/s.roe*10 : null;
@@ -953,6 +965,7 @@ function rankVal(s,k){
 function absScore(s,k){
   const v=metric(s,k); if(v==null) return null;
   if(k==='posafe') return v;
+  if(k==='epsy') return v/100;
   if((k==='pe'||k==='ev'||k==='pb')&&v<=0) return 0;
   return ABS[k]? interp(ABS[k],v) : null;
 }
@@ -987,9 +1000,14 @@ function computeAll(){
     if(P.length<6) P=U.filter(x=>x._type===s._type);
     return groupCache[key]=P;
   };
+  const V1=typeof ALGO_V!=='undefined'&&ALGO_V===1;
+  /* v2: chỉ số định giá, biên lợi nhuận, đòn bẩy so với cùng ngành (Asness, Porter & Stevens 2000) — biên gộp
+     của phần mềm và bán lẻ không so được với nhau. Ngành cần ≥ 10 mã cùng thị trường, nếu không chỉ so toàn thị trường. */
+  const SECREL=new Set(['pe','pb','ev','ps','fcf','peg','gm','om','roe','roic','de','cr','dy','ic']);
+  const secCache={};
+  const secPeers=s=>{ const key=s._type+'|'+s.m+'|'+s.s; if(secCache[key]) return secCache[key]; const P=U.filter(x=>x._type===s._type&&x.m===s.m&&x.s===s.s); return secCache[key]=P.length>=10?P:null; };
   const sorted={};
-  const pctRank=(s,k,dir)=>{
-    const P=peersOf(s); const key=s._type+'|'+s.m+'|'+k;
+  const rankIn=(P,key,s,k,dir)=>{
     let arr=sorted[key];
     if(!arr){ arr=P.map(x=>rankVal(x,k)).filter(v=>v!=null).sort((a,b)=>a-b); sorted[key]=arr; }
     const v=rankVal(s,k); if(v==null||arr.length<3) return null;
@@ -998,11 +1016,18 @@ function computeAll(){
     const r=(lo+(eq-1)/2)/(arr.length-1);
     return dir>0? r : 1-r;
   };
+  const pctRank=(s,k,dir)=>{
+    const rm=rankIn(peersOf(s),s._type+'|'+s.m+'|'+k,s,k,dir);
+    if(V1||rm==null||!SECREL.has(k)) return rm;
+    const SP=secPeers(s); if(!SP) return rm;
+    const rs=rankIn(SP,s._type+'|'+s.m+'|'+s.s+'|'+k,s,k,dir);
+    return rs==null? rm : .5*rm+.5*rs;
+  };
   const W=curWeights(); const wsum=Object.values(W).reduce((a,b)=>a+b,0)||1;
   U.forEach(s=>{
-    s._f={}; s._m={};
+    s._f={}; s._m={}; let covHave=0, covAll=0;
     FACTORS.forEach(F=>{
-      const list=F[s._type]; let tot=0, wt=0;
+      const list=F[s._type]; let tot=0, wt=0; const wAll=list.reduce((a,x)=>a+x[2],0);
       list.forEach(([k,dir,w])=>{
         const r=pctRank(s,k,dir), a=absScore(s,k);
         let sc=null;
@@ -1010,8 +1035,12 @@ function computeAll(){
         s._m[k]={v:metric(s,k),sc,r,a};
         if(sc!=null){ tot+=sc*w; wt+=w; }
       });
-      s._f[F.k]= wt? Math.round(tot/wt*100) : 50;
+      /* v2: nhân tố thiếu dữ liệu được kéo về 50 theo tỷ lệ thiếu (đủ ≥ 60% trọng số thì giữ nguyên) */
+      const raw= wt? tot/wt*100 : 50; const cov= wAll? wt/wAll : 0;
+      s._f[F.k]= Math.round(V1? raw : 50+(raw-50)*Math.min(1,cov/.6));
+      covHave+=wt*(W[F.k]||0); covAll+=wAll*(W[F.k]||0);
     });
+    s._cov= covAll? covHave/covAll : 0;
     let comp=0; FACTORS.forEach(F=>comp+=s._f[F.k]*(W[F.k]||0)); comp/=wsum;
     /* cờ đỏ — nhân hệ số phạt */
     const flags=[]; let mult=1;
@@ -1277,6 +1306,8 @@ function epsInfo(s){
   const peAvg= avg>0&&isNum(s.pe)&&s.pe>0&&now>0? s.pe*ratio : (avg<=0? -1 : null);
   return {ttm:now,fy:last,avg,n:last.length,neg,ratio,peAvg};
 }
+/* tăng trưởng EPS 3 năm từ lịch sử khi nguồn không ghi sẵn (chỉ khi cả hai đầu dương) */
+function epsCagr(s){ const e=s._eps; if(!e||e.fy.length<4) return null; const a=e.fy[0][1], b=e.fy[3][1]; if(!(a>0&&b>0)) return null; const g=(Math.pow(a/b,1/3)-1)*100; return Math.abs(g)<=300? Math.round(g*10)/10 : null; }
 function prepCycle(s){
   s._cyc=cycleKind(s); s._eps=epsInfo(s);
   s._peak=!!(s._cyc&&s._eps&&(s._eps.avg<=0||s._eps.ratio>=CYC_PEAK));
@@ -1710,7 +1741,7 @@ function openStock(t){
   <div class="dt-top">
     <div><h2>${esc(s.t)}</h2><p class="sub">${esc(s.n)} · ${esc(s.ex)} · ${esc(SECTORS[s.s]||s.s)}<br>Vốn hóa ${capText(s)} · Beta ${fmt(s.b,2)}</p>
       <div class="row-btns" style="margin-top:10px"><span class="mk ${s.m}" style="align-self:center">${s.m==='US'?'MỸ':'VIỆT NAM'}</span><span class="grade g-${s._grade}" style="font-size:13px;align-self:center">Hạng ${s._grade}</span><button class="btn sm" data-star-d="${esc(s.t)}" aria-pressed="${isStar(s.t)}"><span class="star" style="width:auto;height:auto;color:${isStar(s.t)?'var(--ref)':'inherit'}">${starSVG(isStar(s.t))}</span>${isStar(s.t)?'Trong danh mục':'Theo dõi'}</button></div></div>
-    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span></div></div>
+    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span><span class="cov ${s._cov<.6?'lo':''}">Dữ liệu ${Math.round(s._cov*100)}%</span></div></div>
   </div>
   <div id="liveSlot" data-t="${esc(s.t)}">${liveBlockHTML(s)}</div>
   <div class="flags">${s._flags.length? s._flags.map(f=>`<span class="flag">⚑ ${esc(f)}</span>`).join('') : '<span class="flag ok">✓ Không có cờ đỏ</span>'}${s.edited?'<span class="flag" style="background:var(--gold-soft);color:var(--gold)">Số liệu đã được bạn chỉnh</span>':''}</div>
@@ -1886,12 +1917,12 @@ function openSettings(){
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Hội đồng'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
+  const tabs=[['council','Hội đồng'],['track','Kiểm chứng'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Góc chuyên gia</h2><p>8 trường phái, phòng thí nghiệm quyền chọn, trợ lý AI và công cụ định lượng</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);
@@ -4768,6 +4799,70 @@ function initSearch(){
   document.addEventListener('click',e=>{ const m=e.target.closest('[data-bt-more]'); if(!m) return; const tb=m.previousElementSibling; if(tb){ tb.classList.toggle('all'); m.textContent=tb.classList.contains('all')?T_SEARCH.less:T_SEARCH.more; } });
 }
 const T_SEARCH={title:'Tìm mã',ph:'Mã hoặc tên công ty, ví dụ FPT, Apple, vàng',recent:'Xem gần đây',top:'Điểm cao nhất',results:'kết quả',first30:'30 kết quả đầu',none:'Không thấy mã nào khớp “{q}”. Thử mã niêm yết (FPT, AAPL) hoặc một từ trong tên công ty.',more:'Xem thêm',less:'Thu gọn'};
+/* ============================================================
+   KIỂM CHỨNG — sổ ghi 20 mã điểm cao nhất / thấp nhất mỗi phiên (meta/rot.trk, do tác vụ hằng ngày ghi bằng
+   đúng thuật toán của app) và lợi nhuận thực tế của chúng đến hôm nay so với chỉ số.
+   ============================================================ */
+const TRK_IX={US:'IDX.SPX',VN:'IDX.VNINDEX'};
+function loadTrack(cb){
+  if(LIVE.trk!==undefined){ cb(); return; }
+  const db=LIVE.db; if(!db){ LIVE.trk=null; cb(); return; }
+  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
+}
+function trackEval(m){
+  const L=(LIVE.trk&&LIVE.trk[m])||[]; const ixq= m==='US'? liveE('SPY') : LIVE.q[TRK_IX[m]]; const ixNow=ixq&&isNum(ixq.px)?ixq.px:null;
+  const lastD=ixq&&ixq.d;
+  const rows=[];
+  L.forEach(e=>{
+    if(!e||!e.top||!isNum(e.ix)||!ixNow||(lastD&&e.d>=lastD)) return;
+    const ret=list=>{ const r=list.map(([t,p])=>{ const q=LIVE.q[t]; return q&&isNum(q.px)&&p>0? q.px/p-1 : null; }).filter(v=>v!=null); return r.length? {avg:r.reduce((a,b)=>a+b,0)/r.length, all:r} : null; };
+    const top=ret(e.top), bot=ret(e.bot||[]); if(!top) return;
+    const ix=ixNow/e.ix-1;
+    rows.push({d:e.d,top:top.avg,bot:bot?bot.avg:null,ix,ex:top.avg-ix,beat:top.all.filter(r=>r>ix).length,n:top.all.length,spread:bot?top.avg-bot.avg:null});
+  });
+  return rows;
+}
+function trackPanel(m){
+  const rows=trackEval(m);
+  const name=m==='US'?'S&P 500 (SPY)':'VN-Index';
+  if(!rows.length) return `<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${esc(mktName(m))}</h2><p>${T_TRK.empty}</p></div></div></section>`;
+  const pc=v=>(v>0?'+':'')+fmt(v*100,1)+'%'; const cl=v=>v>0?'up':v<0?'dn':'';
+  const nWin=rows.filter(r=>r.ex>0).length, picks=rows.reduce((a,r)=>a+r.n,0), beat=rows.reduce((a,r)=>a+r.beat,0);
+  const first=rows[0]; const sp=rows.filter(r=>r.spread!=null);
+  const W=Math.max(300,Math.min(640,rows.length*34)), H=150, mx=Math.max(...rows.map(r=>Math.abs(r.ex)),.01), y0=H/2, bw=W/rows.length;
+  let g=`<line x1="0" x2="${W}" y1="${y0}" y2="${y0}" style="stroke:var(--line2)"/>`;
+  rows.forEach((r,i)=>{ const h=Math.abs(r.ex)/mx*(H/2-16); g+=`<rect x="${(i*bw+bw*.18).toFixed(1)}" y="${(r.ex>=0?y0-h:y0).toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${Math.max(h,1).toFixed(1)}" rx="2" style="fill:var(--${r.ex>=0?'up':'dn'})"><title>${r.d}: ${pc(r.ex)}</title></rect>`;
+    if(i===0||i===rows.length-1) g+=`<text x="${(i*bw+bw/2).toFixed(1)}" y="${H-2}" text-anchor="middle" style="font-size:11px;fill:var(--mut)">${r.d.slice(8,10)}/${r.d.slice(5,7)}</text>`; });
+  return `<section class="panel" style="display:flex;flex-direction:column;gap:12px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:18px">${esc(mktName(m))}</h2><p>${T_TRK.sub.replace('{ix}',name).replace('{n}',rows.length)}</p></div></div>
+    <div class="trk-k">
+      <div><span>${T_TRK.k1.replace('{d}',first.d.slice(8,10)+'/'+first.d.slice(5,7))}</span><b class="${cl(first.top)}">${pc(first.top)}</b><small>${name} ${pc(first.ix)}</small></div>
+      <div><span>${T_TRK.k2}</span><b>${nWin}/${rows.length}</b><small>${T_TRK.k2s}</small></div>
+      <div><span>${T_TRK.k3}</span><b>${Math.round(beat/picks*100)}%</b><small>${beat}/${picks} ${T_TRK.k3s}</small></div>
+      <div><span>${T_TRK.k4}</span><b class="${sp.length?cl(sp.reduce((a,r)=>a+r.spread,0)):''}">${sp.length?pc(sp.reduce((a,r)=>a+r.spread,0)/sp.length):'—'}</b><small>${T_TRK.k4s}</small></div>
+    </div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(T_TRK.chart)}">${g}</svg>
+    <p class="note">${T_TRK.chart}</p>
+    <details class="acc"><summary>${T_TRK.table}</summary><div class="scroll-x" tabindex="0"><table class="ptab"><thead><tr><th>${T_TRK.c1}</th><th>${T_TRK.c2}</th><th>${name}</th><th>${T_TRK.c3}</th><th>${T_TRK.c4}</th></tr></thead><tbody>
+      ${rows.slice().reverse().map(r=>`<tr><td>${r.d.slice(8,10)}/${r.d.slice(5,7)}</td><td class="${cl(r.top)}">${pc(r.top)}</td><td class="${cl(r.ix)}">${pc(r.ix)}</td><td class="${cl(r.ex)}"><b>${pc(r.ex)}</b></td><td class="${r.bot!=null?cl(r.bot):''}">${r.bot!=null?pc(r.bot):'—'}</td></tr>`).join('')}
+    </tbody></table></div></details>
+  </section>`;
+}
+function renderTrack(){
+  const box=$('#expertBody'); box.innerHTML=`<p class="note">${T_TRK.loading}</p>`;
+  loadTrack(()=>{
+    const ms=S.market==='ALL'?['US','VN']:[S.market];
+    box.innerHTML=`<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${T_TRK.h}</h2><p>${T_TRK.p}</p></div></div>
+      <p class="note">${T_TRK.how}</p></section>${LIVE.trk?ms.map(trackPanel).join(''):`<section class="panel"><p class="note">${T_TRK.none}</p></section>`}
+      <p class="note">${T_TRK.caveat}</p>`;
+  });
+}
+const T_TRK={h:'Kiểm chứng điểm La Bàn',p:'Mỗi phiên, 20 mã điểm cao nhất được ghi lại cùng giá đóng cửa. Ở đây là lợi nhuận thực tế của chúng đến hôm nay.',
+how:'Điểm được tính bằng đúng dữ liệu có tại ngày ghi (không nhìn trước tương lai). So sánh với chỉ số của thị trường đó; các dòng ghi chồng lên nhau về thời gian nên không độc lập.',
+sub:'So với {ix} · {n} lần ghi',k1:'Top 20 từ {d}',k2:'Số lần top 20 thắng chỉ số',k2s:'mỗi lần ghi tính đến hôm nay',k3:'Tỷ lệ mã thắng chỉ số',k3s:'lượt chọn',
+k4:'Top 20 trừ 20 mã thấp nhất',k4s:'chênh lệch bình quân',chart:'Mỗi cột: lợi nhuận top 20 trừ chỉ số, từ ngày ghi đến hôm nay (cũ bên trái, mới bên phải).',
+table:'Từng lần ghi',c1:'Ngày ghi',c2:'Top 20',c3:'Vượt chỉ số',c4:'20 mã thấp nhất',empty:'Chưa có lần ghi nào đủ cũ để đo.',loading:'Đang tải sổ kiểm chứng…',
+none:'Chưa có sổ kiểm chứng (cần dữ liệu cập nhật hằng ngày).',
+caveat:'Mẫu còn rất nhỏ: vài tuần và vài chục lần ghi chồng nhau. Điểm La Bàn được thiết kế cho tầm nắm giữ 6–12 tháng, nên kết quả vài tuần chủ yếu là nhiễu, kể cả khi đẹp. Cần ít nhất 6–12 tháng ghi liên tục mới bắt đầu kết luận được. Hiệu quả quá khứ không đảm bảo kết quả tương lai.'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>window.__LB_APP_en=function(){
@@ -4938,8 +5033,8 @@ const FACTORS=[
     gen:[['pe',-1,1],['pb',-1,.6],['ev',-1,1],['fcf',1,1],['peg',-1,.8]],
     bank:[['pe',-1,1],['pb',-1,1],['pbroe',-1,1],['dy',1,.4]]},
   {k:'qual',n:'Quality',  d:'Profitability and economic moat',
-    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8]],
-    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5]]},
+    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8],['epsy',1,.7]],
+    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5],['epsy',1,.6]]},
   {k:'grow',n:'Growth', d:'Past and expected revenue and EPS',
     gen:[['rg',1,1],['eg',1,1],['fg',1,1.2]],
     bank:[['rg',1,1],['eg',1,1],['fg',1,1.2]]},
@@ -4959,7 +5054,7 @@ const MET={
   om:{n:'Operating margin',u:'%'},nm:{n:'Net margin',u:'%'},fs:{n:'Piotroski F-Score',u:'/9'},nim:{n:'NIM',u:'%'},npl:{n:'Bad debt (NPL)',u:'%',lo:true},
   casa:{n:'CASA',u:'%'},car:{n:'CAR / CET1',u:'%'},rg:{n:'Revenue CAGR 3Y',u:'%'},eg:{n:'EPS CAGR 3Y',u:'%'},fg:{n:'Expected EPS growth',u:'%'},
   de:{n:'Debt / Equity',u:'x',lo:true},cr:{n:'Current ratio',u:'x'},ic:{n:'Interest coverage',u:'x'},z:{n:'Altman Z',u:''},
-  mo:{n:'12-month return',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Payout safety',u:''},po:{n:'Payout ratio',u:'%'}
+  epsy:{n:'Profitable years (of 5)',u:'%'},mo:{n:'12-month return',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Payout safety',u:''},po:{n:'Payout ratio',u:'%'}
 };
 /* điểm tuyệt đối: các mốc (giá trị, điểm 0–1), nội suy tuyến tính */
 const ABS={
@@ -4987,9 +5082,10 @@ const kn=(v,f)=> isNum(v)? f(v) : null; /* tiêu chí không có dữ liệu →
 function metric(s,k){
   switch(k){
     case 'pe': return s._peak? s._eps.peAvg : (isNum(s.pe)? s.pe : null);
+    case 'epsy': return s._eps? 100*(s._eps.n-s._eps.neg)/s._eps.n : null;
     case 'ev': return s._peak&&isNum(s.ev)? (isFinite(s._k)? s.ev*s._k : -1) : (isNum(s.ev)? s.ev : null);
     case 'fcf': return s._peak&&isNum(s.fcf)? (isFinite(s._k)? s.fcf/s._k : 0) : (isNum(s.fcf)? s.fcf : null);
-    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : null);
+    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : epsCagr(s));
     case 'peg': return (!s._peak&&isNum(s.pe)&&s.pe>0&&isNum(s.fg)&&s.fg>0)? s.pe/s.fg : null;
     case 'fs': return fscore(s);
     case 'pbroe': return (isNum(s.pb)&&s.pb>0&&isNum(s.roe)&&s.roe>0)? s.pb/s.roe*10 : null;
@@ -5010,6 +5106,7 @@ function rankVal(s,k){
 function absScore(s,k){
   const v=metric(s,k); if(v==null) return null;
   if(k==='posafe') return v;
+  if(k==='epsy') return v/100;
   if((k==='pe'||k==='ev'||k==='pb')&&v<=0) return 0;
   return ABS[k]? interp(ABS[k],v) : null;
 }
@@ -5044,9 +5141,14 @@ function computeAll(){
     if(P.length<6) P=U.filter(x=>x._type===s._type);
     return groupCache[key]=P;
   };
+  const V1=typeof ALGO_V!=='undefined'&&ALGO_V===1;
+  /* v2: chỉ số định giá, biên lợi nhuận, đòn bẩy so với cùng ngành (Asness, Porter & Stevens 2000) — biên gộp
+     của phần mềm và bán lẻ không so được với nhau. Ngành cần ≥ 10 mã cùng thị trường, nếu không chỉ so toàn thị trường. */
+  const SECREL=new Set(['pe','pb','ev','ps','fcf','peg','gm','om','roe','roic','de','cr','dy','ic']);
+  const secCache={};
+  const secPeers=s=>{ const key=s._type+'|'+s.m+'|'+s.s; if(secCache[key]) return secCache[key]; const P=U.filter(x=>x._type===s._type&&x.m===s.m&&x.s===s.s); return secCache[key]=P.length>=10?P:null; };
   const sorted={};
-  const pctRank=(s,k,dir)=>{
-    const P=peersOf(s); const key=s._type+'|'+s.m+'|'+k;
+  const rankIn=(P,key,s,k,dir)=>{
     let arr=sorted[key];
     if(!arr){ arr=P.map(x=>rankVal(x,k)).filter(v=>v!=null).sort((a,b)=>a-b); sorted[key]=arr; }
     const v=rankVal(s,k); if(v==null||arr.length<3) return null;
@@ -5055,11 +5157,18 @@ function computeAll(){
     const r=(lo+(eq-1)/2)/(arr.length-1);
     return dir>0? r : 1-r;
   };
+  const pctRank=(s,k,dir)=>{
+    const rm=rankIn(peersOf(s),s._type+'|'+s.m+'|'+k,s,k,dir);
+    if(V1||rm==null||!SECREL.has(k)) return rm;
+    const SP=secPeers(s); if(!SP) return rm;
+    const rs=rankIn(SP,s._type+'|'+s.m+'|'+s.s+'|'+k,s,k,dir);
+    return rs==null? rm : .5*rm+.5*rs;
+  };
   const W=curWeights(); const wsum=Object.values(W).reduce((a,b)=>a+b,0)||1;
   U.forEach(s=>{
-    s._f={}; s._m={};
+    s._f={}; s._m={}; let covHave=0, covAll=0;
     FACTORS.forEach(F=>{
-      const list=F[s._type]; let tot=0, wt=0;
+      const list=F[s._type]; let tot=0, wt=0; const wAll=list.reduce((a,x)=>a+x[2],0);
       list.forEach(([k,dir,w])=>{
         const r=pctRank(s,k,dir), a=absScore(s,k);
         let sc=null;
@@ -5067,8 +5176,12 @@ function computeAll(){
         s._m[k]={v:metric(s,k),sc,r,a};
         if(sc!=null){ tot+=sc*w; wt+=w; }
       });
-      s._f[F.k]= wt? Math.round(tot/wt*100) : 50;
+      /* v2: nhân tố thiếu dữ liệu được kéo về 50 theo tỷ lệ thiếu (đủ ≥ 60% trọng số thì giữ nguyên) */
+      const raw= wt? tot/wt*100 : 50; const cov= wAll? wt/wAll : 0;
+      s._f[F.k]= Math.round(V1? raw : 50+(raw-50)*Math.min(1,cov/.6));
+      covHave+=wt*(W[F.k]||0); covAll+=wAll*(W[F.k]||0);
     });
+    s._cov= covAll? covHave/covAll : 0;
     let comp=0; FACTORS.forEach(F=>comp+=s._f[F.k]*(W[F.k]||0)); comp/=wsum;
     /* cờ đỏ — nhân hệ số phạt */
     const flags=[]; let mult=1;
@@ -5334,6 +5447,8 @@ function epsInfo(s){
   const peAvg= avg>0&&isNum(s.pe)&&s.pe>0&&now>0? s.pe*ratio : (avg<=0? -1 : null);
   return {ttm:now,fy:last,avg,n:last.length,neg,ratio,peAvg};
 }
+/* tăng trưởng EPS 3 năm từ lịch sử khi nguồn không ghi sẵn (chỉ khi cả hai đầu dương) */
+function epsCagr(s){ const e=s._eps; if(!e||e.fy.length<4) return null; const a=e.fy[0][1], b=e.fy[3][1]; if(!(a>0&&b>0)) return null; const g=(Math.pow(a/b,1/3)-1)*100; return Math.abs(g)<=300? Math.round(g*10)/10 : null; }
 function prepCycle(s){
   s._cyc=cycleKind(s); s._eps=epsInfo(s);
   s._peak=!!(s._cyc&&s._eps&&(s._eps.avg<=0||s._eps.ratio>=CYC_PEAK));
@@ -5767,7 +5882,7 @@ function openStock(t){
   <div class="dt-top">
     <div><h2>${esc(s.t)}</h2><p class="sub">${esc(s.n)} · ${esc(s.ex)} · ${esc(SECTORS[s.s]||s.s)}<br>Market cap ${capText(s)} · Beta ${fmt(s.b,2)}</p>
       <div class="row-btns" style="margin-top:10px"><span class="mk ${s.m}" style="align-self:center">${s.m==='US'?'US':'VIETNAM'}</span><span class="grade g-${s._grade}" style="font-size:13px;align-self:center">Grade ${s._grade}</span><button class="btn sm" data-star-d="${esc(s.t)}" aria-pressed="${isStar(s.t)}"><span class="star" style="width:auto;height:auto;color:${isStar(s.t)?'var(--ref)':'inherit'}">${starSVG(isStar(s.t))}</span>${isStar(s.t)?'On watchlist':'Watch'}</button></div></div>
-    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span></div></div>
+    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span><span class="cov ${s._cov<.6?'lo':''}">Data ${Math.round(s._cov*100)}%</span></div></div>
   </div>
   <div id="liveSlot" data-t="${esc(s.t)}">${liveBlockHTML(s)}</div>
   <div class="flags">${s._flags.length? s._flags.map(f=>`<span class="flag">⚑ ${esc(f)}</span>`).join('') : '<span class="flag ok">✓ No red flags</span>'}${s.edited?'<span class="flag" style="background:var(--gold-soft);color:var(--gold)">Data edited by you</span>':''}</div>
@@ -5943,12 +6058,12 @@ function openSettings(){
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Council'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
+  const tabs=[['council','Council'],['track','Track record'],['options','Options'],['ai','AI expert'],['compare','Compare'],['tools','Tools']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Expert corner</h2><p>8 investing schools, an options lab, an AI assistant and quantitative tools</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);
@@ -8825,6 +8940,70 @@ function initSearch(){
   document.addEventListener('click',e=>{ const m=e.target.closest('[data-bt-more]'); if(!m) return; const tb=m.previousElementSibling; if(tb){ tb.classList.toggle('all'); m.textContent=tb.classList.contains('all')?T_SEARCH.less:T_SEARCH.more; } });
 }
 const T_SEARCH={title:'Find a ticker',ph:'Ticker or company name, e.g. FPT, Apple, gold',recent:'Recently viewed',top:'Top scores',results:'results',first30:'First 30 results',none:'Nothing matches “{q}”. Try a listed ticker (FPT, AAPL) or a word from the company name.',more:'Show more',less:'Show less'};
+/* ============================================================
+   KIỂM CHỨNG — sổ ghi 20 mã điểm cao nhất / thấp nhất mỗi phiên (meta/rot.trk, do tác vụ hằng ngày ghi bằng
+   đúng thuật toán của app) và lợi nhuận thực tế của chúng đến hôm nay so với chỉ số.
+   ============================================================ */
+const TRK_IX={US:'IDX.SPX',VN:'IDX.VNINDEX'};
+function loadTrack(cb){
+  if(LIVE.trk!==undefined){ cb(); return; }
+  const db=LIVE.db; if(!db){ LIVE.trk=null; cb(); return; }
+  try{ db.doc('meta/rot').get().then(s=>{ const d=s&&s.exists?s.data():null; LIVE.trk=d&&d.trk?d.trk:null; cb(); }).catch(()=>{ LIVE.trk=null; cb(); }); }catch(e){ LIVE.trk=null; cb(); }
+}
+function trackEval(m){
+  const L=(LIVE.trk&&LIVE.trk[m])||[]; const ixq= m==='US'? liveE('SPY') : LIVE.q[TRK_IX[m]]; const ixNow=ixq&&isNum(ixq.px)?ixq.px:null;
+  const lastD=ixq&&ixq.d;
+  const rows=[];
+  L.forEach(e=>{
+    if(!e||!e.top||!isNum(e.ix)||!ixNow||(lastD&&e.d>=lastD)) return;
+    const ret=list=>{ const r=list.map(([t,p])=>{ const q=LIVE.q[t]; return q&&isNum(q.px)&&p>0? q.px/p-1 : null; }).filter(v=>v!=null); return r.length? {avg:r.reduce((a,b)=>a+b,0)/r.length, all:r} : null; };
+    const top=ret(e.top), bot=ret(e.bot||[]); if(!top) return;
+    const ix=ixNow/e.ix-1;
+    rows.push({d:e.d,top:top.avg,bot:bot?bot.avg:null,ix,ex:top.avg-ix,beat:top.all.filter(r=>r>ix).length,n:top.all.length,spread:bot?top.avg-bot.avg:null});
+  });
+  return rows;
+}
+function trackPanel(m){
+  const rows=trackEval(m);
+  const name=m==='US'?'S&P 500 (SPY)':'VN-Index';
+  if(!rows.length) return `<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${esc(mktName(m))}</h2><p>${T_TRK.empty}</p></div></div></section>`;
+  const pc=v=>(v>0?'+':'')+fmt(v*100,1)+'%'; const cl=v=>v>0?'up':v<0?'dn':'';
+  const nWin=rows.filter(r=>r.ex>0).length, picks=rows.reduce((a,r)=>a+r.n,0), beat=rows.reduce((a,r)=>a+r.beat,0);
+  const first=rows[0]; const sp=rows.filter(r=>r.spread!=null);
+  const W=Math.max(300,Math.min(640,rows.length*34)), H=150, mx=Math.max(...rows.map(r=>Math.abs(r.ex)),.01), y0=H/2, bw=W/rows.length;
+  let g=`<line x1="0" x2="${W}" y1="${y0}" y2="${y0}" style="stroke:var(--line2)"/>`;
+  rows.forEach((r,i)=>{ const h=Math.abs(r.ex)/mx*(H/2-16); g+=`<rect x="${(i*bw+bw*.18).toFixed(1)}" y="${(r.ex>=0?y0-h:y0).toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${Math.max(h,1).toFixed(1)}" rx="2" style="fill:var(--${r.ex>=0?'up':'dn'})"><title>${r.d}: ${pc(r.ex)}</title></rect>`;
+    if(i===0||i===rows.length-1) g+=`<text x="${(i*bw+bw/2).toFixed(1)}" y="${H-2}" text-anchor="middle" style="font-size:11px;fill:var(--mut)">${r.d.slice(8,10)}/${r.d.slice(5,7)}</text>`; });
+  return `<section class="panel" style="display:flex;flex-direction:column;gap:12px"><div class="sec-h" style="margin:0"><div><h2 style="font-size:18px">${esc(mktName(m))}</h2><p>${T_TRK.sub.replace('{ix}',name).replace('{n}',rows.length)}</p></div></div>
+    <div class="trk-k">
+      <div><span>${T_TRK.k1.replace('{d}',first.d.slice(8,10)+'/'+first.d.slice(5,7))}</span><b class="${cl(first.top)}">${pc(first.top)}</b><small>${name} ${pc(first.ix)}</small></div>
+      <div><span>${T_TRK.k2}</span><b>${nWin}/${rows.length}</b><small>${T_TRK.k2s}</small></div>
+      <div><span>${T_TRK.k3}</span><b>${Math.round(beat/picks*100)}%</b><small>${beat}/${picks} ${T_TRK.k3s}</small></div>
+      <div><span>${T_TRK.k4}</span><b class="${sp.length?cl(sp.reduce((a,r)=>a+r.spread,0)):''}">${sp.length?pc(sp.reduce((a,r)=>a+r.spread,0)/sp.length):'—'}</b><small>${T_TRK.k4s}</small></div>
+    </div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(T_TRK.chart)}">${g}</svg>
+    <p class="note">${T_TRK.chart}</p>
+    <details class="acc"><summary>${T_TRK.table}</summary><div class="scroll-x" tabindex="0"><table class="ptab"><thead><tr><th>${T_TRK.c1}</th><th>${T_TRK.c2}</th><th>${name}</th><th>${T_TRK.c3}</th><th>${T_TRK.c4}</th></tr></thead><tbody>
+      ${rows.slice().reverse().map(r=>`<tr><td>${r.d.slice(8,10)}/${r.d.slice(5,7)}</td><td class="${cl(r.top)}">${pc(r.top)}</td><td class="${cl(r.ix)}">${pc(r.ix)}</td><td class="${cl(r.ex)}"><b>${pc(r.ex)}</b></td><td class="${r.bot!=null?cl(r.bot):''}">${r.bot!=null?pc(r.bot):'—'}</td></tr>`).join('')}
+    </tbody></table></div></details>
+  </section>`;
+}
+function renderTrack(){
+  const box=$('#expertBody'); box.innerHTML=`<p class="note">${T_TRK.loading}</p>`;
+  loadTrack(()=>{
+    const ms=S.market==='ALL'?['US','VN']:[S.market];
+    box.innerHTML=`<section class="panel"><div class="sec-h"><div><h2 style="font-size:18px">${T_TRK.h}</h2><p>${T_TRK.p}</p></div></div>
+      <p class="note">${T_TRK.how}</p></section>${LIVE.trk?ms.map(trackPanel).join(''):`<section class="panel"><p class="note">${T_TRK.none}</p></section>`}
+      <p class="note">${T_TRK.caveat}</p>`;
+  });
+}
+const T_TRK={h:'Compass Score track record',p:'Every session the 20 highest-scoring stocks are recorded with their closing prices. This shows how they have actually performed since.',
+how:'Scores use only the data available on the recording date (no look-ahead). Returns are compared with that market’s index; entries overlap in time, so they are not independent.',
+sub:'Versus {ix} · {n} entries',k1:'Top 20 since {d}',k2:'Entries where the top 20 beat the index',k2s:'each entry measured to today',k3:'Share of picks beating the index',k3s:'picks',
+k4:'Top 20 minus bottom 20',k4s:'average spread',chart:'Each bar: top-20 return minus the index, from the recording date to today (oldest left, newest right).',
+table:'Every entry',c1:'Recorded',c2:'Top 20',c3:'Versus index',c4:'Bottom 20',empty:'No entry is old enough to measure yet.',loading:'Loading the track record…',
+none:'No track record yet (needs the daily data update).',
+caveat:'The sample is still tiny: a few weeks and a few dozen overlapping entries. The Compass Score is designed for a 6–12 month holding period, so a few weeks of results are mostly noise, even when they look good. At least 6–12 months of continuous records are needed before drawing conclusions. Past performance does not guarantee future results.'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>(function(){

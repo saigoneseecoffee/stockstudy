@@ -572,4 +572,15 @@ input[type=range]{min-height:44px}
 :root[data-theme="light"] .panel, :root[data-theme="light"] .board-tbl, :root[data-theme="light"] .idx{border-color:#dde3df}
 @media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .panel, :root:not([data-theme="dark"]) .board-tbl, :root:not([data-theme="dark"]) .idx{border-color:#dde3df} }
 .pick span{font-size:12px}
+
+/* độ đầy đủ dữ liệu dưới vòng điểm */
+.bigring .v .cov{font-size:11px; color:var(--mut)} .bigring .v .cov.lo{color:var(--dn); font-weight:700}
+
+/* sổ kiểm chứng */
+.trk-k{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (min-width:760px){ .trk-k{grid-template-columns:repeat(4,1fr)} }
+.trk-k>div{display:flex; flex-direction:column; gap:3px; padding:12px; border-radius:12px; background:var(--s2); border:1px solid var(--line)}
+.trk-k span{font-size:12.5px; color:var(--mut); line-height:1.3}
+.trk-k b{font-family:var(--f-disp); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.1}
+.trk-k small{font-size:12px; color:var(--mut)}
 </style>

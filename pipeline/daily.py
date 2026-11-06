@@ -244,6 +244,27 @@ def build(old, work, out):
             lo, hi = (num(x) for x in rng.split('-')) if rng.count('-') == 1 else (num(g(d, 'low')), num(g(d, 'high')))
             h = (h + [[us_date, num(g(d, 'open')), hi, lo, px, None]])[-60:]
             idx['q'][t] = {'px': px, 'pct': pct if pct is not None else (r1(chg / (px - chg) * 100, 3) if chg else None), 'chg': chg, 'o': num(g(d, 'open')), 'h': hi, 'l': lo, 'd': us_date, 'hist': h}
+    # Chỉ số Mỹ không lấy được (Google Finance hay từ chối): suy từ ETF theo dõi chỉ số, tỷ lệ chốt ở phiên chỉ số gần nhất
+    PROXY = {'IDX.SPX': 'SPY', 'IDX.IXIC': 'QQQ', 'IDX.DJI': 'DIA'}
+    for t, e in PROXY.items():
+        o = idx['q'].get(t)
+        if not o or not us_date or o.get('d') == us_date or not o.get('px'): continue
+        er = etf_rows.get(e) or []
+        now = er[-1][4] if er and er[-1][0] == us_date else None
+        then = None
+        for b in (er or []):
+            if b[0] == o['d']: then = b[4]
+        if then is None:
+            se = olde.get('c', {}).get(e); ds = olde.get('dates', [])
+            if se and o['d'] in ds: then = se[ds.index(o['d'])]
+        if not (now and then): continue
+        px = round(o['px'] * now / then, 2); prevpx = o['px']
+        h = [b for b in (o.get('hist') or []) if b[0] != us_date]
+        prev_close = None
+        if len(er) > 1 and er[-2][4]: prev_close = round(o['px'] * er[-2][4] / then, 2)
+        h = (h + [[us_date, None, None, None, px, None]])[-60:]
+        idx['q'][t] = {'px': px, 'pct': r1((px / prev_close - 1) * 100, 3) if prev_close else None, 'chg': r1(px - prev_close, 2) if prev_close else None,
+                       'o': None, 'h': None, 'l': None, 'd': us_date, 'hist': h, 'est': e}
     W(f'{out}/snap/IDX.json', idx); man.append('snap/IDX')
     # ----- history chunks
     def chunk_ids(m, L):
@@ -290,6 +311,24 @@ def build(old, work, out):
         rot.setdefault('fund', {})[k] = datetime.date.today().isoformat()
     for m in changed:
         funds[m]['upd'] = datetime.date.today().isoformat(); W(f'{out}/fund/{m}.json', funds[m]); man.append('fund/' + m)
+    # ----- sổ kiểm chứng: chấm điểm bằng mã nguồn của app (repo đã clone ở bước 1) và ghi top/bottom 20 kèm giá
+    try:
+        import subprocess, shutil
+        repo = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'repo')
+        tj = os.path.join(repo, 'pipeline', 'track.js')
+        if os.path.exists(tj) and shutil.which('node'):
+            r = subprocess.run(['node', tj, '--src', os.path.join(repo, 'src'), '--fund', out, '--fund', old, '--snap', out, '--snap', old],
+                               capture_output=True, text=True, timeout=180)
+            ent = json.loads(r.stdout or '{}')
+            trk = rot.setdefault('trk', {})
+            for m, e in ent.items():
+                L = [x for x in trk.get(m, []) if x.get('d') != e.get('d')] + [e]
+                trk[m] = sorted(L, key=lambda x: x['d'])[-90:]
+            print(json.dumps({'track': {m: e['d'] for m, e in ent.items()}}))
+        else:
+            print('track: skipped (no repo or node)')
+    except Exception as ex:
+        print('track: error', str(ex)[:200])
     W(f'{out}/meta/rot.json', rot); man.append('meta/rot')
     nq = lambda k: len((J(f'{out}/snap/{k}.json', {}) or {}).get('q', {}))
     meta = {'upd': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'usDate': us_date, 'vnDate': vn_date,

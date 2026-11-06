@@ -36,6 +36,8 @@ function epsInfo(s){
   const peAvg= avg>0&&isNum(s.pe)&&s.pe>0&&now>0? s.pe*ratio : (avg<=0? -1 : null);
   return {ttm:now,fy:last,avg,n:last.length,neg,ratio,peAvg};
 }
+/* tăng trưởng EPS 3 năm từ lịch sử khi nguồn không ghi sẵn (chỉ khi cả hai đầu dương) */
+function epsCagr(s){ const e=s._eps; if(!e||e.fy.length<4) return null; const a=e.fy[0][1], b=e.fy[3][1]; if(!(a>0&&b>0)) return null; const g=(Math.pow(a/b,1/3)-1)*100; return Math.abs(g)<=300? Math.round(g*10)/10 : null; }
 function prepCycle(s){
   s._cyc=cycleKind(s); s._eps=epsInfo(s);
   s._peak=!!(s._cyc&&s._eps&&(s._eps.avg<=0||s._eps.ratio>=CYC_PEAK));

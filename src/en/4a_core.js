@@ -54,8 +54,8 @@ const FACTORS=[
     gen:[['pe',-1,1],['pb',-1,.6],['ev',-1,1],['fcf',1,1],['peg',-1,.8]],
     bank:[['pe',-1,1],['pb',-1,1],['pbroe',-1,1],['dy',1,.4]]},
   {k:'qual',n:'Quality',  d:'Profitability and economic moat',
-    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8]],
-    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5]]},
+    gen:[['roe',1,.8],['roic',1,1.2],['gm',1,.8],['om',1,.8],['fs',1,.8],['epsy',1,.7]],
+    bank:[['roe',1,1.2],['nim',1,.8],['npl',-1,1],['casa',1,.8],['fs',1,.5],['epsy',1,.6]]},
   {k:'grow',n:'Growth', d:'Past and expected revenue and EPS',
     gen:[['rg',1,1],['eg',1,1],['fg',1,1.2]],
     bank:[['rg',1,1],['eg',1,1],['fg',1,1.2]]},
@@ -75,7 +75,7 @@ const MET={
   om:{n:'Operating margin',u:'%'},nm:{n:'Net margin',u:'%'},fs:{n:'Piotroski F-Score',u:'/9'},nim:{n:'NIM',u:'%'},npl:{n:'Bad debt (NPL)',u:'%',lo:true},
   casa:{n:'CASA',u:'%'},car:{n:'CAR / CET1',u:'%'},rg:{n:'Revenue CAGR 3Y',u:'%'},eg:{n:'EPS CAGR 3Y',u:'%'},fg:{n:'Expected EPS growth',u:'%'},
   de:{n:'Debt / Equity',u:'x',lo:true},cr:{n:'Current ratio',u:'x'},ic:{n:'Interest coverage',u:'x'},z:{n:'Altman Z',u:''},
-  mo:{n:'12-month return',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Payout safety',u:''},po:{n:'Payout ratio',u:'%'}
+  epsy:{n:'Profitable years (of 5)',u:'%'},mo:{n:'12-month return',u:'%'},b:{n:'Beta',u:'',lo:true},posafe:{n:'Payout safety',u:''},po:{n:'Payout ratio',u:'%'}
 };
 /* điểm tuyệt đối: các mốc (giá trị, điểm 0–1), nội suy tuyến tính */
 const ABS={
@@ -103,9 +103,10 @@ const kn=(v,f)=> isNum(v)? f(v) : null; /* tiêu chí không có dữ liệu →
 function metric(s,k){
   switch(k){
     case 'pe': return s._peak? s._eps.peAvg : (isNum(s.pe)? s.pe : null);
+    case 'epsy': return s._eps? 100*(s._eps.n-s._eps.neg)/s._eps.n : null;
     case 'ev': return s._peak&&isNum(s.ev)? (isFinite(s._k)? s.ev*s._k : -1) : (isNum(s.ev)? s.ev : null);
     case 'fcf': return s._peak&&isNum(s.fcf)? (isFinite(s._k)? s.fcf/s._k : 0) : (isNum(s.fcf)? s.fcf : null);
-    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : null);
+    case 'eg': return s._peak? null : (isNum(s.eg)? s.eg : epsCagr(s));
     case 'peg': return (!s._peak&&isNum(s.pe)&&s.pe>0&&isNum(s.fg)&&s.fg>0)? s.pe/s.fg : null;
     case 'fs': return fscore(s);
     case 'pbroe': return (isNum(s.pb)&&s.pb>0&&isNum(s.roe)&&s.roe>0)? s.pb/s.roe*10 : null;
@@ -126,6 +127,7 @@ function rankVal(s,k){
 function absScore(s,k){
   const v=metric(s,k); if(v==null) return null;
   if(k==='posafe') return v;
+  if(k==='epsy') return v/100;
   if((k==='pe'||k==='ev'||k==='pb')&&v<=0) return 0;
   return ABS[k]? interp(ABS[k],v) : null;
 }
@@ -160,9 +162,14 @@ function computeAll(){
     if(P.length<6) P=U.filter(x=>x._type===s._type);
     return groupCache[key]=P;
   };
+  const V1=typeof ALGO_V!=='undefined'&&ALGO_V===1;
+  /* v2: chỉ số định giá, biên lợi nhuận, đòn bẩy so với cùng ngành (Asness, Porter & Stevens 2000) — biên gộp
+     của phần mềm và bán lẻ không so được với nhau. Ngành cần ≥ 10 mã cùng thị trường, nếu không chỉ so toàn thị trường. */
+  const SECREL=new Set(['pe','pb','ev','ps','fcf','peg','gm','om','roe','roic','de','cr','dy','ic']);
+  const secCache={};
+  const secPeers=s=>{ const key=s._type+'|'+s.m+'|'+s.s; if(secCache[key]) return secCache[key]; const P=U.filter(x=>x._type===s._type&&x.m===s.m&&x.s===s.s); return secCache[key]=P.length>=10?P:null; };
   const sorted={};
-  const pctRank=(s,k,dir)=>{
-    const P=peersOf(s); const key=s._type+'|'+s.m+'|'+k;
+  const rankIn=(P,key,s,k,dir)=>{
     let arr=sorted[key];
     if(!arr){ arr=P.map(x=>rankVal(x,k)).filter(v=>v!=null).sort((a,b)=>a-b); sorted[key]=arr; }
     const v=rankVal(s,k); if(v==null||arr.length<3) return null;
@@ -171,11 +178,18 @@ function computeAll(){
     const r=(lo+(eq-1)/2)/(arr.length-1);
     return dir>0? r : 1-r;
   };
+  const pctRank=(s,k,dir)=>{
+    const rm=rankIn(peersOf(s),s._type+'|'+s.m+'|'+k,s,k,dir);
+    if(V1||rm==null||!SECREL.has(k)) return rm;
+    const SP=secPeers(s); if(!SP) return rm;
+    const rs=rankIn(SP,s._type+'|'+s.m+'|'+s.s+'|'+k,s,k,dir);
+    return rs==null? rm : .5*rm+.5*rs;
+  };
   const W=curWeights(); const wsum=Object.values(W).reduce((a,b)=>a+b,0)||1;
   U.forEach(s=>{
-    s._f={}; s._m={};
+    s._f={}; s._m={}; let covHave=0, covAll=0;
     FACTORS.forEach(F=>{
-      const list=F[s._type]; let tot=0, wt=0;
+      const list=F[s._type]; let tot=0, wt=0; const wAll=list.reduce((a,x)=>a+x[2],0);
       list.forEach(([k,dir,w])=>{
         const r=pctRank(s,k,dir), a=absScore(s,k);
         let sc=null;
@@ -183,8 +197,12 @@ function computeAll(){
         s._m[k]={v:metric(s,k),sc,r,a};
         if(sc!=null){ tot+=sc*w; wt+=w; }
       });
-      s._f[F.k]= wt? Math.round(tot/wt*100) : 50;
+      /* v2: nhân tố thiếu dữ liệu được kéo về 50 theo tỷ lệ thiếu (đủ ≥ 60% trọng số thì giữ nguyên) */
+      const raw= wt? tot/wt*100 : 50; const cov= wAll? wt/wAll : 0;
+      s._f[F.k]= Math.round(V1? raw : 50+(raw-50)*Math.min(1,cov/.6));
+      covHave+=wt*(W[F.k]||0); covAll+=wAll*(W[F.k]||0);
     });
+    s._cov= covAll? covHave/covAll : 0;
     let comp=0; FACTORS.forEach(F=>comp+=s._f[F.k]*(W[F.k]||0)); comp/=wsum;
     /* cờ đỏ — nhân hệ số phạt */
     const flags=[]; let mult=1;

@@ -4,12 +4,12 @@
 const CMP={a:null,b:null};
 RENDER.expert=function(){
   const el=$('#v-expert');
-  const tabs=[['council','Hội đồng'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
+  const tabs=[['council','Hội đồng'],['track','Kiểm chứng'],['options','Quyền chọn'],['ai','Chuyên gia AI'],['compare','So sánh'],['tools','Công cụ']];
   el.innerHTML=`<div class="sec-h" style="margin:0"><div><h2>Góc chuyên gia</h2><p>8 trường phái, phòng thí nghiệm quyền chọn, trợ lý AI và công cụ định lượng</p></div></div>
     <div class="subtabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" data-et="${k}" aria-selected="${S.expertTab===k}">${n}</button>`).join('')}</div>
     <div id="expertBody"></div>`;
   $$('[data-et]',el).forEach(b=>b.onclick=()=>{ S.expertTab=b.dataset.et; RENDER.expert(); });
-  ({council:renderCouncil,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
+  ({council:renderCouncil,track:renderTrack,options:renderOptions,ai:renderAI,compare:renderCompare,tools:renderTools})[S.expertTab]();
 };
 function renderCouncil(){
   const box=$('#expertBody'); const L=inMarket(U);

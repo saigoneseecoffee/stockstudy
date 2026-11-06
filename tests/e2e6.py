@@ -8,6 +8,7 @@ open(SCR+"/test.html","w",encoding="utf8").write('<!doctype html><html><head><me
 D={}
 for p in glob.glob(os.path.join(FIX,"snap","*.json")): D["snap/"+p.split('/')[-1][:-5]]=json.load(open(p))
 for p in glob.glob(os.path.join(FIX,"hist","*.json")): D["hist/"+p.split('/')[-1][:-5]]=json.load(open(p))
+for p in glob.glob(os.path.join(FIX,"meta","*.json")): D["meta/"+p.split("/")[-1][:-5]]=json.load(open(p))
 D["meta/feed"]={"upd":"2026-10-17T12:06:49+00:00","usDate":"2026-10-16","vnDate":"2026-10-16","ok":58,"failed":[]}
 mock="""window.__D=%s;
 window.claude={use:async(name)=>{ if(name!=='db') return null; await new Promise(r=>setTimeout(r,200));

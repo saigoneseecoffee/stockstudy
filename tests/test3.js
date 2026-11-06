@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm');
-const files=['3_data.js','3c_universe.js','3e_epsh.js','4a_core.js','4a1_cycle.js','3d_build.js','4b_views.js','4c_more.js','4d_learn.js','4e_chart.js','4f_patterns.js','4g_options.js','4h_live.js','4j_etf.js','4k0_lessons2.js','4k_levels.js','4l_search.js'];
+const files=['3_data.js','3c_universe.js','3e_epsh.js','4a_core.js','4a1_cycle.js','3d_build.js','4b_views.js','4c_more.js','4d_learn.js','4e_chart.js','4f_patterns.js','4g_options.js','4h_live.js','4j_etf.js','4k0_lessons2.js','4k_levels.js','4l_search.js','4m_track.js'];
 const ctx={window:{addEventListener(){}},document:{readyState:'loading',addEventListener(){}},console,Math,JSON,location:{hash:''},history:{}};
 vm.createContext(ctx); vm.runInContext(files.map(f=>fs.readFileSync(f,'utf8')).join('\n')+';globalThis.T={bs,ncdf,impliedVol,analyzeStrategy,positionValue,presetLegs,OPT,OPT_PRESETS,LESSONS,QUIZ,payoffSVG};',ctx);
 const T=ctx.T; let f=0; const near=(a,b,m,t=1e-3)=>{ const ok=Math.abs(a-b)<=t; if(!ok)f++; console.log(ok?'ok  ':'FAIL',m,ok?'':`${a} vs ${b}`); };

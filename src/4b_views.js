@@ -333,7 +333,7 @@ function openStock(t){
   <div class="dt-top">
     <div><h2>${esc(s.t)}</h2><p class="sub">${esc(s.n)} · ${esc(s.ex)} · ${esc(SECTORS[s.s]||s.s)}<br>Vốn hóa ${capText(s)} · Beta ${fmt(s.b,2)}</p>
       <div class="row-btns" style="margin-top:10px"><span class="mk ${s.m}" style="align-self:center">${s.m==='US'?'MỸ':'VIỆT NAM'}</span><span class="grade g-${s._grade}" style="font-size:13px;align-self:center">Hạng ${s._grade}</span><button class="btn sm" data-star-d="${esc(s.t)}" aria-pressed="${isStar(s.t)}"><span class="star" style="width:auto;height:auto;color:${isStar(s.t)?'var(--ref)':'inherit'}">${starSVG(isStar(s.t))}</span>${isStar(s.t)?'Trong danh mục':'Theo dõi'}</button></div></div>
-    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span></div></div>
+    <div class="bigring">${ringSVG(s._score,108,9)}<div class="v"><b>${s._score}</b><span>#${s._rank}/${s._of}</span><span class="cov ${s._cov<.6?'lo':''}">Dữ liệu ${Math.round(s._cov*100)}%</span></div></div>
   </div>
   <div id="liveSlot" data-t="${esc(s.t)}">${liveBlockHTML(s)}</div>
   <div class="flags">${s._flags.length? s._flags.map(f=>`<span class="flag">⚑ ${esc(f)}</span>`).join('') : '<span class="flag ok">✓ Không có cờ đỏ</span>'}${s.edited?'<span class="flag" style="background:var(--gold-soft);color:var(--gold)">Số liệu đã được bạn chỉnh</span>':''}</div>
