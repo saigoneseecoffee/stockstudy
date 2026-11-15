@@ -20,8 +20,8 @@ const LEVELS=[
   ids:['l8-plan','l8-alloc','l8-rebal','l8-dividend','l8-fire','cycle','capm','frontier','sizing','famafrench','emh']},
  {n:'Phân tích kỹ thuật',tier:'Nâng cao',d:'Nến, xu hướng, chỉ báo, cắt lỗ — công cụ chọn điểm mua bán.',goal:['Đọc cây nến, mẫu nến, mô hình giá','Xu hướng, hỗ trợ, kháng cự','MA, RSI, MACD, Bollinger, Ichimoku, Fibonacci','Cắt lỗ theo ATR, hiểu rủi ro margin'],
   ids:['candle-anatomy','dow','sr','ma','volume-l','rsi-l','macd-l','bb-l','stoch-l','fibo','ichimoku-l','elliott','atr-l','margin-trade'],extra:'cdl'},
- {n:'Phái sinh & đòn bẩy',tier:'Chuyên gia',d:'Quyền chọn, Greeks, chiến lược, ETF đòn bẩy và đảo chiều.',goal:['Định giá quyền chọn Black–Scholes','Quản lý Greeks và IV','Dựng chiến lược spread, condor, collar','Hiểu hao mòn của ETF đòn bẩy'],
-  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','etf-decay','etf-pairs']}
+ {n:'Phái sinh & đòn bẩy',tier:'Chuyên gia',d:'Quyền chọn, Greeks, chiến lược, hợp đồng tương lai, ETF đòn bẩy và đảo chiều.',goal:['Định giá quyền chọn Black–Scholes','Quản lý Greeks và IV','Dựng chiến lược spread, condor, collar','Dùng hợp đồng tương lai: ký quỹ, basis, phòng hộ','Hiểu hao mòn của ETF đòn bẩy'],
+  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','fut-basics','fut-margin','fut-curve','fut-hedge','etf-decay','etf-pairs']}
 ];
 const TIER_COL={'Người mới':'var(--up)','Trung cấp':'var(--us)','Nâng cao':'var(--gold)','Chuyên gia':'var(--dn)'};
 
@@ -183,6 +183,7 @@ QUIZ.forEach(q=>{ if(/ETF/.test(q.q)&&/S&P 500/.test(q.q)) q.lv=3; });
  {lv:6,q:'Trong DCF, tăng chi phí vốn r (giữ nguyên dòng tiền) làm giá trị nội tại?',a:['Giảm','Tăng','Không đổi','Bằng 0'],c:0,e:'Dòng tiền tương lai bị chiết khấu mạnh hơn; giá trị cuối kỳ đặc biệt nhạy với r − g.'},
  {lv:4,q:'Lợi nhuận 160 tỷ, 100 triệu cổ phiếu. EPS bằng?',a:['1.600 đồng','160 đồng','16.000 đồng','1,6 đồng'],c:0,e:'160.000.000.000 ÷ 100.000.000 = 1.600 đồng/cổ phiếu.'}
 ].forEach(q=>QUIZ.push(q));
+FUT_QUIZ.forEach(q=>{ q.lv=LV_OF[q.lid]||9; QUIZ.push(q); });
 
 /* ---------- tiến độ ---------- */
 function lvState(i){

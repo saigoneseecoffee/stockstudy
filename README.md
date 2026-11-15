@@ -4,7 +4,7 @@
 
 - ~500 mã S&P 500, ~500 mã HOSE/HNX, ~200 ETF Mỹ (theo dõi theo cặp đối xứng)
 - Bộ lọc, chấm điểm, biểu đồ nến, mô hình giá, quyền chọn
-- Lộ trình học 10 cấp (101 bài có infographic, 121 câu hỏi), máy tính tích sản, bài thực hành đọc BCTC
+- Lộ trình học 10 cấp (105 bài có infographic, 128 câu hỏi; có quyền chọn và hợp đồng tương lai), máy tính tích sản, bài thực hành đọc BCTC
 
 ## Cấu trúc
 

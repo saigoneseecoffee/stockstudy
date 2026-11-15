@@ -3584,6 +3584,67 @@ LESSONS.sort((a,b)=>ORDER.indexOf(a.g)-ORDER.indexOf(b.g));
 const _openLessonOpt=openLesson;
 openLesson=function(id){ _openLessonOpt(id); if(String(id).startsWith('opt-')){ const rb=$('#sheetBody .row-btns'); if(rb){ const b=document.createElement('button'); b.className='btn'; b.id='lOptLab'; b.textContent='Mở phòng thí nghiệm quyền chọn'; b.onclick=()=>{ closeSheet(); S.expertTab='options'; setView('expert'); }; rb.appendChild(b); } } };
 /* ============================================================
+   HỢP ĐỒNG TƯƠNG LAI (FUTURES) — 4 bài + câu hỏi, cấp "Phái sinh & đòn bẩy"
+   Đặc tả VN30F: HNX/VSDC (hệ số nhân 100.000đ/điểm, ký quỹ ban đầu tối thiểu 17%, bước giá 0,1, ±7%).
+   ============================================================ */
+const FUT_G='Hợp đồng tương lai';
+const FUT_LESSONS=[
+ {id:'fut-basics',g:FUT_G,t:'Hợp đồng tương lai khác quyền chọn thế nào',d:'Nghĩa vụ so với quyền: lãi lỗ tuyến tính và lãi lỗ lệch',
+  vis:()=>{ const X=s=>20+(s-80)/40*170, Y=v=>66-v*2.2; const fu=s=>s-100, ca=s=>Math.max(s-100,0)-4;
+    let g=`<line x1="20" x2="190" y1="${Y(0)}" y2="${Y(0)}" style="stroke:var(--mut)" stroke-width=".8"/><line x1="${X(100)}" x2="${X(100)}" y1="12" y2="118" style="stroke:var(--line2)" stroke-dasharray="2 2"/>`;
+    g+=`<path d="M${X(80)} ${Y(fu(80))} L${X(120)} ${Y(fu(120))}" fill="none" style="stroke:var(--us)" stroke-width="2.2"/>`;
+    g+=`<path d="M${X(80)} ${Y(ca(80))} L${X(100)} ${Y(ca(100))} L${X(120)} ${Y(ca(120))}" fill="none" style="stroke:var(--gold)" stroke-width="2.2"/>`;
+    g+=T(24,20,'Mua future: lãi/lỗ đều tuyến tính','style="font-size:7.5px;font-weight:700;fill:var(--us)"')+T(24,30,'Mua call: lỗ tối đa = phí','style="font-size:7.5px;font-weight:700;fill:var(--gold)"');
+    g+=T(X(100),122,'Giá vào lệnh / giá thực hiện','text-anchor="middle" style="font-size:6.5px;fill:var(--mut)"')+T(186,Y(0)-3,'0','text-anchor="end" style="font-size:7px;fill:var(--mut)"');
+    return sv(g,'Đồ thị lãi lỗ: mua hợp đồng tương lai là đường thẳng, mua quyền chọn mua có lỗ giới hạn ở mức phí'); },
+  f:'Lãi/lỗ = (Giá đóng − Giá mở) × Hệ số nhân × Số hợp đồng',
+  pts:['Hợp đồng tương lai là thỏa thuận chuẩn hóa để mua hoặc bán một tài sản (chỉ số, hàng hóa, trái phiếu) ở giá chốt hôm nay, thanh toán vào ngày đáo hạn. Cả hai bên đều có nghĩa vụ.','Quyền chọn chỉ cho người mua quyền, không bắt buộc; đổi lại người mua trả phí ngay từ đầu.','Lãi/lỗ của future tuyến tính: giá đi bao nhiêu thì lãi hoặc lỗ bấy nhiêu, theo cả hai chiều. Không có phí quyền chọn, không mất giá theo thời gian (theta), không phụ thuộc biến động ngầm định (IV).','Mua (long) lãi khi giá tăng; bán (short) lãi khi giá giảm — bán chỉ số dễ như mua.','Đòn bẩy đến từ ký quỹ: chỉ đặt một phần giá trị hợp đồng, nên chỉ số đi 1% có thể thành 5% trên tiền ký quỹ.'],
+  thr:[['Đặt cược theo hướng, chấp nhận lỗ theo biến động','Future'],['Muốn giới hạn lỗ ở mức phí đã trả','Mua quyền chọn'],['Muốn thu phí khi giá đi ngang','Bán quyền chọn (rủi ro lớn)']],
+  hook:'<b>Mẹo nhớ:</b> future là <i>nghĩa vụ</i>, option là <i>quyền</i>. Quyền thì phải trả tiền mua; nghĩa vụ thì phải ký quỹ.',src:'CME Group, Futures Fundamentals; Luật Chứng khoán 2019 và Nghị định 158/2020/NĐ-CP về chứng khoán phái sinh.'},
+ {id:'fut-margin',g:FUT_G,t:'Ký quỹ và lãi lỗ mỗi ngày',d:'Mark-to-market, đòn bẩy và lệnh gọi ký quỹ',
+  vis:()=>{ const v=[26,27,24.5,20,26], lab=['Ngày 1','+10 điểm','−25 điểm','−45 điểm','Nộp thêm']; const Y=x=>112-x*2.9; let g='';
+    g+=`<line x1="14" x2="192" y1="${Y(21)}" y2="${Y(21)}" style="stroke:var(--dn)" stroke-dasharray="3 2"/>`+T(192,21,'Ngưỡng gọi ký quỹ','text-anchor="end" style="font-size:6.5px;fill:var(--dn)"');
+    v.forEach((x,i)=>{ const bx=18+i*35; g+=`<rect x="${bx}" y="${Y(x)}" width="24" height="${112-Y(x)}" rx="3" style="fill:${x<21?'var(--dn)':i===4?'var(--gold)':'var(--us)'}"/>`+T(bx+12,Y(x)-3,String(x).replace('.',','),'text-anchor="middle" style="font-size:7px;font-weight:700;fill:var(--fg)"')+T(bx+12,121,lab[i],'text-anchor="middle" style="font-size:6px;fill:var(--mut)"'); });
+    g+=T(14,11,'Tiền ký quỹ (triệu đồng), 1 HĐ VN30F','style="font-size:7.5px;font-weight:700;fill:var(--fg)"');
+    return sv(g,'Tiền ký quỹ thay đổi mỗi ngày theo lãi lỗ; khi xuống dưới ngưỡng thì phải nộp thêm'); },
+  f:'Lãi/lỗ mỗi ngày = (Giá thanh toán hôm nay − hôm qua) × 100.000đ × Số HĐ',
+  pts:['Ký quỹ ban đầu: VSDC quy định tối thiểu 17% giá trị hợp đồng VN30F; công ty chứng khoán thường yêu cầu khoảng 17–22%.','Ví dụ: 1 hợp đồng ở 1.300 điểm có giá trị 1.300 × 100.000đ = 130 triệu đồng; ký quỹ 20% là 26 triệu.','Cuối mỗi ngày, lãi/lỗ được tính theo giá thanh toán và cộng hoặc trừ ngay vào tài khoản (mark-to-market), không chờ đến ngày đáo hạn.','Chỉ số giảm 5% (65 điểm) → lỗ 6,5 triệu, bằng 25% tiền ký quỹ. Đòn bẩy xấp xỉ 1 ÷ tỷ lệ ký quỹ = 5 lần.','Tài sản ký quỹ xuống dưới ngưỡng thì bị gọi nộp thêm (margin call); không nộp kịp sẽ bị đóng vị thế bắt buộc, thường đúng lúc giá xấu nhất.','Chi phí: phí giao dịch của sở và công ty chứng khoán cho mỗi hợp đồng, phí giữ vị thế qua đêm của VSDC, và thuế.'],
+  thr:[['Ký quỹ 20%','Đòn bẩy ≈ 5 lần: chỉ số 1% = vốn 5%'],['Để dư tiền ký quỹ','Chịu được vài phiên xấu mà không bị gọi ký quỹ']],
+  hook:'<b>Mẹo nhớ:</b> với future, bạn không thua vào ngày đáo hạn — bạn thua từng tối một.',src:'VSDC, quy chế ký quỹ và thanh toán bù trừ chứng khoán phái sinh; HNX, đặc tả hợp đồng tương lai chỉ số VN30.'},
+ {id:'fut-curve',g:FUT_G,t:'Basis, contango và chi phí cuộn',d:'Vì sao giá future khác giá chỉ số và vì sao ETF hàng hóa hao mòn',
+  vis:()=>{ const X=i=>30+i*48, Yc=i=>70-i*12, Yb=i=>58+i*12; let g=`<line x1="22" x2="190" y1="64" y2="64" style="stroke:var(--mut)" stroke-dasharray="2 2"/>`+T(186,61,'Giao ngay','text-anchor="end" style="font-size:6.5px;fill:var(--mut)"');
+    g+=`<path d="M${[0,1,2,3].map(i=>X(i)+' '+Yc(i)).join(' L')}" fill="none" style="stroke:var(--dn)" stroke-width="2"/><path d="M${[0,1,2,3].map(i=>X(i)+' '+Yb(i)).join(' L')}" fill="none" style="stroke:var(--up)" stroke-width="2"/>`;
+    [0,1,2,3].forEach(i=>{ g+=`<circle cx="${X(i)}" cy="${Yc(i)}" r="2.5" style="fill:var(--dn)"/><circle cx="${X(i)}" cy="${Yb(i)}" r="2.5" style="fill:var(--up)"/>`+T(X(i),120,['Tháng này','Tháng sau','Quý gần','Quý xa'][i],'text-anchor="middle" style="font-size:6.5px;fill:var(--mut)"'); });
+    g+=T(X(3),Yc(3)-6,'Contango','text-anchor="middle" style="font-size:8px;font-weight:700;fill:var(--dn)"')+T(X(3),Yb(3)+12,'Backwardation','text-anchor="middle" style="font-size:8px;font-weight:700;fill:var(--up)"')+T(22,14,'Giá các kỳ hạn của cùng một tài sản','style="font-size:7.5px;font-weight:700;fill:var(--fg)"');
+    return sv(g,'Đường cong kỳ hạn: contango dốc lên, backwardation dốc xuống'); },
+  f:'Giá lý thuyết F ≈ S × (1 + (r − q) × T) · Basis = F − S',
+  pts:['Giá future khác giá chỉ số vì chi phí nắm giữ: lãi suất (r) trừ cổ tức (q) trong thời gian T. Với hàng hóa còn có phí kho và bảo hiểm.','Ví dụ: VN30 1.300, r 5%, q 2%, còn 1 tháng → F ≈ 1.300 × (1 + 0,03 ÷ 12) ≈ 1.303,3.','Basis = F − S. Càng gần đáo hạn, basis càng tiến về 0 vì hai giá phải gặp nhau khi thanh toán.','Contango: hợp đồng kỳ xa đắt hơn kỳ gần (đường cong dốc lên). Backwardation: kỳ xa rẻ hơn, thường khi hàng hóa đang khan hiếm.','Chi phí cuộn: muốn giữ vị thế lâu phải bán hợp đồng sắp đáo hạn và mua hợp đồng kỳ sau. Trong contango, mỗi lần cuộn là mua đắt hơn — vì thế ETF dầu, khí, VIX có thể giảm dù giá giao ngay đi ngang.','VN30F có lúc giao dịch chiết khấu so với VN30 (basis âm), phản ánh tâm lý thị trường. Basis lệch bất thường là tín hiệu cần đọc kỹ, không phải tiền miễn phí.'],
+  thr:[['Basis dương','Contango — người giữ lâu chịu chi phí cuộn'],['Basis âm','Backwardation hoặc tâm lý bi quan'],['Ngày đáo hạn','Basis về 0']],
+  hook:'<b>Mẹo nhớ:</b> contango = “chờ thì đắt hơn”; ETF hàng hóa nắm future trả tiền cho sự chờ đợi đó.',src:'Hull, Options, Futures, and Other Derivatives, chương 5; CME Group, Contango and Backwardation.'},
+ {id:'fut-hedge',g:FUT_G,t:'VN30F, E-mini và phòng hộ danh mục',d:'Đặc tả hợp đồng Việt Nam và Mỹ, cách tính số hợp đồng phòng hộ',
+  vis:()=>{ const R=[['Hệ số nhân','100.000đ/điểm','$50/điểm'],['Bước giá','0,1 điểm','0,25 điểm'],['Biên độ/phiên','±7%','Ngắt mạch'],['Đáo hạn','Hằng tháng','Hằng quý'],['Bản nhỏ','—','Micro $5']]; let g='';
+    g+=`<rect x="8" y="8" width="184" height="110" rx="8" style="fill:var(--s1);stroke:var(--line2)"/>`+T(84,24,'VN30F','text-anchor="middle" style="font-size:9px;font-weight:800;fill:var(--vn)"')+T(150,24,'E-mini S&P','text-anchor="middle" style="font-size:9px;font-weight:800;fill:var(--us)"');
+    R.forEach((r,i)=>{ const y=42+i*17; g+=`<line x1="14" x2="186" y1="${y-11}" y2="${y-11}" style="stroke:var(--line)"/>`+T(16,y,r[0],'style="font-size:7px;fill:var(--mut)"')+T(84,y,r[1],'text-anchor="middle" style="font-size:7.5px;font-weight:700;fill:var(--fg)"')+T(150,y,r[2],'text-anchor="middle" style="font-size:7.5px;font-weight:700;fill:var(--fg)"'); });
+    return sv(g,'So sánh đặc tả hợp đồng tương lai VN30F và E-mini S&P 500'); },
+  f:'Số HĐ phòng hộ = Giá trị danh mục × Beta ÷ (Giá future × Hệ số nhân)',
+  pts:['VN30F (HNX): tài sản cơ sở là chỉ số VN30, hệ số nhân 100.000đ/điểm, bước giá 0,1 điểm, biên độ ±7% mỗi phiên, thanh toán bằng tiền. Có 4 kỳ hạn: tháng hiện tại, tháng kế tiếp và tháng cuối của hai quý tiếp theo; đáo hạn thứ Năm tuần thứ ba của tháng.','Mở và đóng vị thế ngay trong phiên được, khác cổ phiếu cơ sở phải chờ tiền và hàng về.','E-mini S&P 500 (CME, mã ES): $50 × chỉ số, bước giá 0,25 điểm = $12,50; bản Micro (MES) $5 × chỉ số. Đáo hạn theo quý (tháng 3, 6, 9, 12), giao dịch gần như suốt ngày đêm từ Chủ nhật đến thứ Sáu.','Phòng hộ: bán future để bù khoản lỗ của danh mục khi thị trường giảm mà không phải bán cổ phiếu (vẫn giữ cổ tức, không phát sinh thuế bán).','Ví dụ: danh mục 1 tỷ đồng, beta 1,1, VN30F ở 1.300 → 1.000.000.000 × 1,1 ÷ (1.300 × 100.000) ≈ 8,5 → bán 8–9 hợp đồng.','Phòng hộ chỉ bù phần rủi ro thị trường; nếu cổ phiếu của bạn giảm mạnh hơn chỉ số thì vẫn lỗ phần chênh lệch (rủi ro cơ sở). Khi thị trường tăng, lãi danh mục cũng bị khoản lỗ future bù trừ.'],
+  thr:[['1 HĐ VN30F ở 1.300 điểm','≈ 130 triệu đồng giá trị'],['1 HĐ ES ở 6.000 điểm','≈ $300.000 giá trị'],['1 HĐ MES ở 6.000 điểm','≈ $30.000 giá trị']],
+  hook:'<b>Mẹo nhớ:</b> phòng hộ là mua bảo hiểm bằng cách đặt cược ngược lại chính danh mục của mình.',src:'HNX, đặc tả hợp đồng tương lai chỉ số VN30; CME Group, E-mini và Micro E-mini S&P 500 contract specs; Hull, chương 3.'}
+];
+FUT_LESSONS.forEach(l=>LESSONS.push(l));
+ORDER.splice(ORDER.indexOf('Quyền chọn (Options)')+1,0,FUT_G);
+LESSONS.sort((a,b)=>ORDER.indexOf(a.g)-ORDER.indexOf(b.g));
+/* câu hỏi được thêm vào cuối QUIZ trong 4k_levels để không xê dịch chỉ số ôn tập đã lưu */
+const FUT_QUIZ=[
+ {lid:'fut-basics',q:'Điểm khác cơ bản nhất giữa hợp đồng tương lai và quyền chọn?',a:['Future là nghĩa vụ của cả hai bên; quyền chọn là quyền của người mua','Future chỉ có ở Việt Nam','Quyền chọn không có ngày đáo hạn','Future phải trả phí như quyền chọn'],c:0,e:'Người mua quyền chọn trả phí để có quyền; hai bên future đặt ký quỹ và chịu lãi/lỗ theo giá.'},
+ {lid:'fut-margin',q:'Mua 1 VN30F ở 1.300, đóng ở 1.320. Lãi trước phí là?',a:['2 triệu đồng','20.000 đồng','200.000 đồng','20 triệu đồng'],c:0,e:'20 điểm × 100.000đ = 2.000.000đ.'},
+ {lid:'fut-margin',q:'Tỷ lệ ký quỹ 20% tương đương đòn bẩy khoảng?',a:['5 lần','20 lần','2 lần','1,2 lần'],c:0,e:'1 ÷ 0,2 = 5: chỉ số đi 1% thì tiền ký quỹ đi khoảng 5%.'},
+ {lid:'fut-margin',q:'Lãi/lỗ của hợp đồng tương lai được ghi nhận khi nào?',a:['Mỗi ngày (mark-to-market)','Chỉ khi đáo hạn','Mỗi quý','Khi công bố kết quả kinh doanh'],c:0,e:'Lỗ bị trừ ngay vào tài khoản cuối ngày; thiếu ký quỹ thì bị gọi nộp thêm.'},
+ {lid:'fut-curve',q:'Contango là khi?',a:['Hợp đồng kỳ xa đắt hơn kỳ gần','Hợp đồng kỳ xa rẻ hơn kỳ gần','Future bằng giá giao ngay','Future bị ngừng giao dịch'],c:0,e:'Người giữ vị thế mua lâu dài phải trả chi phí cuộn mỗi kỳ — lý do ETF dầu và VIX hao mòn.'},
+ {lid:'fut-curve',q:'Vào ngày đáo hạn, basis (F − S) tiến về?',a:['0','Lãi suất','Cổ tức','7%'],c:0,e:'Giá future và chỉ số cơ sở phải hội tụ khi thanh toán.'},
+ {lid:'fut-hedge',q:'Danh mục 1 tỷ đồng, beta 1, VN30F ở 1.250. Cần bán khoảng bao nhiêu hợp đồng để phòng hộ?',a:['8','80','1','12'],c:0,e:'1.000.000.000 ÷ (1.250 × 100.000) = 8.'}
+];
+/* ============================================================
    GIÁ THỊ TRƯỜNG — đọc từ cơ sở dữ liệu của trang, do tác vụ hẹn giờ ghi sau mỗi phiên
    snap/US, snap/VN, snap/ETF: {d, dates:[25 phiên], q:{MÃ:[giá, %thay đổi, vốn hóa]}, c:{MÃ:[25 giá đóng cửa]}}
    snap/IDX: {q:{"IDX.SPX":{px,pct,chg,o,h,l,d,hist}}}
@@ -4435,8 +4496,8 @@ const LEVELS=[
   ids:['l8-plan','l8-alloc','l8-rebal','l8-dividend','l8-fire','cycle','capm','frontier','sizing','famafrench','emh']},
  {n:'Phân tích kỹ thuật',tier:'Nâng cao',d:'Nến, xu hướng, chỉ báo, cắt lỗ — công cụ chọn điểm mua bán.',goal:['Đọc cây nến, mẫu nến, mô hình giá','Xu hướng, hỗ trợ, kháng cự','MA, RSI, MACD, Bollinger, Ichimoku, Fibonacci','Cắt lỗ theo ATR, hiểu rủi ro margin'],
   ids:['candle-anatomy','dow','sr','ma','volume-l','rsi-l','macd-l','bb-l','stoch-l','fibo','ichimoku-l','elliott','atr-l','margin-trade'],extra:'cdl'},
- {n:'Phái sinh & đòn bẩy',tier:'Chuyên gia',d:'Quyền chọn, Greeks, chiến lược, ETF đòn bẩy và đảo chiều.',goal:['Định giá quyền chọn Black–Scholes','Quản lý Greeks và IV','Dựng chiến lược spread, condor, collar','Hiểu hao mòn của ETF đòn bẩy'],
-  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','etf-decay','etf-pairs']}
+ {n:'Phái sinh & đòn bẩy',tier:'Chuyên gia',d:'Quyền chọn, Greeks, chiến lược, hợp đồng tương lai, ETF đòn bẩy và đảo chiều.',goal:['Định giá quyền chọn Black–Scholes','Quản lý Greeks và IV','Dựng chiến lược spread, condor, collar','Dùng hợp đồng tương lai: ký quỹ, basis, phòng hộ','Hiểu hao mòn của ETF đòn bẩy'],
+  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','fut-basics','fut-margin','fut-curve','fut-hedge','etf-decay','etf-pairs']}
 ];
 const TIER_COL={'Người mới':'var(--up)','Trung cấp':'var(--us)','Nâng cao':'var(--gold)','Chuyên gia':'var(--dn)'};
 
@@ -4598,6 +4659,7 @@ QUIZ.forEach(q=>{ if(/ETF/.test(q.q)&&/S&P 500/.test(q.q)) q.lv=3; });
  {lv:6,q:'Trong DCF, tăng chi phí vốn r (giữ nguyên dòng tiền) làm giá trị nội tại?',a:['Giảm','Tăng','Không đổi','Bằng 0'],c:0,e:'Dòng tiền tương lai bị chiết khấu mạnh hơn; giá trị cuối kỳ đặc biệt nhạy với r − g.'},
  {lv:4,q:'Lợi nhuận 160 tỷ, 100 triệu cổ phiếu. EPS bằng?',a:['1.600 đồng','160 đồng','16.000 đồng','1,6 đồng'],c:0,e:'160.000.000.000 ÷ 100.000.000 = 1.600 đồng/cổ phiếu.'}
 ].forEach(q=>QUIZ.push(q));
+FUT_QUIZ.forEach(q=>{ q.lv=LV_OF[q.lid]||9; QUIZ.push(q); });
 
 /* ---------- tiến độ ---------- */
 function lvState(i){
@@ -7876,6 +7938,67 @@ LESSONS.sort((a,b)=>ORDER.indexOf(a.g)-ORDER.indexOf(b.g));
 const _openLessonOpt=openLesson;
 openLesson=function(id){ _openLessonOpt(id); if(String(id).startsWith('opt-')){ const rb=$('#sheetBody .row-btns'); if(rb){ const b=document.createElement('button'); b.className='btn'; b.id='lOptLab'; b.textContent='Open the Options Lab'; b.onclick=()=>{ closeSheet(); S.expertTab='options'; setView('expert'); }; rb.appendChild(b); } } };
 /* ============================================================
+   HỢP ĐỒNG TƯƠNG LAI (FUTURES) — 4 bài + câu hỏi, cấp "Phái sinh & đòn bẩy"
+   Đặc tả VN30F: HNX/VSDC (hệ số nhân 100.000đ/điểm, ký quỹ ban đầu tối thiểu 17%, bước giá 0,1, ±7%).
+   ============================================================ */
+const FUT_G='Futures';
+const FUT_LESSONS=[
+ {id:'fut-basics',g:FUT_G,t:'How futures differ from options',d:'Obligation versus right: linear versus asymmetric payoff',
+  vis:()=>{ const X=s=>20+(s-80)/40*170, Y=v=>66-v*2.2; const fu=s=>s-100, ca=s=>Math.max(s-100,0)-4;
+    let g=`<line x1="20" x2="190" y1="${Y(0)}" y2="${Y(0)}" style="stroke:var(--mut)" stroke-width=".8"/><line x1="${X(100)}" x2="${X(100)}" y1="12" y2="118" style="stroke:var(--line2)" stroke-dasharray="2 2"/>`;
+    g+=`<path d="M${X(80)} ${Y(fu(80))} L${X(120)} ${Y(fu(120))}" fill="none" style="stroke:var(--us)" stroke-width="2.2"/>`;
+    g+=`<path d="M${X(80)} ${Y(ca(80))} L${X(100)} ${Y(ca(100))} L${X(120)} ${Y(ca(120))}" fill="none" style="stroke:var(--gold)" stroke-width="2.2"/>`;
+    g+=T(24,20,'Long future: linear gain and loss','style="font-size:7.5px;font-weight:700;fill:var(--us)"')+T(24,30,'Long call: max loss = premium','style="font-size:7.5px;font-weight:700;fill:var(--gold)"');
+    g+=T(X(100),122,'Entry price / strike','text-anchor="middle" style="font-size:6.5px;fill:var(--mut)"')+T(186,Y(0)-3,'0','text-anchor="end" style="font-size:7px;fill:var(--mut)"');
+    return sv(g,'Payoff chart: a long future is a straight line, a long call caps the loss at the premium'); },
+  f:'P/L = (Exit price − Entry price) × Multiplier × Contracts',
+  pts:['A futures contract is a standardized agreement to buy or sell an asset (an index, a commodity, a bond) at a price fixed today, settled on the expiry date. Both sides are obligated.','An option gives only the buyer a right, not an obligation; in exchange the buyer pays a premium up front.','Futures P/L is linear: whatever the price moves, you gain or lose the same, in both directions. No premium, no time decay (theta), no dependence on implied volatility (IV).','Long gains when the price rises; short gains when it falls — selling an index is as easy as buying it.','Leverage comes from margin: you post only part of the contract value, so a 1% index move can be 5% on your margin.'],
+  thr:[['Directional bet, loss moves with price','Future'],['Want loss capped at the premium paid','Buy an option'],['Want to collect premium in a flat market','Sell options (high risk)']],
+  hook:'<b>Memory hook:</b> a future is an <i>obligation</i>, an option is a <i>right</i>. A right costs a premium; an obligation needs margin.',src:'CME Group, Futures Fundamentals; Vietnam Securities Law 2019 and Decree 158/2020/ND-CP on derivatives.'},
+ {id:'fut-margin',g:FUT_G,t:'Margin and daily P/L',d:'Mark-to-market, leverage and margin calls',
+  vis:()=>{ const v=[26,27,24.5,20,26], lab=['Day 1','+10 pts','−25 pts','−45 pts','Top-up']; const Y=x=>112-x*2.9; let g='';
+    g+=`<line x1="14" x2="192" y1="${Y(21)}" y2="${Y(21)}" style="stroke:var(--dn)" stroke-dasharray="3 2"/>`+T(192,21,'Margin call level','text-anchor="end" style="font-size:6.5px;fill:var(--dn)"');
+    v.forEach((x,i)=>{ const bx=18+i*35; g+=`<rect x="${bx}" y="${Y(x)}" width="24" height="${112-Y(x)}" rx="3" style="fill:${x<21?'var(--dn)':i===4?'var(--gold)':'var(--us)'}"/>`+T(bx+12,Y(x)-3,String(x).replace('.','.'),'text-anchor="middle" style="font-size:7px;font-weight:700;fill:var(--fg)"')+T(bx+12,121,lab[i],'text-anchor="middle" style="font-size:6px;fill:var(--mut)"'); });
+    g+=T(14,11,'Margin balance (M VND), 1 VN30F','style="font-size:7.5px;font-weight:700;fill:var(--fg)"');
+    return sv(g,'The margin balance changes daily with P/L; below the threshold you must add funds'); },
+  f:'Daily P/L = (Today’s settlement − Yesterday’s) × 100,000 VND × Contracts',
+  pts:['Initial margin: VSDC sets a minimum of 17% of VN30F contract value; brokers usually require about 17–22%.','Example: 1 contract at 1,300 points is worth 1,300 × 100,000 VND = 130M VND; 20% margin is 26M.','At the end of each day, P/L is computed from the settlement price and credited or debited to the account at once (mark-to-market) — it does not wait for expiry.','The index falls 5% (65 points) → a loss of 6.5M, i.e. 25% of the margin. Leverage ≈ 1 ÷ margin rate = 5×.','If margin assets fall below the threshold you get a margin call; fail to top up in time and the position is force-closed, often at the worst price.','Costs: exchange and broker fees per contract, VSDC overnight position fee, and tax.'],
+  thr:[['20% margin','Leverage ≈ 5×: index 1% = capital 5%'],['Keep spare margin','Survive a few bad sessions without a call']],
+  hook:'<b>Memory hook:</b> with futures you don’t lose on expiry day — you lose one evening at a time.',src:'VSDC, derivatives margin and clearing rules; HNX, VN30 index futures specifications.'},
+ {id:'fut-curve',g:FUT_G,t:'Basis, contango and roll cost',d:'Why futures differ from the index and why commodity ETFs decay',
+  vis:()=>{ const X=i=>30+i*48, Yc=i=>70-i*12, Yb=i=>58+i*12; let g=`<line x1="22" x2="190" y1="64" y2="64" style="stroke:var(--mut)" stroke-dasharray="2 2"/>`+T(186,61,'Spot','text-anchor="end" style="font-size:6.5px;fill:var(--mut)"');
+    g+=`<path d="M${[0,1,2,3].map(i=>X(i)+' '+Yc(i)).join(' L')}" fill="none" style="stroke:var(--dn)" stroke-width="2"/><path d="M${[0,1,2,3].map(i=>X(i)+' '+Yb(i)).join(' L')}" fill="none" style="stroke:var(--up)" stroke-width="2"/>`;
+    [0,1,2,3].forEach(i=>{ g+=`<circle cx="${X(i)}" cy="${Yc(i)}" r="2.5" style="fill:var(--dn)"/><circle cx="${X(i)}" cy="${Yb(i)}" r="2.5" style="fill:var(--up)"/>`+T(X(i),120,['This month','Next month','Near qtr','Far qtr'][i],'text-anchor="middle" style="font-size:6.5px;fill:var(--mut)"'); });
+    g+=T(X(3),Yc(3)-6,'Contango','text-anchor="middle" style="font-size:8px;font-weight:700;fill:var(--dn)"')+T(X(3),Yb(3)+12,'Backwardation','text-anchor="middle" style="font-size:8px;font-weight:700;fill:var(--up)"')+T(22,14,'Prices of each expiry, same asset','style="font-size:7.5px;font-weight:700;fill:var(--fg)"');
+    return sv(g,'Futures curve: contango slopes up, backwardation slopes down'); },
+  f:'Fair value F ≈ S × (1 + (r − q) × T) · Basis = F − S',
+  pts:['A future differs from the index because of the cost of carry: interest (r) minus dividends (q) over time T. Commodities also carry storage and insurance.','Example: VN30 at 1,300, r 5%, q 2%, 1 month left → F ≈ 1,300 × (1 + 0.03 ÷ 12) ≈ 1,303.3.','Basis = F − S. As expiry nears, basis moves toward 0 because the two prices must meet at settlement.','Contango: far contracts cost more than near ones (curve slopes up). Backwardation: far contracts are cheaper, often when a commodity is scarce.','Roll cost: holding a position long-term means selling the expiring contract and buying the next. In contango each roll buys higher — which is why oil, gas and VIX ETFs can fall even when spot is flat.','VN30F sometimes trades at a discount to VN30 (negative basis), reflecting sentiment. An unusual basis is a signal to read carefully, not free money.'],
+  thr:[['Positive basis','Contango — long holders pay roll cost'],['Negative basis','Backwardation or bearish sentiment'],['Expiry day','Basis goes to 0']],
+  hook:'<b>Memory hook:</b> contango = “waiting costs more”; commodity ETFs holding futures pay for that wait.',src:'Hull, Options, Futures, and Other Derivatives, ch. 5; CME Group, Contango and Backwardation.'},
+ {id:'fut-hedge',g:FUT_G,t:'VN30F, E-mini and portfolio hedging',d:'Vietnam and US contract specs, and how many contracts to hedge',
+  vis:()=>{ const R=[['Multiplier','100,000₫/pt','$50/pt'],['Tick','0.1 pt','0.25 pt'],['Daily limit','±7%','Circuit breaker'],['Expiry','Monthly','Quarterly'],['Small size','—','Micro $5']]; let g='';
+    g+=`<rect x="8" y="8" width="184" height="110" rx="8" style="fill:var(--s1);stroke:var(--line2)"/>`+T(84,24,'VN30F','text-anchor="middle" style="font-size:9px;font-weight:800;fill:var(--vn)"')+T(150,24,'E-mini S&P','text-anchor="middle" style="font-size:9px;font-weight:800;fill:var(--us)"');
+    R.forEach((r,i)=>{ const y=42+i*17; g+=`<line x1="14" x2="186" y1="${y-11}" y2="${y-11}" style="stroke:var(--line)"/>`+T(16,y,r[0],'style="font-size:7px;fill:var(--mut)"')+T(84,y,r[1],'text-anchor="middle" style="font-size:7.5px;font-weight:700;fill:var(--fg)"')+T(150,y,r[2],'text-anchor="middle" style="font-size:7.5px;font-weight:700;fill:var(--fg)"'); });
+    return sv(g,'Comparison of VN30F and E-mini S&P 500 futures specifications'); },
+  f:'Hedge contracts = Portfolio value × Beta ÷ (Futures price × Multiplier)',
+  pts:['VN30F (HNX): underlying is the VN30 index, multiplier 100,000 VND per point, tick 0.1 point, ±7% daily limit, cash-settled. Four expiries: current month, next month and the last month of the next two quarters; expiry is the third Thursday of the month.','You can open and close within the same session, unlike the underlying shares, which must wait for settlement.','E-mini S&P 500 (CME, ticker ES): $50 × index, tick 0.25 point = $12.50; Micro (MES) is $5 × index. Quarterly expiry (Mar, Jun, Sep, Dec), trading nearly around the clock Sunday to Friday.','Hedging: sell futures to offset portfolio losses in a falling market without selling your shares (you keep dividends and avoid sale tax).','Example: 1 bn VND portfolio, beta 1.1, VN30F at 1,300 → 1,000,000,000 × 1.1 ÷ (1,300 × 100,000) ≈ 8.5 → sell 8–9 contracts.','A hedge only offsets market risk; if your stocks fall more than the index you still lose the difference (basis risk). When the market rises, futures losses offset portfolio gains too.'],
+  thr:[['1 VN30F at 1,300 points','≈ 130M VND notional'],['1 ES at 6,000 points','≈ $300,000 notional'],['1 MES at 6,000 points','≈ $30,000 notional']],
+  hook:'<b>Memory hook:</b> hedging is buying insurance by betting against your own portfolio.',src:'HNX, VN30 index futures specifications; CME Group, E-mini and Micro E-mini S&P 500 contract specs; Hull, ch. 3.'}
+];
+FUT_LESSONS.forEach(l=>LESSONS.push(l));
+ORDER.splice(ORDER.indexOf('Options')+1,0,FUT_G);
+LESSONS.sort((a,b)=>ORDER.indexOf(a.g)-ORDER.indexOf(b.g));
+/* câu hỏi được thêm vào cuối QUIZ trong 4k_levels để không xê dịch chỉ số ôn tập đã lưu */
+const FUT_QUIZ=[
+ {lid:'fut-basics',q:'What is the most basic difference between futures and options?',a:['A future obligates both sides; an option is a right for the buyer','Futures exist only in Vietnam','Options have no expiry date','Futures require a premium like options'],c:0,e:'An option buyer pays a premium for a right; both futures parties post margin and take P/L as price moves.'},
+ {lid:'fut-margin',q:'Buy 1 VN30F at 1,300, close at 1,320. Profit before fees?',a:['2M VND','20,000 VND','200,000 VND','20M VND'],c:0,e:'20 points × 100,000 VND = 2,000,000 VND.'},
+ {lid:'fut-margin',q:'A 20% margin rate means leverage of about?',a:['5×','20×','2×','1.2×'],c:0,e:'1 ÷ 0.2 = 5: a 1% index move is about 5% on your margin.'},
+ {lid:'fut-margin',q:'When is futures P/L recognized?',a:['Every day (mark-to-market)','Only at expiry','Every quarter','When earnings are reported'],c:0,e:'Losses are debited at the end of each day; if margin runs short you get a margin call.'},
+ {lid:'fut-curve',q:'Contango is when?',a:['Far contracts cost more than near ones','Far contracts are cheaper than near ones','The future equals spot','Futures trading is halted'],c:0,e:'Long-term long holders pay roll cost each period — why oil and VIX ETFs decay.'},
+ {lid:'fut-curve',q:'On expiry day, basis (F − S) moves toward?',a:['0','The interest rate','The dividend','7%'],c:0,e:'The future and the underlying index must converge at settlement.'},
+ {lid:'fut-hedge',q:'Portfolio 1 bn VND, beta 1, VN30F at 1,250. About how many contracts to sell to hedge?',a:['8','80','1','12'],c:0,e:'1,000,000,000 ÷ (1,250 × 100,000) = 8.'}
+];
+/* ============================================================
    GIÁ THỊ TRƯỜNG — đọc từ cơ sở dữ liệu của trang, do tác vụ hẹn giờ ghi sau mỗi phiên
    snap/US, snap/VN, snap/ETF: {d, dates:[25 phiên], q:{MÃ:[giá, %thay đổi, vốn hóa]}, c:{MÃ:[25 giá đóng cửa]}}
    snap/IDX: {q:{"IDX.SPX":{px,pct,chg,o,h,l,d,hist}}}
@@ -8727,8 +8850,8 @@ const LEVELS=[
   ids:['l8-plan','l8-alloc','l8-rebal','l8-dividend','l8-fire','cycle','capm','frontier','sizing','famafrench','emh']},
  {n:'Technical analysis',tier:'Advanced',d:'Candles, trends, indicators, stop-losses — tools for timing buys and sells.',goal:['Read candles, candlestick patterns and chart patterns','Read trends, support and resistance','Use MA, RSI, MACD, Bollinger, Ichimoku, Fibonacci','Set ATR-based stop-losses and understand margin risk'],
   ids:['candle-anatomy','dow','sr','ma','volume-l','rsi-l','macd-l','bb-l','stoch-l','fibo','ichimoku-l','elliott','atr-l','margin-trade'],extra:'cdl'},
- {n:'Derivatives & leverage',tier:'Expert',d:'Options, Greeks, strategies, leveraged and inverse ETFs.',goal:['Price options with Black–Scholes','Manage the Greeks and IV','Build spreads, condors and collars','Understand the decay of leveraged ETFs'],
-  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','etf-decay','etf-pairs']}
+ {n:'Derivatives & leverage',tier:'Expert',d:'Options, Greeks, strategies, futures, leveraged and inverse ETFs.',goal:['Price options with Black–Scholes','Manage the Greeks and IV','Build spreads, condors and collars','Use futures: margin, basis, hedging','Understand the decay of leveraged ETFs'],
+  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','fut-basics','fut-margin','fut-curve','fut-hedge','etf-decay','etf-pairs']}
 ];
 const TIER_COL={'Beginner':'var(--up)','Intermediate':'var(--us)','Advanced':'var(--gold)','Expert':'var(--dn)'};
 
@@ -8890,6 +9013,7 @@ QUIZ.forEach(q=>{ if(/ETF/.test(q.q)&&/S&P 500/.test(q.q)) q.lv=3; });
  {lv:6,q:'In a DCF, raising the cost of capital r (cash flows unchanged) makes intrinsic value?',a:['Fall','Rise','Stay the same','Drop to 0'],c:0,e:'Future cash flows are discounted more heavily; terminal value is especially sensitive to r − g.'},
  {lv:4,q:'Profit of 160 bn VND, 100M shares. EPS is?',a:['₫1,600','₫160','₫16,000','₫1.6'],c:0,e:'160,000,000,000 ÷ 100,000,000 = ₫1,600 per share.'}
 ].forEach(q=>QUIZ.push(q));
+FUT_QUIZ.forEach(q=>{ q.lv=LV_OF[q.lid]||9; QUIZ.push(q); });
 
 /* ---------- tiến độ ---------- */
 function lvState(i){

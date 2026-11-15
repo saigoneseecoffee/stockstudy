@@ -20,8 +20,8 @@ const LEVELS=[
   ids:['l8-plan','l8-alloc','l8-rebal','l8-dividend','l8-fire','cycle','capm','frontier','sizing','famafrench','emh']},
  {n:'Technical analysis',tier:'Advanced',d:'Candles, trends, indicators, stop-losses — tools for timing buys and sells.',goal:['Read candles, candlestick patterns and chart patterns','Read trends, support and resistance','Use MA, RSI, MACD, Bollinger, Ichimoku, Fibonacci','Set ATR-based stop-losses and understand margin risk'],
   ids:['candle-anatomy','dow','sr','ma','volume-l','rsi-l','macd-l','bb-l','stoch-l','fibo','ichimoku-l','elliott','atr-l','margin-trade'],extra:'cdl'},
- {n:'Derivatives & leverage',tier:'Expert',d:'Options, Greeks, strategies, leveraged and inverse ETFs.',goal:['Price options with Black–Scholes','Manage the Greeks and IV','Build spreads, condors and collars','Understand the decay of leveraged ETFs'],
-  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','etf-decay','etf-pairs']}
+ {n:'Derivatives & leverage',tier:'Expert',d:'Options, Greeks, strategies, futures, leveraged and inverse ETFs.',goal:['Price options with Black–Scholes','Manage the Greeks and IV','Build spreads, condors and collars','Use futures: margin, basis, hedging','Understand the decay of leveraged ETFs'],
+  ids:['opt-basics','opt-money','opt-payoff','opt-bs','opt-parity','opt-delta','opt-theta','opt-iv','opt-smile','opt-income','opt-hedge','opt-vertical','opt-straddle','opt-condor','opt-calendar','opt-risk','opt-vn','fut-basics','fut-margin','fut-curve','fut-hedge','etf-decay','etf-pairs']}
 ];
 const TIER_COL={'Beginner':'var(--up)','Intermediate':'var(--us)','Advanced':'var(--gold)','Expert':'var(--dn)'};
 
@@ -183,6 +183,7 @@ QUIZ.forEach(q=>{ if(/ETF/.test(q.q)&&/S&P 500/.test(q.q)) q.lv=3; });
  {lv:6,q:'In a DCF, raising the cost of capital r (cash flows unchanged) makes intrinsic value?',a:['Fall','Rise','Stay the same','Drop to 0'],c:0,e:'Future cash flows are discounted more heavily; terminal value is especially sensitive to r − g.'},
  {lv:4,q:'Profit of 160 bn VND, 100M shares. EPS is?',a:['₫1,600','₫160','₫16,000','₫1.6'],c:0,e:'160,000,000,000 ÷ 100,000,000 = ₫1,600 per share.'}
 ].forEach(q=>QUIZ.push(q));
+FUT_QUIZ.forEach(q=>{ q.lv=LV_OF[q.lid]||9; QUIZ.push(q); });
 
 /* ---------- tiến độ ---------- */
 function lvState(i){
