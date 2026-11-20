@@ -627,6 +627,29 @@ input[type=range]{min-height:44px}
 .news-f a{color:var(--mut); min-height:32px; display:inline-flex; align-items:center}
 .chip.imp{font-size:11.5px; padding:2px 8px; min-height:0}
 .chip.imp.up{color:var(--up); border-color:color-mix(in srgb,var(--up) 40%,transparent)} .chip.imp.dn{color:var(--dn); border-color:color-mix(in srgb,var(--dn) 40%,transparent)}
+/* dòng tiền & tâm lý */
+.fl-sum{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 12px}
+.fl-sum p{flex-basis:100%; margin:4px 0 0; font-size:14px; line-height:1.5}
+.chip.fl-c{font-size:11.5px; padding:2px 8px; min-height:0}
+.chip.fl-c.fear{color:var(--dn); border-color:color-mix(in srgb,var(--dn) 40%,transparent)}
+.chip.fl-c.greed{color:var(--ref); border-color:color-mix(in srgb,var(--ref) 45%,transparent)}
+.chip.fl-c.mid{color:var(--mut)}
+.fl-g{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px}
+.fl-i{border:1px solid var(--line); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; min-width:0}
+.fl-h{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+.fl-h h3{font-size:14.5px; line-height:1.35; margin:0}
+.fl-v{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+.fl-v b{font-family:var(--f-disp); font-size:24px; font-variant-numeric:tabular-nums}
+.fl-v span{font-size:12.5px; color:var(--mut)}
+.fl-bar{position:relative; height:8px; border-radius:4px; overflow:visible; margin-top:4px}
+.fl-bar i{position:absolute; top:0; height:100%}
+.fl-bar i:first-child{border-radius:4px 0 0 4px} .fl-bar i:nth-child(3){border-radius:0 4px 4px 0}
+.fl-bar i.fear{background:color-mix(in srgb,var(--dn) 45%,transparent)}
+.fl-bar i.mid{background:color-mix(in srgb,var(--mut) 30%,transparent)}
+.fl-bar i.greed{background:color-mix(in srgb,var(--ref) 50%,transparent)}
+.fl-bar b{position:absolute; top:-4px; width:4px; height:16px; margin-left:-2px; border-radius:2px; background:var(--fg); box-shadow:0 0 0 2px var(--bg,#000)}
+.fl-ax{display:flex; justify-content:space-between; font-size:11px; color:var(--mut)}
+.fl-i p{margin:0; font-size:13px; line-height:1.5; color:var(--mut)}
 </style>
 <body>
 <template id="lb-body-vi">
@@ -1490,6 +1513,7 @@ RENDER.home=function(){
   </section>
   <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
   ${newsHomeHTML()}
+  ${flowHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -3883,6 +3907,7 @@ async function initLive(){
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
     db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/flow').onSnapshot(s=>{ LIVE.flow=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }
 /* ============================================================
@@ -5106,6 +5131,79 @@ bhow:'Ô số lớn là tỷ lệ đoán đúng chiều, dòng nhỏ là sai s�
 bcav:'Lịch sử dùng để kiểm định chỉ khoảng 80 phiên và chồng lấn nhau, nên tỷ lệ chênh 1–3% so với 50% thường chỉ là nhiễu. Nếu không mô hình nào có dấu ✓, nghĩa là ở tầm đó giá ngắn hạn không dự báo được bằng các mô hình này — đó là kết quả trung thực, không phải lỗi.',
 imp:{pos:'Tích cực',neg:'Tiêu cực',mix:'Hai chiều'},all:'Toàn cầu',nh:'Tin kinh tế – chính trị',np:'Sự kiện có thể ảnh hưởng cổ phiếu · cập nhật {d}',
 nst:'Tin liên quan',nsp:'Sự kiện gần đây ảnh hưởng tới mã, ngành hoặc thị trường của mã này'};
+/* ---------- dòng tiền & tâm lý thị trường Mỹ (đọc meta/flow) ----------
+   Tài liệu: {upd, items:[{k, v, p, d, src:{n,u}, x?}]}; v = giá trị mới nhất, p = kỳ trước.
+   Mỗi chỉ báo được quy về thang z; vượt ngưỡng a là vùng sợ hãi, vượt ngưỡng b là vùng hưng phấn. */
+const FLOW_DEF={
+  fg:    {z:o=>o.v,               lo:0,   hi:100, a:45,  b:55,  up:false, d:0, u:''},
+  vix:   {z:o=>o.v,               lo:10,  hi:45,  a:20,  b:15,  up:true,  d:2, u:''},
+  aaii:  {z:o=>o.v,               lo:15,  hi:65,  a:40,  b:25,  up:true,  d:1, u:'%'},
+  fms:   {z:o=>o.v,               lo:3,   hi:6.5, a:5,   b:4,   up:true,  d:1, u:'%'},
+  mmf:   {z:o=>isNum(o.p)?o.v-o.p:null,        lo:-120, hi:120, a:40, b:-40, up:true,  d:0, u:'B'},
+  margin:{z:o=>isNum(o.p)&&o.p?(o.v-o.p)/o.p*100:null, lo:-8, hi:8, a:-2, b:2, up:false, d:1, u:'%'}
+};
+const FLOW_ORDER=['fg','vix','aaii','fms','mmf','margin'];
+function flowZone(k,o){
+  const D=FLOW_DEF[k], z=D.z(o); if(!isNum(z)) return {z:null,c:'mid'};
+  if(D.up) return {z,c:z>=D.a?'fear':z<=D.b?'greed':'mid'};
+  return {z,c:z<=D.a?'fear':z>=D.b?'greed':'mid'};
+}
+function flowVal(k,v){
+  const D=FLOW_DEF[k]; if(!isNum(v)) return '—';
+  if(k==='mmf') return '$'+fmt(v/1000,2)+T_FL.tr;
+  if(k==='margin') return '$'+fmt(v/1000,2)+T_FL.tr;
+  return fmt(v,D.d)+D.u;
+}
+function flowChg(k,o){
+  if(!isNum(o.p)) return '';
+  const d=o.v-o.p; if(!d) return T_FL.flat;
+  const ar=d>0?'▲':'▼';
+  if(k==='mmf') return `${ar} ${d>0?'+':'−'}$${fmt(Math.abs(d),1)}${T_FL.bn} ${T_FL.vs}`;
+  if(k==='margin') return `${ar} ${d>0?'+':'−'}${fmt(Math.abs(d/o.p*100),1)}% ${T_FL.vs}`;
+  return `${ar} ${d>0?'+':'−'}${fmt(Math.abs(d),FLOW_DEF[k].d)}${k==='fg'||k==='vix'?'':' '+T_FL.pt} ${T_FL.vs} (${flowVal(k,o.p)})`;
+}
+function flowBar(k,z){
+  const D=FLOW_DEF[k]; const pos=v=>Math.max(0,Math.min(100,(v-D.lo)/(D.hi-D.lo)*100));
+  const pa=pos(D.a), pb=pos(D.b); const lo=Math.min(pa,pb), hi=Math.max(pa,pb);
+  const fearLeft=!D.up;
+  const L=fearLeft?'fear':'greed', R=fearLeft?'greed':'fear';
+  return `<div class="fl-bar" aria-hidden="true"><i class="${L}" style="left:0;width:${lo}%"></i><i class="mid" style="left:${lo}%;width:${hi-lo}%"></i><i class="${R}" style="left:${hi}%;width:${100-hi}%"></i>${isNum(z)?`<b style="left:${pos(z)}%"></b>`:''}</div>
+    <div class="fl-ax"><span>${T_FL.zn[L]}</span><span>${T_FL.zn[R]}</span></div>`;
+}
+function flowHomeHTML(){
+  if(S.market==='VN') return '';
+  const F=LIVE.flow&&LIVE.flow.items; if(!F||!F.length) return '';
+  const by={}; F.forEach(o=>{ if(o&&FLOW_DEF[o.k]&&isNum(o.v)) by[o.k]=o; });
+  const ks=FLOW_ORDER.filter(k=>by[k]); if(!ks.length) return '';
+  const Z=ks.map(k=>flowZone(k,by[k]));
+  const nf=Z.filter(x=>x.c==='fear').length, ng=Z.filter(x=>x.c==='greed').length;
+  const verdict=nf>=Math.ceil(ks.length/2)?T_FL.vf:ng>=Math.ceil(ks.length/2)?T_FL.vg:T_FL.vm;
+  const day=s=>esc(String(s||'').slice(0,10).split('-').reverse().join('/'));
+  return `<section class="panel flow" aria-labelledby="h-flow"><div class="sec-h"><div><h2 id="h-flow">${T_FL.h}</h2><p>${T_FL.sub.replace('{d}',day(LIVE.flow.upd))}</p></div></div>
+    <div class="fl-sum"><span class="chip fl-c fear">${T_FL.zn.fear} ${nf}</span><span class="chip fl-c mid">${T_FL.zn.mid} ${ks.length-nf-ng}</span><span class="chip fl-c greed">${T_FL.zn.greed} ${ng}</span><p>${verdict}</p></div>
+    <div class="fl-g">${ks.map((k,i)=>{ const o=by[k], zz=Z[i];
+      return `<article class="fl-i"><div class="fl-h"><h3>${T_FL.n[k]}</h3><span class="chip fl-c ${zz.c}">${T_FL.zn[zz.c]}</span></div>
+        <div class="fl-v"><b>${flowVal(k,o.v)}</b><span>${esc(flowChg(k,o))}</span></div>
+        ${flowBar(k,zz.z)}
+        <p>${T_FL.m[k]}</p>
+        <div class="news-f"><span>${day(o.d)} · ${T_FL.fq[k]}</span>${o.src&&o.src.u?`<a href="${esc(o.src.u)}" target="_blank" rel="noopener">${esc(o.src.n||'')} ↗</a>`:''}</div></article>`; }).join('')}</div>
+    <p class="note">${T_FL.cav}</p></section>`;
+}
+const T_FL={h:'Dòng tiền & tâm lý (Mỹ)',sub:'Nhà đầu tư đang giữ tiền mặt hay đổ tiền vào cổ phiếu · cập nhật {d}',
+tr:' nghìn tỷ',bn:' tỷ',pt:'điểm %',vs:'so với kỳ trước',flat:'Không đổi so với kỳ trước',
+zn:{fear:'Sợ hãi',mid:'Trung tính',greed:'Hưng phấn'},
+n:{fg:'Chỉ số Sợ hãi & Tham lam (CNN)',vix:'VIX – chỉ số biến động',aaii:'Nhà đầu tư cá nhân bi quan (AAII)',fms:'Tiền mặt của quỹ lớn (BofA)',mmf:'Tài sản quỹ thị trường tiền tệ',margin:'Dư nợ ký quỹ (FINRA)'},
+fq:{fg:'hằng ngày',vix:'hằng ngày',aaii:'hằng tuần',fms:'hằng tháng',mmf:'hằng tuần',margin:'hằng tháng'},
+m:{fg:'Gộp 7 tín hiệu thị trường trên thang 0–100. Dưới 25 là sợ hãi cực độ, trên 75 là tham lam cực độ.',
+vix:'Mức biến động thị trường quyền chọn kỳ vọng cho S&P 500 trong 30 ngày tới. Trên 20 là thị trường lo lắng, trên 30 là hoảng loạn.',
+aaii:'Tỷ lệ nhà đầu tư cá nhân Mỹ cho rằng cổ phiếu sẽ giảm trong 6 tháng tới. Trung bình lịch sử khoảng 31,5%.',
+fms:'Tỷ lệ tiền mặt bình quân trong danh mục các quỹ toàn cầu. Từ 5% trở lên là quỹ đang co cụm (thường là tín hiệu mua ngược đám đông); từ 4% trở xuống là gần như dồn hết vào tài sản rủi ro.',
+mmf:'Tiền nằm chờ trong các quỹ thị trường tiền tệ. Thanh màu đo mức thay đổi trong tuần: tiền chảy vào mạnh nghĩa là nhà đầu tư đang trú ẩn. Lãi suất cao khiến tổng tài sản tăng dần cả khi thị trường bình thường, nên hãy xem chiều thay đổi.',
+margin:'Tiền nhà đầu tư vay để mua chứng khoán. Thanh màu đo mức thay đổi so với tháng trước: dư nợ giảm là đang hạ đòn bẩy, tăng là khẩu vị rủi ro cao.'},
+vf:'Đa số chỉ báo đang ở vùng sợ hãi: nhà đầu tư thận trọng, ưu tiên giữ tiền. Trong lịch sử, sợ hãi cực độ thường xuất hiện gần các đáy ngắn hạn, nhưng không cho biết chính xác thời điểm.',
+vg:'Đa số chỉ báo đang ở vùng hưng phấn: tiền đổ mạnh vào cổ phiếu, ít tiền mặt dự phòng. Đây thường là lúc thị trường dễ tổn thương khi có tin xấu.',
+vm:'Các chỉ báo trái chiều nhau: chưa có xu hướng rõ ràng về việc rút tiền hay đổ tiền vào cổ phiếu.',
+cav:'Mỗi chỉ báo có tần suất và độ trễ khác nhau (ngày, tuần, tháng), nên đọc cùng nhau thay vì dựa vào một con số. Đây là thước đo tâm lý, không phải tín hiệu mua bán.'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>window.__LB_APP_en=function(){
@@ -5844,6 +5942,7 @@ RENDER.home=function(){
   </section>
   <p class="note">Gold line: ${esc(s.t)} profile. Dashed line: ${esc(mktName(S.market))} median. Weight set: <b>${esc(S.preset==='custom'?'Custom':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
   ${newsHomeHTML()}
+  ${flowHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
@@ -8237,6 +8336,7 @@ async function initLive(){
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
     db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/flow').onSnapshot(s=>{ LIVE.flow=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }
 /* ============================================================
@@ -9460,6 +9560,79 @@ bhow:'The large figure is the share of correct direction calls, the small line t
 bcav:'The test history is only about 80 sessions and the windows overlap, so a 1–3% edge over 50% is usually noise. If no model has a ✓, short-term prices at that horizon are not predictable with these models — that is an honest result, not a bug.',
 imp:{pos:'Positive',neg:'Negative',mix:'Mixed'},all:'Global',nh:'Economic & political news',np:'Events that may move stocks · updated {d}',
 nst:'Related news',nsp:'Recent events affecting this stock, its sector or its market'};
+/* ---------- dòng tiền & tâm lý thị trường Mỹ (đọc meta/flow) ----------
+   Tài liệu: {upd, items:[{k, v, p, d, src:{n,u}, x?}]}; v = giá trị mới nhất, p = kỳ trước.
+   Mỗi chỉ báo được quy về thang z; vượt ngưỡng a là vùng sợ hãi, vượt ngưỡng b là vùng hưng phấn. */
+const FLOW_DEF={
+  fg:    {z:o=>o.v,               lo:0,   hi:100, a:45,  b:55,  up:false, d:0, u:''},
+  vix:   {z:o=>o.v,               lo:10,  hi:45,  a:20,  b:15,  up:true,  d:2, u:''},
+  aaii:  {z:o=>o.v,               lo:15,  hi:65,  a:40,  b:25,  up:true,  d:1, u:'%'},
+  fms:   {z:o=>o.v,               lo:3,   hi:6.5, a:5,   b:4,   up:true,  d:1, u:'%'},
+  mmf:   {z:o=>isNum(o.p)?o.v-o.p:null,        lo:-120, hi:120, a:40, b:-40, up:true,  d:0, u:'B'},
+  margin:{z:o=>isNum(o.p)&&o.p?(o.v-o.p)/o.p*100:null, lo:-8, hi:8, a:-2, b:2, up:false, d:1, u:'%'}
+};
+const FLOW_ORDER=['fg','vix','aaii','fms','mmf','margin'];
+function flowZone(k,o){
+  const D=FLOW_DEF[k], z=D.z(o); if(!isNum(z)) return {z:null,c:'mid'};
+  if(D.up) return {z,c:z>=D.a?'fear':z<=D.b?'greed':'mid'};
+  return {z,c:z<=D.a?'fear':z>=D.b?'greed':'mid'};
+}
+function flowVal(k,v){
+  const D=FLOW_DEF[k]; if(!isNum(v)) return '—';
+  if(k==='mmf') return '$'+fmt(v/1000,2)+T_FL.tr;
+  if(k==='margin') return '$'+fmt(v/1000,2)+T_FL.tr;
+  return fmt(v,D.d)+D.u;
+}
+function flowChg(k,o){
+  if(!isNum(o.p)) return '';
+  const d=o.v-o.p; if(!d) return T_FL.flat;
+  const ar=d>0?'▲':'▼';
+  if(k==='mmf') return `${ar} ${d>0?'+':'−'}$${fmt(Math.abs(d),1)}${T_FL.bn} ${T_FL.vs}`;
+  if(k==='margin') return `${ar} ${d>0?'+':'−'}${fmt(Math.abs(d/o.p*100),1)}% ${T_FL.vs}`;
+  return `${ar} ${d>0?'+':'−'}${fmt(Math.abs(d),FLOW_DEF[k].d)}${k==='fg'||k==='vix'?'':' '+T_FL.pt} ${T_FL.vs} (${flowVal(k,o.p)})`;
+}
+function flowBar(k,z){
+  const D=FLOW_DEF[k]; const pos=v=>Math.max(0,Math.min(100,(v-D.lo)/(D.hi-D.lo)*100));
+  const pa=pos(D.a), pb=pos(D.b); const lo=Math.min(pa,pb), hi=Math.max(pa,pb);
+  const fearLeft=!D.up;
+  const L=fearLeft?'fear':'greed', R=fearLeft?'greed':'fear';
+  return `<div class="fl-bar" aria-hidden="true"><i class="${L}" style="left:0;width:${lo}%"></i><i class="mid" style="left:${lo}%;width:${hi-lo}%"></i><i class="${R}" style="left:${hi}%;width:${100-hi}%"></i>${isNum(z)?`<b style="left:${pos(z)}%"></b>`:''}</div>
+    <div class="fl-ax"><span>${T_FL.zn[L]}</span><span>${T_FL.zn[R]}</span></div>`;
+}
+function flowHomeHTML(){
+  if(S.market==='VN') return '';
+  const F=LIVE.flow&&LIVE.flow.items; if(!F||!F.length) return '';
+  const by={}; F.forEach(o=>{ if(o&&FLOW_DEF[o.k]&&isNum(o.v)) by[o.k]=o; });
+  const ks=FLOW_ORDER.filter(k=>by[k]); if(!ks.length) return '';
+  const Z=ks.map(k=>flowZone(k,by[k]));
+  const nf=Z.filter(x=>x.c==='fear').length, ng=Z.filter(x=>x.c==='greed').length;
+  const verdict=nf>=Math.ceil(ks.length/2)?T_FL.vf:ng>=Math.ceil(ks.length/2)?T_FL.vg:T_FL.vm;
+  const day=s=>esc(String(s||'').slice(0,10).split('-').reverse().join('/'));
+  return `<section class="panel flow" aria-labelledby="h-flow"><div class="sec-h"><div><h2 id="h-flow">${T_FL.h}</h2><p>${T_FL.sub.replace('{d}',day(LIVE.flow.upd))}</p></div></div>
+    <div class="fl-sum"><span class="chip fl-c fear">${T_FL.zn.fear} ${nf}</span><span class="chip fl-c mid">${T_FL.zn.mid} ${ks.length-nf-ng}</span><span class="chip fl-c greed">${T_FL.zn.greed} ${ng}</span><p>${verdict}</p></div>
+    <div class="fl-g">${ks.map((k,i)=>{ const o=by[k], zz=Z[i];
+      return `<article class="fl-i"><div class="fl-h"><h3>${T_FL.n[k]}</h3><span class="chip fl-c ${zz.c}">${T_FL.zn[zz.c]}</span></div>
+        <div class="fl-v"><b>${flowVal(k,o.v)}</b><span>${esc(flowChg(k,o))}</span></div>
+        ${flowBar(k,zz.z)}
+        <p>${T_FL.m[k]}</p>
+        <div class="news-f"><span>${day(o.d)} · ${T_FL.fq[k]}</span>${o.src&&o.src.u?`<a href="${esc(o.src.u)}" target="_blank" rel="noopener">${esc(o.src.n||'')} ↗</a>`:''}</div></article>`; }).join('')}</div>
+    <p class="note">${T_FL.cav}</p></section>`;
+}
+const T_FL={h:'Cash flows & sentiment (US)',sub:'Are investors hoarding cash or putting it into stocks · updated {d}',
+tr:'T',bn:'B',pt:'pts',vs:'vs prior',flat:'Unchanged vs prior',
+zn:{fear:'Fear',mid:'Neutral',greed:'Greed'},
+n:{fg:'Fear & Greed Index (CNN)',vix:'VIX volatility index',aaii:'Bearish individual investors (AAII)',fms:'Fund manager cash (BofA)',mmf:'Money market fund assets',margin:'Margin debt (FINRA)'},
+fq:{fg:'daily',vix:'daily',aaii:'weekly',fms:'monthly',mmf:'weekly',margin:'monthly'},
+m:{fg:'Combines 7 market signals on a 0–100 scale. Below 25 is extreme fear, above 75 extreme greed.',
+vix:'Volatility the options market expects for the S&P 500 over the next 30 days. Above 20 signals worry, above 30 panic.',
+aaii:'Share of US individual investors who expect stocks to fall over the next 6 months. The historical average is about 31.5%.',
+fms:'Average cash share in global fund portfolios. 5% or more means funds are defensive (often a contrarian buy signal); 4% or less means they are almost fully in risk assets.',
+mmf:'Cash parked in money market funds. The bar measures the weekly change: strong inflows mean investors are seeking shelter. High interest rates make total assets drift up even in calm markets, so watch the direction of change.',
+margin:'Money investors borrow to buy securities. The bar measures the change vs the prior month: falling debt means deleveraging, rising debt means strong risk appetite.'},
+vf:'Most indicators are in fear: investors are cautious and favor cash. Historically, extreme fear often appears near short-term bottoms, but it does not pinpoint timing.',
+vg:'Most indicators are in greed: money is pouring into stocks with little cash cushion. Markets are often more vulnerable to bad news at such times.',
+vm:'The indicators disagree: no clear trend of investors pulling money out of or pouring it into stocks.',
+cav:'Each indicator has a different frequency and lag (daily, weekly, monthly), so read them together rather than relying on one number. These measure sentiment; they are not buy or sell signals.'};
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 };</script>
 <script>(function(){

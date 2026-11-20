@@ -223,5 +223,6 @@ async function initLive(){
     });
     db.doc('meta/feed').onSnapshot(s=>{ LIVE.meta=s.exists?s.data():null; liveChanged(false); },()=>{});
     db.doc('meta/news').onSnapshot(s=>{ LIVE.news=s.exists?s.data():null; liveChanged(false); },()=>{});
+    db.doc('meta/flow').onSnapshot(s=>{ LIVE.flow=s.exists?s.data():null; liveChanged(false); },()=>{});
   }catch(e){ LIVE.status='off'; liveChanged(false); }
 }

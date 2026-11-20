@@ -52,6 +52,7 @@ RENDER.home=function(){
   </section>
   <p class="note">Đường vàng: hồ sơ ${esc(s.t)}. Đường đứt nét: trung vị ${esc(mktName(S.market))}. Bộ trọng số: <b>${esc(S.preset==='custom'?'Tùy chỉnh':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
   ${newsHomeHTML()}
+  ${flowHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">

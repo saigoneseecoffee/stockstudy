@@ -52,6 +52,7 @@ RENDER.home=function(){
   </section>
   <p class="note">Gold line: ${esc(s.t)} profile. Dashed line: ${esc(mktName(S.market))} median. Weight set: <b>${esc(S.preset==='custom'?'Custom':PRESETS[S.preset].n)}</b>. ${esc(DISC)}</p></div></div>
   ${newsHomeHTML()}
+  ${flowHomeHTML()}
 
   <div class="grid2">
     <section class="panel" aria-labelledby="h-tree">
