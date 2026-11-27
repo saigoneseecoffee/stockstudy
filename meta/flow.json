@@ -1,0 +1,73 @@
+{
+ "upd": "2026-11-20T02:46:29Z",
+ "items": [
+  {
+   "k": "fg",
+   "v": 19,
+   "p": 24,
+   "d": "2026-11-19",
+   "src": {
+    "n": "The Wall Street Republic",
+    "u": "https://thewallstreetrepublic.substack.com/p/anthropic-closes-at-9717-s-and-p"
+   }
+  },
+  {
+   "k": "vix",
+   "v": 28.44,
+   "p": 24.56,
+   "d": "2026-11-19",
+   "src": {
+    "n": "Yahoo Finance",
+    "u": "https://finance.yahoo.com/markets/stocks/articles/stock-market-today-nov-19-221002368.html"
+   }
+  },
+  {
+   "k": "aaii",
+   "v": 51.4,
+   "p": 48.3,
+   "d": "2026-11-11",
+   "x": {
+    "bull": 30.8,
+    "neu": 17.8
+   },
+   "src": {
+    "n": "AAII",
+    "u": "https://www.aaii.com/latest/article/568394-aaii-sentiment-survey-optimism-falters"
+   }
+  },
+  {
+   "k": "fms",
+   "v": 3.6,
+   "p": 3.9,
+   "d": "2026-11-17",
+   "src": {
+    "n": "BofA FMS (Atrani Capital)",
+    "u": "https://atranicapital.substack.com/p/november-2026-bank-of-america-global"
+   }
+  },
+  {
+   "k": "mmf",
+   "v": 7980.02,
+   "p": 8015.74,
+   "d": "2026-11-11",
+   "x": {
+    "retail": 3114.88,
+    "inst": 4865.14
+   },
+   "src": {
+    "n": "ICI",
+    "u": "https://www.ici.org/research/stats/mmf"
+   }
+  },
+  {
+   "k": "margin",
+   "v": 1450,
+   "p": 1480,
+   "d": "2026-10-31",
+   "src": {
+    "n": "FINRA (thetrading.tools)",
+    "u": "https://www.thetrading.tools/margin-debt"
+   }
+  }
+ ]
+}

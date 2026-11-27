@@ -1,0 +1,809 @@
+{
+ "upd": "2026-11-27T00:44:04Z",
+ "items": [
+  {
+   "id": "vn-market-1126",
+   "d": "2026-11-26",
+   "m": "VN",
+   "imp": "neg",
+   "sec": [
+    "re",
+    "retail",
+    "bank",
+    "ind"
+   ],
+   "tk": [
+    "VIC",
+    "VHM",
+    "NLG",
+    "MWG",
+    "FRT",
+    "PNJ",
+    "GMD",
+    "VSC"
+   ],
+   "vi": {
+    "t": "VN-Index mất 57,77 điểm (−3,42%) về 1.629,68 vì lo thuế Mục 301; bất động sản giảm hơn 5%",
+    "s": "Tin Mỹ đề xuất thuế bổ sung tối đa 35% với hàng Việt Nam khiến thị trường bị bán mạnh, thanh khoản toàn thị trường khoảng 17.600 tỷ đồng. VIC giảm 6,3% (lấy đi khoảng 24 điểm), VHM −3,4%; NLG, HDC, GMD, VSC giảm sàn. Bán lẻ (MWG −4,15%, FRT −4,92%, PNJ −5,47%), cảng biển và ngân hàng (VCB, TCB, VPB, BID, CTG) cũng kéo chỉ số. Ngành xuất khẩu và logistics nhạy cảm nhất với rủi ro thuế quan."
+   },
+   "en": {
+    "t": "VN-Index sheds 57.77 points (−3.42%) to 1,629.68 on Section 301 tariff fears; real estate down over 5%",
+    "s": "A US proposal for up to 35% extra tariffs on Vietnamese goods triggered heavy selling, with market-wide turnover about VND 17.6 trillion. VIC fell 6.3% (about 24 index points), VHM −3.4%; NLG, HDC, GMD and VSC hit the floor. Retail (MWG −4.15%, FRT −4.92%, PNJ −5.47%), ports and banks (VCB, TCB, VPB, BID, CTG) also weighed. Export and logistics names are most exposed to tariff risk."
+   },
+   "src": [
+    {
+     "n": "Dân trí",
+     "u": "https://dantri.com.vn/kinh-doanh/chung-khoan-giam-manh-vn-index-mat-gan-58-diem-20261126152723829.htm"
+    },
+    {
+     "n": "Fili",
+     "u": "https://fili.vn/2026/11/nhip-dap-thi-truong-2611-som-chiu-ap-luc-truoc-thong-tin-thue-quan-1636-1517894.htm"
+    }
+   ]
+  },
+  {
+   "id": "vn-foreign-1126",
+   "d": "2026-11-26",
+   "m": "VN",
+   "imp": "neg",
+   "sec": [
+    "re",
+    "bank"
+   ],
+   "tk": [
+    "VIC",
+    "TCB",
+    "VPL",
+    "VHM",
+    "NLG",
+    "VNM",
+    "CTD",
+    "MSN"
+   ],
+   "vi": {
+    "t": "Khối ngoại bán ròng 139 tỷ đồng phiên 26/11, xả mạnh nhất VIC 191 tỷ",
+    "s": "Nhà đầu tư nước ngoài bán ròng khoảng 139 tỷ đồng trên cả ba sàn (HOSE khoảng 180 tỷ). Bị bán nhiều nhất: VIC 191 tỷ, TCB 81 tỷ, VPL 77 tỷ, VHM 46 tỷ, NLG 45 tỷ. Chiều mua có FUEVFVND 62 tỷ, CTD 57 tỷ, VNM 56 tỷ, MSN 43 tỷ. Quy mô bán nhỏ hơn nhiều so với hôm trước nhưng vẫn nối dài chuỗi rút vốn."
+   },
+   "en": {
+    "t": "Foreigners net sell VND 139 billion on Nov 26, led by VND 191 billion of VIC",
+    "s": "Foreign investors were net sellers of about VND 139 billion across the three exchanges (about VND 180 billion on HOSE). Top net sells: VIC 191 billion, TCB 81 billion, VPL 77 billion, VHM 46 billion, NLG 45 billion. Net buys included FUEVFVND 62 billion, CTD 57 billion, VNM 56 billion and MSN 43 billion. Selling was far smaller than the prior day but extends the outflow streak."
+   },
+   "src": [
+    {
+     "n": "Index.vn",
+     "u": "https://index.vn/tin-tuc/khoi-ngoai-ban-rong-139-ty-dong-phien-26-11-xa-191-ty-dong-tai-vic"
+    },
+    {
+     "n": "Fili",
+     "u": "https://fili.vn/2026/11/nhip-dap-thi-truong-2611-som-chiu-ap-luc-truoc-thong-tin-thue-quan-1636-1517894.htm"
+    }
+   ]
+  },
+  {
+   "id": "vn-301-1126",
+   "d": "2026-11-26",
+   "m": "VN",
+   "imp": "mix",
+   "sec": [
+    "cons",
+    "ind",
+    "mat",
+    "tech"
+   ],
+   "tk": [],
+   "vi": {
+    "t": "Bộ Công Thương: thuế Mục 301 có thể giảm từ 35% xuống 20% nếu Việt Nam – Mỹ đạt thỏa thuận",
+    "s": "Thứ trưởng Lương Hoàng Thái cho biết Việt Nam sẽ tiếp tục gửi ý kiến và tham gia điều trần với USTR; mức 35% chỉ là đề xuất sơ bộ, có thể còn 20% nếu đạt thỏa thuận thương mại đối ứng. Có 2.121 dòng hàng HS 8 số được đề xuất miễn thuế. USTR mở điều trần từ 25/1/2027, quyết định cuối cùng sớm nhất tháng 2 và muộn nhất 11/3/2027. Dệt may, da giày, đóng tàu, xi măng, điện tử là các ngành bị nêu tên."
+   },
+   "en": {
+    "t": "Trade ministry: Section 301 tariff could fall from 35% to 20% if Vietnam and the US strike a deal",
+    "s": "Deputy Minister Luong Hoang Thai said Vietnam will keep submitting comments and join USTR hearings; 35% is only a preliminary proposal and could drop to 20% under a reciprocal trade agreement. 2,121 HS 8-digit items are proposed for exemption. Hearings start Jan 25, 2027, with a final decision between February and March 11, 2027. Textiles, footwear, shipbuilding, cement and electronics are the named sectors."
+   },
+   "src": [
+    {
+     "n": "SGGP",
+     "u": "https://en.sggp.org.vn/vietnam-to-continue-us-tariff-consultations-post131270.html"
+    },
+    {
+     "n": "Fili",
+     "u": "https://fili.vn/2026/11/nhip-dap-thi-truong-2611-som-chiu-ap-luc-truoc-thong-tin-thue-quan-1636-1517894.htm"
+    }
+   ]
+  },
+  {
+   "id": "vn-sbv-1126",
+   "d": "2026-11-26",
+   "m": "VN",
+   "imp": "pos",
+   "sec": [
+    "bank"
+   ],
+   "tk": [],
+   "vi": {
+    "t": "NHNN bơm ròng 20.667 tỷ đồng qua thị trường mở, lãi suất 4,5%",
+    "s": "Ngân hàng Nhà nước chào và trúng thầu toàn bộ 29.199 tỷ đồng kỳ hạn 7–91 ngày với lãi suất 4,5%/năm, trong khi 8.532 tỷ đáo hạn, nâng dư nợ kênh cầm cố lên 127.016 tỷ. Lãi suất liên ngân hàng qua đêm ngày 25/11 ở 4,9%, kỳ hạn 1 tháng 5,6%. Thanh khoản được hỗ trợ giúp giảm áp lực lãi suất cho ngân hàng và doanh nghiệp vay vốn."
+   },
+   "en": {
+    "t": "State Bank injects a net VND 20.667 trillion via open market at 4.5%",
+    "s": "The SBV offered and allotted all VND 29.199 trillion in 7–91-day repos at 4.5% a year against VND 8.532 trillion maturing, lifting repo outstanding to VND 127.016 trillion. Interbank overnight was 4.9% on Nov 25, one-month 5.6%. The liquidity support eases rate pressure for banks and borrowers."
+   },
+   "src": [
+    {
+     "n": "Người Quan Sát",
+     "u": "https://nguoiquansat.vn/phien-26-11-ngan-hang-nha-nuoc-bom-rong-20-667-ty-dong-lai-suat-qua-dem-neo-muc-4-9-330314.html"
+    }
+   ]
+  },
+  {
+   "id": "vn-fuel-1126",
+   "d": "2026-11-26",
+   "m": "VN",
+   "imp": "mix",
+   "sec": [
+    "energy",
+    "ind"
+   ],
+   "tk": [
+    "PLX",
+    "OIL",
+    "HVN",
+    "VJC"
+   ],
+   "vi": {
+    "t": "Giá xăng dầu trong nước giảm từ 15h 26/11; dầu diesel giảm 1.382 đồng/lít",
+    "s": "Liên Bộ Công Thương – Tài chính hạ giá: E5RON92 tối đa 18.391 đồng/lít (−185), E10RON95-III 19.056 đồng (−44), diesel 24.965 đồng (−1.382), dầu mazut 17.570 đồng/kg (−1.101). Giá thế giới bình quân kỳ giảm 8–9% do IEA dự báo dư cung quý 4; OPEC+ họp ngày 29/11. Chi phí nhiên liệu thấp hơn có lợi cho vận tải, hàng không, nhưng làm giảm biên lãi hàng tồn kho của doanh nghiệp phân phối xăng dầu."
+   },
+   "en": {
+    "t": "Vietnam cuts fuel prices from 3pm Nov 26; diesel down VND 1,382 per litre",
+    "s": "The trade and finance ministries cut caps: E5RON92 to VND 18,391/litre (−185), E10RON95-III VND 19,056 (−44), diesel VND 24,965 (−1,382), fuel oil VND 17,570/kg (−1,101). Average world prices for the period fell 8–9% as the IEA sees a Q4 surplus; OPEC+ meets Nov 29. Cheaper fuel helps transport and airlines but squeezes inventory margins at fuel distributors."
+   },
+   "src": [
+    {
+     "n": "Bộ Công Thương",
+     "u": "https://moit.gov.vn/tin-tuc/thong-tin-ve-viec-dieu-hanh-gia-xang-dau-ngay-26-11-2026.html"
+    }
+   ]
+  },
+  {
+   "id": "us-futures-1126",
+   "d": "2026-11-26",
+   "m": "US",
+   "imp": "pos",
+   "sec": [
+    "tech",
+    "semi"
+   ],
+   "tk": [
+    "NVDA"
+   ],
+   "vi": {
+    "t": "Phố Wall nghỉ lễ Tạ ơn; hợp đồng tương lai S&P 500 tăng khoảng 0,5%, châu Âu hồi gần 2%",
+    "s": "Thị trường Mỹ đóng cửa ngày 26/11 và chỉ giao dịch nửa phiên (đến 13h giờ New York) ngày 27/11. Hợp đồng tương lai S&P 500 lên khoảng 7.234 điểm (+0,54%), Nasdaq 100 +0,46%, Dow +0,43%; Nvidia tăng 1,29% ngoài giờ. Kỳ vọng Fed tăng 0,5 điểm % trong tháng 12 hạ nhiệt nhưng thị trường vẫn định giá mức tăng 0,25 điểm %, nên đà hồi có thể mong manh."
+   },
+   "en": {
+    "t": "Wall Street shut for Thanksgiving; S&P 500 futures up about 0.5%, Europe rebounds nearly 2%",
+    "s": "US markets were closed Nov 26 and trade a half day (to 1pm New York time) on Nov 27. S&P 500 futures rose to about 7,234 (+0.54%), Nasdaq 100 +0.46%, Dow +0.43%; Nvidia gained 1.29% after hours. Bets on a 50bp December Fed hike cooled but a 25bp hike is still priced, so the rebound may be fragile."
+   },
+   "src": [
+    {
+     "n": "TradingKey",
+     "u": "https://www.tradingkey.com/analysis/stocks/us-stocks/262324161-thanksgiving-global-stock-rally-3-us-futures-signal-higher-friday-open-tradingkey"
+    },
+    {
+     "n": "WiseVoter",
+     "u": "https://wisevoter.com/world/2026/11/26/global-stocks-rise-us-markets-closed-thanksgiving"
+    }
+   ]
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "On Nov 25 the USTR proposed Section 301 'excess capacity' tariffs on 14 economies: China up to 20%, the EU 15%, Japan, Korea and Taiwan up to 15%, India up to 25%, and Thailand, Malaysia, Indonesia and Cambodia up to 18%. Vietnam faces up to 35%, possibly cut to 20% if it reaches a reciprocal trade agreement. Comments are due Jan 5, 2027, a hearing is set for Jan 25, 2027, and final action is expected in early 2027. This is a major risk for Vietnamese exporters to the US (textiles, furniture, seafood, electronics) and raises import costs for US companies.",
+    "t": "US proposes Section 301 tariffs on 14 economies; Vietnam faces the highest cap, up to 35%"
+   },
+   "id": "us-301-1125",
+   "imp": "neg",
+   "m": "ALL",
+   "sec": [
+    "ind",
+    "mat",
+    "auto",
+    "semi",
+    "retail",
+    "cons"
+   ],
+   "src": [
+    {
+     "n": "Baker McKenzie Global Import Blog",
+     "u": "https://globalimportblog.bakermckenzie.com/2026/11/25/us-ustr-proposes-section-301-tariffs-on-14-economies-over-structural-excess-capacity/"
+    },
+    {
+     "n": "Tiền Phong",
+     "u": "https://tienphong.vn/chung-khoan-my-lao-doc-sau-tin-chan-dong-ve-chinh-sach-thue-moi-post1897538.tpo"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Ngày 25/11, Văn phòng Đại diện Thương mại Mỹ (USTR) đề xuất thuế Mục 301 vì “dư thừa công suất” với 14 nền kinh tế: Trung Quốc tới 20%, EU 15%, Nhật, Hàn, Đài Loan tới 15%, Ấn Độ tới 25%, Thái Lan, Malaysia, Indonesia, Campuchia tới 18%. Việt Nam bị đề xuất tới 35%, có thể giảm còn 20% nếu đạt thỏa thuận thương mại đối ứng. Hạn góp ý 5/1/2027, điều trần 25/1/2027, quyết định cuối dự kiến đầu 2027. Đây là rủi ro lớn cho doanh nghiệp xuất khẩu Việt Nam sang Mỹ (dệt may, đồ gỗ, thủy sản, điện tử) và chi phí nhập khẩu của các hãng Mỹ.",
+    "t": "Mỹ đề xuất thuế Mục 301 với 14 nền kinh tế; Việt Nam chịu mức trần cao nhất, tới 35%"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "On Nov 25 the Dow fell more than 1,100 points on the new tariff news, then rallied late to close at 50,183 (+0.33%). The S&P 500 slipped about 0.3% to 7,182.78 and the Nasdaq fell 0.62% to 23,585.80 as AI and tech selling continued. Energy led while consumer discretionary and tech lagged. The 10-year Treasury yield eased to 4.91%. US markets are closed Nov 26.",
+    "t": "Dow erases 1,100-point drop to close +0.33%; S&P 500 −0.3%, Nasdaq −0.62% before Thanksgiving"
+   },
+   "id": "us-market-1125",
+   "imp": "mix",
+   "m": "US",
+   "sec": [
+    "tech",
+    "semi",
+    "energy",
+    "comm"
+   ],
+   "src": [
+    {
+     "n": "Motley Fool",
+     "u": "https://www.fool.com/coverage/stock-market-today/2026/11/25/stock-market-today-nov-25-dow-erases-1-100-point-loss-as-wall-street-stages-dramatic-late-day-comeback/"
+    },
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-wednesday-november-25-dow-sp-500-nasdaq-pce-inflation-data-091428237.html"
+    }
+   ],
+   "tk": [
+    "CHTR"
+   ],
+   "vi": {
+    "s": "Phiên 25/11, Dow có lúc mất hơn 1.100 điểm vì tin thuế quan mới rồi hồi mạnh cuối phiên, đóng cửa 50.183 điểm (+0,33%). S&P 500 giảm khoảng 0,3% về 7.182,78; Nasdaq giảm 0,62% về 23.585,80 do nhóm AI và công nghệ tiếp tục bị bán. Năng lượng dẫn đầu, tiêu dùng không thiết yếu và công nghệ yếu nhất. Lợi suất trái phiếu 10 năm nhích xuống 4,91%. Thị trường Mỹ nghỉ ngày 26/11.",
+    "t": "Dow xóa mức giảm hơn 1.100 điểm, đóng cửa +0,33%; S&P 500 −0,3%, Nasdaq −0,62% trước lễ Tạ ơn"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "The PCE price index, the Fed's preferred gauge, rose 3.8% year over year in October, as expected; core PCE rose 3.3% (forecast 3.2%), the fastest since late 2023, and 0.3% month over month for a third straight month. Q3 GDP was revised up to 4.3%. Markets see a Fed hike at the Dec 9 meeting as nearly certain (about 94%). Higher rates weigh on growth stocks and real estate and keep the dollar strong, a headwind for foreign flows into Vietnam.",
+    "t": "October PCE inflation rises to 3.8%, core 3.3% highest since late 2023; Q3 GDP revised up to 4.3%"
+   },
+   "id": "us-pce-1125",
+   "imp": "neg",
+   "m": "ALL",
+   "sec": [
+    "bank",
+    "re",
+    "tech",
+    "util"
+   ],
+   "src": [
+    {
+     "n": "CNBC",
+     "u": "https://www.cnbc.com/2026/11/25/pce-inflation-report-october-2026.html"
+    },
+    {
+     "n": "Benzinga",
+     "u": "https://www.benzinga.com/markets/economic-data/26/11/63619838/pce-inflation-october-gdp-second-estimate"
+    },
+    {
+     "n": "Motley Fool",
+     "u": "https://www.fool.com/coverage/stock-market-today/2026/11/25/stock-market-today-nov-25-dow-erases-1-100-point-loss-as-wall-street-stages-dramatic-late-day-comeback/"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Chỉ số giá PCE, thước đo lạm phát Fed ưa dùng, tăng 3,8% so với cùng kỳ trong tháng 10, đúng dự báo; PCE lõi tăng 3,3% (dự báo 3,2%), nhanh nhất từ cuối 2023, và tăng 0,3% so với tháng trước, tháng thứ ba liên tiếp. GDP quý 3 được điều chỉnh lên 4,3%. Thị trường gần như chắc chắn Fed tăng lãi suất ở cuộc họp 9/12 (khoảng 94%). Lãi suất cao hơn gây áp lực lên cổ phiếu tăng trưởng, bất động sản và khiến USD mạnh, bất lợi cho dòng vốn ngoại vào Việt Nam.",
+    "t": "Lạm phát PCE tháng 10 tăng lên 3,8%, lõi 3,3% cao nhất từ cuối 2023; GDP quý 3 điều chỉnh lên 4,3%"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "On the morning of Nov 25, Brent rose 2.41% to $93.60 a barrel and WTI 1.78% to $83.51 after Yemen's Houthis claimed a strike on Saudi Arabia's 550,000 bpd Ras Tanura refinery. The Saudi-led coalition said it downed four drones and did not confirm a hit. Prices had been falling on glut worries; OPEC+ meets on Nov 29. Volatile oil supports energy stocks but adds to inflation concerns.",
+    "t": "Brent jumps over 2% to about $93.6 after Houthis claim attack on Saudi Ras Tanura refinery"
+   },
+   "id": "oil-1125",
+   "imp": "mix",
+   "m": "ALL",
+   "sec": [
+    "energy"
+   ],
+   "src": [
+    {
+     "n": "OilPrice.com",
+     "u": "https://oilprice.com/Latest-Energy-News/World-News/Oil-Jumps-Over-2-as-Saudi-Arabia-Downs-Drones-Over-Ras-Tanura.html"
+    },
+    {
+     "n": "Kotak Neo",
+     "u": "https://www.kotakneo.com/news/commodities/oil-prices-fall-as-global-supply-glut-outweighs-middle-east-tensions-brent-crude-at-87-54/"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Sáng 25/11, Brent tăng 2,41% lên 93,60 USD/thùng, WTI tăng 1,78% lên 83,51 USD, sau khi lực lượng Houthi tuyên bố tấn công nhà máy lọc dầu Ras Tanura (550.000 thùng/ngày) của Ả Rập Xê Út. Liên quân nói đã bắn hạ 4 drone, chưa xác nhận nhà máy bị trúng. Trước đó giá dầu đã giảm vì lo dư cung; OPEC+ họp ngày 29/11. Giá dầu dao động mạnh hỗ trợ nhóm dầu khí nhưng làm tăng lo ngại lạm phát.",
+    "t": "Dầu Brent tăng hơn 2% lên khoảng 93,6 USD sau khi Houthi tuyên bố tấn công nhà máy lọc dầu Ras Tanura"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "On Nov 25 the VN-Index briefly reached about 1,705 but closed down 9.69 points (−0.57%) at about 1,687, with 227 decliners versus 84 gainers. Banks (SHB −1.9%, VPB −0.98%), brokers (SSI −2.28%, VND −3.11%), real estate and steel (HPG −1.72%) weighed. HOSE turnover topped VND 16,091 billion (+27%). Foreign investors net sold about VND 5,676 billion, a sixth straight session, about VND 4,595 billion of it a negotiated block of 18.7 million VIC shares; MSN saw VND 124 billion of selling. MSR hit the daily limit up.",
+    "t": "VN-Index fails at 1,700, falls 9.69 points to 1,687; foreigners net sell VND 5,676 billion, mostly a VIC block"
+   },
+   "id": "vn-market-1125",
+   "imp": "neg",
+   "m": "VN",
+   "sec": [
+    "bank",
+    "broker",
+    "re",
+    "mat"
+   ],
+   "src": [
+    {
+     "n": "Tiền Phong",
+     "u": "https://tienphong.vn/vn-index-vuot-1700-diem-bat-thanh-khoi-ngoai-ban-manh-post1897423.tpo"
+    },
+    {
+     "n": "Index.vn",
+     "u": "https://index.vn/tin-tuc/khoi-ngoai-ban-rong-gan-5-700-ty-dong-msn-va-vix-cung-bi-ban-manh"
+    }
+   ],
+   "tk": [
+    "VIC",
+    "SHB",
+    "VPB",
+    "SSI",
+    "VND",
+    "HPG",
+    "MSN",
+    "MSR"
+   ],
+   "vi": {
+    "s": "Phiên 25/11, VN-Index có lúc lên khoảng 1.705 điểm nhưng đóng cửa giảm 9,69 điểm (−0,57%) về khoảng 1.687; 227 mã giảm, 84 mã tăng. Ngân hàng (SHB −1,9%, VPB −0,98%), chứng khoán (SSI −2,28%, VND −3,11%), bất động sản và thép (HPG −1,72%) kéo chỉ số. Thanh khoản HOSE hơn 16.091 tỷ đồng (+27%). Khối ngoại bán ròng khoảng 5.676 tỷ đồng, phiên thứ 6 liên tiếp, trong đó khoảng 4.595 tỷ là giao dịch thỏa thuận 18,7 triệu cổ phiếu VIC; MSN bị bán 124 tỷ. MSR tăng trần.",
+    "t": "VN-Index vượt 1.700 bất thành, giảm 9,69 điểm về 1.687; khối ngoại bán ròng 5.676 tỷ, chủ yếu thỏa thuận VIC"
+   }
+  },
+  {
+   "d": "2026-11-25",
+   "en": {
+    "s": "HP Inc. (HPQ) rose 11.49% after quarterly earnings beat and an encouraging fiscal 2027 outlook. Ambarella fell 19.77% on disappointing revenue guidance and Nutanix lost about 15% amid selling in high-growth tech. Charter Communications gained 8.39% as money rotated into defensives. Investors are rewarding solid profits and punishing weak growth guidance.",
+    "t": "HP Inc. jumps 11.5% on earnings and upbeat 2027 outlook; Ambarella sinks nearly 20%, Nutanix −15%"
+   },
+   "id": "us-earn-1125",
+   "imp": "mix",
+   "m": "US",
+   "sec": [
+    "tech",
+    "semi"
+   ],
+   "src": [
+    {
+     "n": "Motley Fool",
+     "u": "https://www.fool.com/coverage/stock-market-today/2026/11/25/stock-market-today-nov-25-dow-erases-1-100-point-loss-as-wall-street-stages-dramatic-late-day-comeback/"
+    }
+   ],
+   "tk": [
+    "HPQ",
+    "CHTR"
+   ],
+   "vi": {
+    "s": "HP Inc. (HPQ) tăng 11,49% sau khi lợi nhuận quý vượt kỳ vọng và đưa ra dự báo năm tài chính 2027 khả quan. Ngược lại Ambarella giảm 19,77% vì dự báo doanh thu đáng thất vọng, Nutanix giảm khoảng 15% trong làn sóng bán cổ phiếu công nghệ tăng trưởng cao. Charter Communications tăng 8,39% nhờ dòng tiền chuyển sang nhóm phòng thủ. Kết quả cho thấy nhà đầu tư thưởng cho doanh nghiệp có lợi nhuận chắc chắn và phạt nặng doanh nghiệp tăng trưởng yếu dự báo.",
+    "t": "HP Inc. tăng 11,5% nhờ kết quả kinh doanh và dự báo 2027 tốt; Ambarella mất gần 20%, Nutanix −15%"
+   }
+  },
+  {
+   "d": "2026-11-24",
+   "en": {
+    "s": "On Nov 24 the Dow rose 423.39 points to 50,018.70; the S&P 500 fell 0.50% to 7,201.09 and the Nasdaq fell 1.48% to 23,733.54. Money rotated out of AI and semiconductors into industrials and healthcare: GE Vernova +8.2%, Eaton +8.03%, UnitedHealth +3%. Oracle fell 3.98%, CrowdStrike 8.92% and Medtronic 4.49% after earnings. The 10-year Treasury yield was about 4.904%.",
+    "t": "Dow closes above 50,000 for the first time (+0.85%), but S&P 500 −0.5% and Nasdaq −1.48% as chips sold off"
+   },
+   "id": "us-market-1124",
+   "imp": "mix",
+   "m": "US",
+   "sec": [
+    "ind",
+    "health",
+    "tech",
+    "semi"
+   ],
+   "src": [
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-24-dow-sp-500-nasdaq-chip-stocks-nvidia-140629923.html"
+    },
+    {
+     "n": "JournalArta",
+     "u": "https://journalarta.com/en/2026/11/25/stock-market-today-dow-tops-50000-while-chip-selloff-drags-nasdaq-down-1-48/"
+    }
+   ],
+   "tk": [
+    "GEV",
+    "ETN",
+    "UNH",
+    "MDT",
+    "ORCL",
+    "CRWD"
+   ],
+   "vi": {
+    "s": "Phiên 24/11, Dow tăng 423,39 điểm lên 50.018,70; S&P 500 giảm 0,50% về 7.201,09; Nasdaq giảm 1,48% về 23.733,54. Dòng tiền rời nhóm AI và bán dẫn sang công nghiệp, y tế: GE Vernova +8,2%, Eaton +8,03%, UnitedHealth +3%. Ngược lại Oracle −3,98%, CrowdStrike −8,92%, Medtronic −4,49% sau báo cáo kết quả. Lợi suất trái phiếu 10 năm quanh 4,904%.",
+    "t": "Dow lần đầu đóng cửa trên 50.000 điểm (+0,85%), nhưng S&P 500 −0,5% và Nasdaq −1,48% vì nhóm chip bị bán"
+   }
+  },
+  {
+   "d": "2026-11-24",
+   "en": {
+    "s": "Nvidia closed at $155.38 (−5.86%), giving back part of the roughly 31% jump the day before on Jensen Huang's return as CEO. Intraday, Micron fell more than 10%, AMD was down about 9.6% at one point, Seagate and Western Digital dropped at least 5%, and TSMC lost 4.21%. Doubts about AI spending and a possible December Fed hike keep semiconductors highly volatile, which can weigh on tech sentiment globally.",
+    "t": "Nvidia drops 5.86% after its 31% surge; Micron loses over 10% intraday as chip and storage stocks slide"
+   },
+   "id": "us-chips-1124",
+   "imp": "neg",
+   "m": "ALL",
+   "sec": [
+    "semi",
+    "tech"
+   ],
+   "src": [
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-24-dow-sp-500-nasdaq-chip-stocks-nvidia-140629923.html"
+    },
+    {
+     "n": "JournalArta",
+     "u": "https://journalarta.com/en/2026/11/25/stock-market-today-dow-tops-50000-while-chip-selloff-drags-nasdaq-down-1-48/"
+    }
+   ],
+   "tk": [
+    "NVDA",
+    "MU",
+    "AMD",
+    "AVGO",
+    "STX",
+    "WDC"
+   ],
+   "vi": {
+    "s": "Nvidia đóng cửa 155,38 USD (−5,86%), trả lại một phần mức tăng khoảng 31% hôm trước khi Jensen Huang trở lại ghế CEO. Trong phiên, Micron giảm hơn 10%, AMD có lúc mất khoảng 9,6%, Seagate và Western Digital giảm ít nhất 5%; TSMC −4,21%. Nghi ngại về đầu tư AI và khả năng Fed tăng lãi tháng 12 khiến nhóm bán dẫn biến động rất mạnh, dễ lan sang tâm lý nhóm công nghệ toàn cầu.",
+    "t": "Nvidia giảm 5,86% sau cú tăng 31%; Micron mất hơn 10% trong phiên, nhóm chip và ổ cứng lao dốc"
+   }
+  },
+  {
+   "d": "2026-11-24",
+   "en": {
+    "s": "The Conference Board index rose 11.4 points to 103.3 in November, while 12-month inflation expectations stood at 5.7%. Per Yahoo Finance, markets price about a 95% chance of a 25bp Fed hike in December. October PCE, the second Q3 GDP estimate and durable goods are due Wednesday Nov 25; US markets close for Thanksgiving on Nov 26 and close early Nov 27. Higher rates weigh on growth stocks and real estate and pressure emerging-market currencies such as Vietnam's.",
+    "t": "US consumer confidence jumps to 103.3, highest since Jan 2025; markets price about 95% odds of a December Fed hike"
+   },
+   "id": "us-macro-1124",
+   "imp": "mix",
+   "m": "ALL",
+   "sec": [
+    "bank",
+    "re",
+    "retail",
+    "cons"
+   ],
+   "src": [
+    {
+     "n": "Vista Partners",
+     "u": "https://vistapglobal.com/stock-market-today-november-24-2026-dow-tops-50000-as-nasdaq-slides-consumer-confidence-surges-with-pce-due-on-thanksgiving-eve-ant-bby-dell-dks-dltr-eprx-gld-insm-kymr-modd-msft-n/"
+    },
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-24-dow-sp-500-nasdaq-chip-stocks-nvidia-140629923.html"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Chỉ số niềm tin tiêu dùng Conference Board tháng 11 tăng 11,4 điểm lên 103,3, nhưng kỳ vọng lạm phát 12 tháng ở mức 5,7%. Theo Yahoo Finance, thị trường định giá khoảng 95% khả năng Fed tăng 0,25 điểm % trong tháng 12. Thứ Tư 25/11 có PCE tháng 10, GDP quý 3 (ước tính lần 2) và đơn hàng lâu bền; thị trường Mỹ nghỉ Lễ Tạ ơn 26/11 và đóng cửa sớm 27/11. Lãi suất cao hơn bất lợi cho cổ phiếu tăng trưởng, bất động sản và gây áp lực tỷ giá ở các nước mới nổi như Việt Nam.",
+    "t": "Niềm tin tiêu dùng Mỹ vọt lên 103,3, cao nhất từ 1/2025; thị trường đặt cược khoảng 95% Fed tăng lãi tháng 12"
+   }
+  },
+  {
+   "d": "2026-11-24",
+   "en": {
+    "s": "On Nov 24 the State Bank set its central rate at 25,668 VND/USD, up from 25,637 in mid-month; Vietcombank quoted USD at 25,580–25,990. SJC gold rose 1.5 million VND per tael to 130–135 million after world gold rebounded. A firmer dollar while the Fed may hike narrows room for domestic rate cuts, which matters for banks.",
+    "t": "SBV central rate rises to 25,668 VND/USD; SJC gold up 1.5 million to 130–135 million VND per tael"
+   },
+   "id": "vn-fx-1124",
+   "imp": "mix",
+   "m": "VN",
+   "sec": [
+    "bank",
+    "retail"
+   ],
+   "src": [
+    {
+     "n": "HTV",
+     "u": "https://htv.vn/thi-truong-ngay-24-11-vang-sjc-tang-manh-gia-dau-giam-sau-vn-index-phuc-hoi-gan-1700-diem-222261124075156909.htm"
+    },
+    {
+     "n": "24hmoney",
+     "u": "https://24hmoney.vn/posts/-c55a2862151.html"
+    }
+   ],
+   "tk": [
+    "VCB",
+    "PNJ"
+   ],
+   "vi": {
+    "s": "Sáng 24/11, NHNN niêm yết tỷ giá trung tâm 25.668 đồng/USD, cao hơn mức 25.637 đồng giữa tháng; Vietcombank mua – bán USD 25.580–25.990 đồng. Vàng SJC tăng 1,5 triệu đồng/lượng lên 130–135 triệu đồng sau khi vàng thế giới bật tăng. Tỷ giá nhích lên trong khi Fed có thể tăng lãi khiến dư địa giảm lãi suất trong nước hẹp hơn, đáng chú ý với nhóm ngân hàng.",
+    "t": "Tỷ giá trung tâm lên 25.668 đồng/USD; vàng SJC tăng 1,5 triệu lên 130–135 triệu đồng/lượng"
+   }
+  },
+  {
+   "d": "2026-11-23",
+   "en": {
+    "s": "Nvidia's board reinstated Jensen Huang as CEO after President Trump publicly pushed for it; the company said it received input from the US government that the move poses no national security risk. NVDA rose about 31.5%, regaining roughly $954 billion in market value, its biggest one-day gain since 2003. Chips, coming off their worst week since 2001, rebounded: Marvell +18.4%, Micron about +19%, Dell about +20%, AMD +6.9%. Nomura warned much of the move was mechanical short covering and guarantees nothing.",
+    "t": "Jensen Huang reinstated as CEO; Nvidia jumps 31.5%, best day since 2003, as chips and AI infrastructure rebound"
+   },
+   "id": "us-nvda-1123",
+   "imp": "pos",
+   "m": "ALL",
+   "sec": [
+    "semi",
+    "tech"
+   ],
+   "src": [
+    {
+     "n": "Kiplinger",
+     "u": "https://www.kiplinger.com/investing/stocks/nasdaq-soars-1-471-points-as-huang-returns-to-nvidia-stock-market-today"
+    },
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-monday-november-23-dow-sp-500-nasdaq-surge-after-nvidia-reinstates-jensen-huang-182039397.html"
+    }
+   ],
+   "tk": [
+    "NVDA",
+    "MRVL",
+    "MU",
+    "DELL",
+    "HPE",
+    "AMD",
+    "AVGO",
+    "ORCL"
+   ],
+   "vi": {
+    "s": "Hội đồng quản trị Nvidia phục chức CEO cho Jensen Huang sau khi Tổng thống Trump công khai thúc giục; công ty nói đã nhận ý kiến từ chính phủ Mỹ rằng việc này không gây rủi ro an ninh. Cổ phiếu NVDA tăng khoảng 31,5%, lấy lại khoảng 954 tỷ USD vốn hóa – mức tăng một ngày lớn nhất kể từ 2003. Nhóm chip vừa trải qua tuần tệ nhất từ 2001 cũng hồi mạnh: Marvell +18,4%, Micron khoảng +19%, Dell khoảng +20%, AMD +6,9%. Nomura cảnh báo phần lớn là mua bù bán khống mang tính kỹ thuật, chưa bảo đảm xu hướng bền.",
+    "t": "Jensen Huang trở lại ghế CEO, Nvidia tăng 31,5% – mạnh nhất từ 2003; cả nhóm chip và hạ tầng AI bật dậy"
+   }
+  },
+  {
+   "d": "2026-11-23",
+   "en": {
+    "s": "John Williams said inflation remains too high, projecting 3.5% at end-2026 and a return to 2% only in 2028; he would not exclude hiking at consecutive meetings. The fed funds range is 3.75–4.00%; markets price about a 91–92% chance of a quarter-point hike on Dec 9, and Governor Waller has floated a half point. Higher rates weigh on growth stocks, real estate and flows into emerging markets such as Vietnam.",
+    "t": "NY Fed's Williams: inflation still too high, consecutive hikes not ruled out"
+   },
+   "id": "fed-1123",
+   "imp": "neg",
+   "m": "ALL",
+   "sec": [
+    "bank",
+    "re",
+    "tech"
+   ],
+   "src": [
+    {
+     "n": "Reuters qua Kitco",
+     "u": "https://www.kitco.com/news/off-the-wire/2026-11-23/feds-williams-says-inflation-still-too-high-signals-more-rate-hikes"
+    },
+    {
+     "n": "Yahoo Finance",
+     "u": "https://finance.yahoo.com/markets/live/stock-market-today-monday-november-23-dow-sp-500-nasdaq-surge-after-nvidia-reinstates-jensen-huang-182039397.html"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Ông John Williams nói lạm phát còn quá cao, dự báo kết thúc 2026 ở 3,5% và chỉ về 2% vào 2028; ông không loại trừ tăng lãi ở các cuộc họp liên tiếp. Lãi suất Fed hiện 3,75–4,00%; thị trường định giá khoảng 91–92% khả năng tăng 0,25 điểm % ngày 9/12, Thống đốc Waller còn gợi ý có thể tăng 0,5 điểm. Lãi suất cao hơn gây áp lực lên cổ phiếu tăng trưởng, bất động sản và dòng vốn vào thị trường mới nổi như Việt Nam.",
+    "t": "Chủ tịch Fed New York Williams: lạm phát vẫn quá cao, không loại trừ tăng lãi liên tiếp"
+   }
+  },
+  {
+   "d": "2026-11-23",
+   "en": {
+    "s": "The VN-Index rose 0.49% to 1,697.14, led by VIC (+1.57%), VHM (+1.82%) and FPT (+4.11%), while the HNX-Index fell 1.01%. HOSE turnover was about VND12.691 trillion, down 20%. Foreign investors net sold about VND437 billion market-wide, dumping HDB, VPX, SSI and VIX but net buying POW (VND176.5B), GMD and FPT. Banks were mixed: TCB −2.12%, STB −1.55%.",
+    "t": "VN-Index up 8.35 points to 1,697.14 on VIC, VHM, FPT; foreigners still net sell about VND437B"
+   },
+   "id": "vn-market-1123",
+   "imp": "mix",
+   "m": "VN",
+   "sec": [
+    "re",
+    "tech",
+    "comm",
+    "bank",
+    "broker"
+   ],
+   "src": [
+    {
+     "n": "Tuổi Trẻ",
+     "u": "https://tuoitre.vn/co-phieu-pnj-giam-kich-san-sau-thong-tin-lanh-dao-thua-nhan-kho-khan-tai-chinh-100261123153644513.htm"
+    },
+    {
+     "n": "Vietstock",
+     "u": "https://vietstock.vn/2026/11/nhip-dap-thi-truong-2311-vn-index-phuc-hoi-trong-boi-canh-phan-hoa-pnj-lai-cham-san-1636-1516907.htm"
+    }
+   ],
+   "tk": [
+    "VIC",
+    "VHM",
+    "FPT",
+    "POW",
+    "GMD",
+    "HDB",
+    "SSI",
+    "TCB"
+   ],
+   "vi": {
+    "s": "VN-Index tăng 0,49% lên 1.697,14 điểm, chủ yếu nhờ VIC (+1,57%), VHM (+1,82%) và FPT (+4,11%); HNX-Index lại giảm 1,01%. Thanh khoản HOSE khoảng 12.691 tỷ đồng, giảm 20%. Khối ngoại bán ròng khoảng 437 tỷ đồng toàn thị trường, bán mạnh HDB, VPX, SSI, VIX nhưng mua ròng POW (176,5 tỷ), GMD và FPT. Ngân hàng phân hóa: TCB −2,12%, STB −1,55%.",
+    "t": "VN-Index tăng 8,35 điểm lên 1.697,14 nhờ VIC, VHM, FPT; khối ngoại vẫn bán ròng khoảng 437 tỷ"
+   }
+  },
+  {
+   "d": "2026-11-22",
+   "en": {
+    "s": "On Nov 22 Iran's navy said two tankers that broke its rules were set on fire after entering a \"restricted area\" east of the Strait of Hormuz. Attacks on shipping have run at roughly one a day in November. This could lift oil when markets reopen, supporting energy stocks (XOM, CVX, GAS, PVD) but weighing on airlines, transport and inflation.",
+    "t": "Iran's navy says two tankers set ablaze in Hormuz; oil supply risk rises again"
+   },
+   "id": "hormuz-1122",
+   "imp": "mix",
+   "m": "ALL",
+   "sec": [
+    "energy"
+   ],
+   "src": [
+    {
+     "n": "Al Jazeera",
+     "u": "https://www.aljazeera.com/news/liveblog/2026/11/22/iran-war-live-tankers-set-ablaze-in-hormuz-as-irgc-warns-of-unrest-threat"
+    },
+    {
+     "n": "Oil Monitor",
+     "u": "https://unbiasednews.substack.com/p/oil-monitor-weekly-summary-nov-15"
+    }
+   ],
+   "tk": [
+    "GAS",
+    "PVD",
+    "XOM",
+    "CVX"
+   ],
+   "vi": {
+    "s": "Ngày 22/11, hải quân Iran cho biết hai tàu chở dầu vi phạm quy định đã bị đốt cháy khi đi vào “khu vực hạn chế” phía đông eo Hormuz. Trong tháng 11, các vụ tấn công tàu diễn ra gần như mỗi ngày. Diễn biến này có thể đẩy giá dầu tăng khi thị trường mở cửa lại, có lợi cho cổ phiếu dầu khí (XOM, CVX, GAS, PVD) nhưng bất lợi cho hàng không, vận tải và lạm phát.",
+    "t": "Hải quân Iran nói đã đốt hai tàu chở dầu ở eo Hormuz; rủi ro nguồn cung dầu tăng trở lại"
+   }
+  },
+  {
+   "d": "2026-11-22",
+   "en": {
+    "s": "Through Nov 20, foreign investors net sold nearly VND127 trillion on HOSE year to date, a record. Analysts cite possible further Fed tightening, a strong dollar and a shortage of large, liquid tech stocks; there is no clear timing for a reversal. Under the FTSE roadmap, the next weight additions come in March, June and September 2027, with passive inflows estimated at about $2.1 billion in total.",
+    "t": "Foreign investors' record net selling nears VND127 trillion this year despite FTSE upgrade"
+   },
+   "id": "vn-foreign-1122",
+   "imp": "neg",
+   "m": "VN",
+   "sec": [
+    "broker",
+    "bank"
+   ],
+   "src": [
+    {
+     "n": "CafeF",
+     "u": "https://cafef.vn/khoi-ngoai-ban-rong-ky-luc-127000-ty-dong-chuyen-gia-du-bao-ve-thoi-diem-dao-chieu-188261122220501841.chn"
+    },
+    {
+     "n": "Người Quan Sát",
+     "u": "https://nguoiquansat.vn/ftse-russell-du-kien-giu-nguyen-27-co-phieu-viet-nam-trong-ky-ra-soat-cuoi-nam-he-lo-dot-giai-ngan-ty-usd-tiep-theo-326361.html"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Tính đến 20/11, khối ngoại bán ròng gần 127.000 tỷ đồng trên HOSE từ đầu năm, mức kỷ lục. Chuyên gia cho rằng nguyên nhân là Fed có thể thắt chặt thêm, USD mạnh, và thị trường thiếu cổ phiếu công nghệ đủ lớn, đủ thanh khoản; dòng tiền chưa có thời điểm đảo chiều rõ. Theo lộ trình FTSE, các đợt bổ sung tỷ trọng tiếp theo diễn ra vào tháng 3, 6 và 9/2027, dòng vốn thụ động ước tính tổng khoảng 2,1 tỷ USD.",
+    "t": "Khối ngoại bán ròng kỷ lục gần 127.000 tỷ đồng từ đầu năm dù Việt Nam đã được FTSE nâng hạng"
+   }
+  },
+  {
+   "d": "2026-11-21",
+   "en": {
+    "s": "On Nov 21 lawmakers passed three revised laws on real estate business, land and housing, all effective July 1, 2027. Deposits are capped at 5% of the price, pre-handover collections at 70%, developers need 15–20% equity of project capital, and collecting money before a project qualifies for sale is banned. A revised tax law adds a 0.2% levy on idle land. The market becomes more transparent, but cash-strapped developers face funding pressure.",
+    "t": "National Assembly passes revised Real Estate Business, Land and Housing laws, effective July 1, 2027"
+   },
+   "id": "vn-relaw-1121",
+   "imp": "mix",
+   "m": "VN",
+   "sec": [
+    "re",
+    "build"
+   ],
+   "src": [
+    {
+     "n": "CafeF",
+     "u": "https://cafef.vn/tat-ca-nguoi-dan-co-bat-dong-san-chu-y-quy-dinh-moi-nhat-vua-duoc-thong-qua-188261122221610053.chn"
+    },
+    {
+     "n": "Market Times",
+     "u": "https://markettimes.vn/diem-nhan-bat-dong-san-tuan-qua-quoc-hoi-thong-qua-mot-loat-luat-quan-trong-mo-ra-ky-vong-moi-cho-thi-truong-134728.html"
+    }
+   ],
+   "tk": [],
+   "vi": {
+    "s": "Ngày 21/11, Quốc hội thông qua ba luật sửa đổi về bất động sản, đất đai và nhà ở, cùng có hiệu lực 1/7/2027. Luật mới giới hạn đặt cọc tối đa 5% giá bán, tổng tiền thu trước bàn giao tối đa 70%, yêu cầu vốn chủ sở hữu 15–20% tổng vốn dự án và cấm thu tiền khi dự án chưa đủ điều kiện. Luật thuế sửa đổi áp thuế 0,2% với đất bỏ hoang. Thị trường minh bạch hơn nhưng chủ đầu tư thiếu vốn sẽ chịu áp lực dòng tiền.",
+    "t": "Quốc hội thông qua Luật Kinh doanh BĐS, Luật Đất đai, Luật Nhà ở sửa đổi; hiệu lực từ 1/7/2027"
+   }
+  },
+  {
+   "d": "2026-11-13",
+   "en": {
+    "s": "The law allows controlled sandbox testing of new models, products and services, lets the Prime Minister decide the stock exchange model, and trims custody licensing conditions while keeping client-asset segregation. Not every legal representative of a brokerage must hold a practising certificate, with a two-year transition. A more flexible legal framework supports brokerage stocks and the market-upgrade goal.",
+    "t": "National Assembly passes amended Securities Law (463/464 votes), effective March 1, 2027"
+   },
+   "id": "vn-seclaw-1113",
+   "imp": "pos",
+   "m": "VN",
+   "sec": [
+    "broker"
+   ],
+   "src": [
+    {
+     "n": "Công Thương",
+     "u": "https://congthuong.vn/quoc-hoi-thong-qua-luat-sua-doi-luat-chung-khoan-hieu-luc-tu-1-3-2027-481005.html"
+    },
+    {
+     "n": "CafeBiz",
+     "u": "https://cafebiz.vn/chinh-thuc-thong-qua-luat-chung-khoan-sua-doi-khong-bat-buoc-tat-ca-nguoi-dai-dien-ctck-phai-co-chung-chi-hanh-nghe-176261113142504961.chn"
+    }
+   ],
+   "tk": [
+    "SSI",
+    "VIX",
+    "VND",
+    "HCM"
+   ],
+   "vi": {
+    "s": "Luật cho phép thử nghiệm có kiểm soát (sandbox) các mô hình, sản phẩm, dịch vụ mới; Thủ tướng quyết định mô hình sở giao dịch; giảm bớt điều kiện cấp phép lưu ký nhưng vẫn giữ yêu cầu tách bạch tài sản khách hàng. Công ty chứng khoán không bắt buộc mọi người đại diện phải có chứng chỉ hành nghề, có 2 năm chuyển tiếp. Khung pháp lý thông thoáng hơn là điểm hỗ trợ cho nhóm chứng khoán và mục tiêu nâng hạng thị trường.",
+    "t": "Quốc hội thông qua Luật Chứng khoán sửa đổi (463/464 phiếu), hiệu lực từ 1/3/2027"
+   }
+  },
+  {
+   "d": "2026-11-04",
+   "en": {
+    "s": "CBS News projects a Democratic House majority (on pace for about 256 seats); the Washington Post reports they also won the Senate. Leader Hakeem Jeffries lists rolling back the President's tariffs, reversing Medicaid/SNAP cuts, extending ACA premium credits and opening investigations. The Dow rose almost 1,600 points on Nov 4, then gave it all back on Nov 5. Lower tariffs would help retailers, automakers and industrials that import parts; health insurers face more policy uncertainty. A tariff rollback passed by the House would still need the Senate and the President's signature (or enough votes to override a veto).",
+    "t": "Democrats win the House in the midterms; tariff rollback a stated priority"
+   },
+   "id": "us-midterms-1104",
+   "imp": "mix",
+   "m": "US",
+   "sec": [
+    "ind",
+    "retail",
+    "auto",
+    "health",
+    "cons"
+   ],
+   "src": [
+    {
+     "n": "CBS News",
+     "u": "https://www.cbsnews.com/live-updates/house-election-results-2026/"
+    },
+    {
+     "n": "Washington Post",
+     "u": "https://www.washingtonpost.com/politics/2026/11/03/elections-2026-live-updates-voters-head-polls-senate-house-governor-races/"
+    },
+    {
+     "n": "investingLive",
+     "u": "https://investinglive.com/news/house-democratic-leader-jeffries-says-will-pass-bill-to-stop-tariffs-and-to-end-the-iran-war/"
+    }
+   ],
+   "tk": [
+    "UNH",
+    "CVS",
+    "CNC",
+    "TSLA",
+    "WMT",
+    "HD"
+   ],
+   "vi": {
+    "s": "CBS News dự báo Đảng Dân chủ chiếm đa số Hạ viện (đang hướng tới khoảng 256 ghế); Washington Post đưa tin họ giành cả Thượng viện. Lãnh đạo Hakeem Jeffries nêu ưu tiên: rút lại thuế quan của Tổng thống, khôi phục khoản cắt giảm Medicaid/SNAP, gia hạn trợ cấp bảo hiểm ACA và mở các cuộc điều tra. Dow tăng gần 1.600 điểm ngày 4/11 rồi mất hết ngày 5/11. Thuế quan thấp hơn có lợi cho bán lẻ, ô tô, công nghiệp nhập khẩu linh kiện; nhóm bảo hiểm y tế chịu nhiều biến số chính sách. Dự luật rút thuế quan nếu qua Hạ viện vẫn cần Thượng viện và chữ ký Tổng thống (hoặc đủ phiếu bác phủ quyết).",
+    "t": "Đảng Dân chủ giành Hạ viện trong bầu cử giữa kỳ; ưu tiên rút lại thuế quan"
+   }
+  }
+ ]
+}
